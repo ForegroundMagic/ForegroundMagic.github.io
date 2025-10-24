@@ -1,20 +1,8 @@
 <section class="tab tab-pick-color color-tab" aria-labelledby="color-heading">
-  <div class="color-header card">
-    <div class="color-header__content">
-      <h2 id="color-heading" class="color-header__title" data-product-name>Loading…</h2>
-      <p class="color-header__description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec turpis vitae nulla luctus tristique.
-        Curabitur blandit, mauris sit amet dictum interdum, erat elit pharetra nibh, ut congue urna neque at orci.
-        Sed id libero consequat, dignissim ipsum at, euismod nibh. Fusce commodo felis et orci auctor, quis cursus
-        magna scelerisque.
-      </p>
-    </div>
-  </div>
-
   <div class="color-body">
+    <h2 id="color-heading" class="color-body__title">Choose a shirt color</h2>
     <div class="color-preview card">
       <div class="color-preview__toolbar">
-        <h3 class="color-preview__color" data-color-name>—</h3>
         <div class="color-preview__toggle" role="group" aria-label="Select shirt side">
           <button type="button" class="color-preview__side" data-side-button="front" aria-pressed="true">Front</button>
           <button type="button" class="color-preview__side" data-side-button="back" aria-pressed="false">Back</button>
@@ -23,12 +11,15 @@
       <div class="color-preview__stage">
         <img data-preview-image src="" alt="" loading="lazy" decoding="async" />
       </div>
+      <div class="color-preview__selection">
+        <span class="color-preview__selection-label">Selected color</span>
+        <h3 class="color-preview__color" data-color-name>—</h3>
+      </div>
     </div>
 
     <div class="color-palette card">
       <div class="color-palette__header">
-        <span class="color-palette__label">Shirt Color</span>
-        <p class="color-palette__hint">Select a color to update the preview.</p>
+        <span class="color-palette__label">Available Colors</span>
       </div>
       <div class="color-palette__grid" data-color-grid>
         <p class="color-palette__loading" data-loading>Loading colors…</p>

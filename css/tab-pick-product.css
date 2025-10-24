@@ -117,3 +117,34 @@
 .product-card:hover {
   transform: translateY(-1px);
 }
+
+.product-summary {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-summary__title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.25;
+}
+
+.product-summary__description {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 70ch;
+}
+
+@media (max-width: 640px) {
+  .product-summary {
+    padding: 24px;
+  }
+
+  .product-summary__title {
+    font-size: 24px;
+  }
+}

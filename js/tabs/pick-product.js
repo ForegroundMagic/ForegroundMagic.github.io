@@ -28,6 +28,7 @@ async function initializePickProduct() {
   const section = host.querySelector(".tab-pick-product");
   if (!section) return;
 
+  const summaryNameEl = section.querySelector("[data-product-summary-name]");
   const loadingEl = section.querySelector("[data-loading]");
   const errorEl = section.querySelector("[data-error]");
   const listEl = section.querySelector("[data-product-list]");
@@ -43,6 +44,13 @@ async function initializePickProduct() {
   const productMap = new Map(products.map((product) => [product.product_code, product]));
   let activeCode = state.color?.productCode;
 
+  const updateSummary = (code) => {
+    if (!summaryNameEl) return;
+    const product = code ? productMap.get(code) : null;
+    if (!product) return;
+    summaryNameEl.textContent = `${product.product_name} [${product.product_code}]`;
+  };
+
   if (!activeCode || !productMap.has(activeCode)) {
     activeCode = products[0].product_code;
     const fallbackProduct = productMap.get(activeCode);
@@ -54,15 +62,23 @@ async function initializePickProduct() {
   if (loadingEl) loadingEl.remove();
   if (errorEl) errorEl.classList.add("hidden");
   listEl.hidden = false;
-  renderProductButtons({ listEl, products, activeCode, onSelect: (code) => {
-    const nextProduct = productMap.get(code);
-    if (!nextProduct) return;
-    activeCode = code;
-    ensureProductState(nextProduct, getState());
-  }});
+  renderProductButtons({
+    listEl,
+    products,
+    activeCode,
+    onSelect: (code) => {
+      const nextProduct = productMap.get(code);
+      if (!nextProduct) return;
+      activeCode = code;
+      ensureProductState(nextProduct, getState());
+    },
+    onActiveChange: updateSummary
+  });
+
+  updateSummary(activeCode);
 }
 
-function renderProductButtons({ listEl, products, activeCode, onSelect }) {
+function renderProductButtons({ listEl, products, activeCode, onSelect, onActiveChange }) {
   const buttons = [];
   listEl.innerHTML = "";
 
@@ -92,6 +108,9 @@ function renderProductButtons({ listEl, products, activeCode, onSelect }) {
       button.setAttribute("aria-pressed", String(isActive));
       button.classList.toggle("is-active", isActive);
     });
+    if (typeof onActiveChange === "function") {
+      onActiveChange(code);
+    }
   }
 
   updateActive(activeCode);

@@ -47,7 +47,9 @@ async function initializePickColor() {
     throw new Error("No colors available for product.");
   }
 
-  productNameEl.textContent = `${product.product_name} [${product.product_code}]`;
+  if (productNameEl) {
+    productNameEl.textContent = `${product.product_name} [${product.product_code}]`;
+  }
 
   if (state.color?.productCode !== product.product_code) {
     setAt("color.productCode", product.product_code);
@@ -139,6 +141,7 @@ function renderPalette(colors, container, activeCode) {
     button.className = "color-swatch";
     button.dataset.colorCode = color.color_code;
     button.setAttribute("aria-pressed", String(color.color_code === activeCode));
+    button.setAttribute("aria-label", color.color_name);
     button.title = color.color_name;
     const buttonImage = color.button_300x80_path || color.button_96_path;
     button.innerHTML = `
