@@ -13,25 +13,21 @@
     <h1>Multi‑Tab Designer</h1>
   </header>
 
-  <button class="edge-nav edge-nav--prev" type="button" data-edge-nav="prev" aria-label="Go to previous step">
-    <span aria-hidden="true">&#10094;</span>
-  </button>
-  <button class="edge-nav edge-nav--next" type="button" data-edge-nav="next" aria-label="Go to next step">
-    <span aria-hidden="true">&#10095;</span>
-  </button>
+  <nav class="tab-nav" role="tablist" aria-label="Designer steps">
+    <button role="tab" data-tab="welcome" aria-selected="true">Welcome Guide</button>
+    <button role="tab" data-tab="pick-product">Pick Product</button>
+    <button role="tab" data-tab="pick-color">Pick Color</button>
+    <button role="tab" data-tab="pick-design">Pick Design</button>
+    <button role="tab" data-tab="modify-design">Modify Design</button>
+    <button role="tab" data-tab="add-text">Add Text</button>
+    <button role="tab" data-tab="export">Export Settings</button>
+  </nav>
 
-  <div class="app-main">
-    <nav class="tab-nav" role="tablist" aria-label="Designer steps">
-      <button role="tab" data-tab="welcome" aria-selected="true">Welcome Guide</button>
-      <button role="tab" data-tab="pick-product">Pick Product</button>
-      <button role="tab" data-tab="pick-color">Pick Color</button>
-      <button role="tab" data-tab="pick-design">Pick Design</button>
-      <button role="tab" data-tab="modify-design">Modify Design</button>
-      <button role="tab" data-tab="add-text">Add Text</button>
-      <button role="tab" data-tab="export">Export Settings</button>
-    </nav>
+  <main id="tab-host" class="tab-host" tabindex="-1" aria-live="polite"></main>
 
-    <main id="tab-host" class="tab-host" tabindex="-1" aria-live="polite"></main>
-  </div>
+  <footer class="app-footer">
+    <button id="prev" class="btn-secondary">Back</button>
+    <button id="next" class="btn-primary">Next</button>
+  </footer>
 </body>
 </html>

@@ -3,8 +3,8 @@ import { EVT_READY } from "./events.js";
 
 const host = document.getElementById("tab-host");
 const nav = document.querySelector(".tab-nav");
-const nextBtn = document.querySelector('[data-edge-nav="next"]');
-const prevBtn = document.querySelector('[data-edge-nav="prev"]');
+const nextBtn = document.getElementById("next");
+const prevBtn = document.getElementById("prev");
 
 const order = ["welcome","pick-product","pick-color","pick-design","modify-design","add-text","export"];
 let current = order[0];
@@ -34,7 +34,6 @@ async function loadTab(id) {
 
   // update nav state
   nav.querySelectorAll('[role="tab"]').forEach(btn => btn.setAttribute("aria-selected", String(btn.dataset.tab === id)));
-  updateEdgeNavState(order.indexOf(id));
 
   // notify ready
   host.dispatchEvent(new CustomEvent(EVT_READY, { detail: { tab: id, state: getState() } }));
@@ -48,45 +47,18 @@ nav.addEventListener("click", (e) => {
   loadTab(current);
 });
 
-function goToNext() {
-  const i = order.indexOf(current);
-  if (i < order.length - 1) {
-    current = order[i + 1];
-    loadTab(current);
-  }
-}
-
-function goToPrevious() {
-  const i = order.indexOf(current);
-  if (i > 0) {
-    current = order[i - 1];
-    loadTab(current);
-  }
-}
-
-nextBtn?.addEventListener("click", goToNext);
-prevBtn?.addEventListener("click", goToPrevious);
+nextBtn.addEventListener("click", () => {
+  const i = order.indexOf(current); if (i < order.length - 1) { current = order[i+1]; loadTab(current); }
+});
+prevBtn.addEventListener("click", () => {
+  const i = order.indexOf(current); if (i > 0) { current = order[i-1]; loadTab(current); }
+});
 
 // keyboard shortcuts
 window.addEventListener("keydown", (e) => {
-  if (e.altKey && e.key === "ArrowRight") goToNext();
-  if (e.altKey && e.key === "ArrowLeft") goToPrevious();
+  if (e.altKey && e.key === "ArrowRight") nextBtn.click();
+  if (e.altKey && e.key === "ArrowLeft") prevBtn.click();
 });
-
-function updateEdgeNavState(index) {
-  if (prevBtn) {
-    const disabled = index <= 0;
-    prevBtn.disabled = disabled;
-    prevBtn.setAttribute("aria-disabled", String(disabled));
-    prevBtn.classList.toggle("is-disabled", disabled);
-  }
-  if (nextBtn) {
-    const disabled = index >= order.length - 1;
-    nextBtn.disabled = disabled;
-    nextBtn.setAttribute("aria-disabled", String(disabled));
-    nextBtn.classList.toggle("is-disabled", disabled);
-  }
-}
 
 // bootstrap
 loadTab(current);

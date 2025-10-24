@@ -1,53 +1,57 @@
 <section class="tab tab-pick-color color-tab" aria-labelledby="color-heading">
   <div class="color-body">
-    <h2 id="color-heading" class="color-body__title" data-product-heading>Loading product…</h2>
-    <div class="color-preview card">
-      <div class="color-preview__toolbar">
-        <div class="color-preview__toggle" role="group" aria-label="Select shirt side">
-          <button type="button" class="color-preview__side" data-side-button="front" aria-pressed="true">Front</button>
-          <button type="button" class="color-preview__side" data-side-button="back" aria-pressed="false">Back</button>
+    <div class="color-body__intro">
+      <h2 id="color-heading" class="color-body__title">
+        <span class="color-body__product-code" data-product-code>[3001C_BC_UJSST]</span>
+        <span class="color-body__product-name" data-product-name>3001C Bella + Canvas Unisex Jersey Short-Sleeve T-Shirt</span>
+      </h2>
+    </div>
+
+    <div class="color-preview-shell">
+      <button class="color-preview__nav color-preview__nav--prev" type="button" data-preview-step="prev" aria-label="Go to previous step">
+        <span aria-hidden="true">◀</span>
+      </button>
+
+      <div class="color-preview card">
+        <div class="color-preview__toolbar">
+          <div class="color-preview__toggle" role="group" aria-label="Select shirt side">
+            <button type="button" class="color-preview__side" data-side-button="front" aria-pressed="true">Front</button>
+            <button type="button" class="color-preview__side" data-side-button="back" aria-pressed="false">Back</button>
+          </div>
+        </div>
+        <div class="color-preview__stage">
+          <img data-preview-image src="" alt="" loading="lazy" decoding="async" />
+        </div>
+        <div class="color-preview__selection" role="group" aria-label="Selected color">
+          <button type="button" class="color-preview__selection-nav" data-color-nav="prev" aria-label="Previous color">
+            <span aria-hidden="true">◀</span>
+          </button>
+          <div class="color-preview__selection-body">
+            <span class="color-preview__selection-label">Selected Color</span>
+            <h3 class="color-preview__color" data-color-name>—</h3>
+          </div>
+          <button type="button" class="color-preview__selection-nav" data-color-nav="next" aria-label="Next color">
+            <span aria-hidden="true">▶</span>
+          </button>
         </div>
       </div>
-      <div class="color-preview__stage">
-        <button
-          type="button"
-          class="color-preview__nav color-preview__nav--prev"
-          data-color-cycle="prev"
-          aria-label="Show previous color"
-        >
-          <span aria-hidden="true">&#10094;</span>
-        </button>
-        <img data-preview-image src="" alt="" loading="lazy" decoding="async" />
-        <button
-          type="button"
-          class="color-preview__nav color-preview__nav--next"
-          data-color-cycle="next"
-          aria-label="Show next color"
-        >
-          <span aria-hidden="true">&#10095;</span>
-        </button>
-      </div>
-      <div class="color-preview__selection">
-        <span class="color-preview__selection-label">Selected color</span>
-        <h3 class="color-preview__color" data-color-name>—</h3>
-      </div>
-      <div class="color-preview__actions">
-        <button type="button" class="color-preview__cycle" data-color-cycle="prev">Previous color</button>
-        <button type="button" class="color-preview__cycle" data-color-cycle="next">Next color</button>
-      </div>
+
+      <button class="color-preview__nav color-preview__nav--next" type="button" data-preview-step="next" aria-label="Go to next step">
+        <span aria-hidden="true">▶</span>
+      </button>
     </div>
 
     <div class="color-palette card" data-collapsible>
-      <button class="color-palette__header" type="button" data-collapsible-toggle aria-expanded="true">
+      <button type="button" class="color-palette__header" data-palette-toggle aria-expanded="true">
         <span class="color-palette__label">Available Colors</span>
-        <span class="color-palette__icon" aria-hidden="true">&#9662;</span>
+        <span class="color-palette__chevron" aria-hidden="true"></span>
       </button>
-      <div class="color-palette__content" data-collapsible-content>
+      <div class="color-palette__content" data-palette-content>
         <div class="color-palette__grid" data-color-grid>
           <p class="color-palette__loading" data-loading>Loading colors…</p>
         </div>
-        <p class="color-palette__error hidden" data-error role="alert"></p>
       </div>
+      <p class="color-palette__error hidden" data-error role="alert"></p>
     </div>
   </div>
 </section>

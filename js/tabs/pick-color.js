@@ -29,17 +29,25 @@ async function initializePickColor() {
   const section = host.querySelector(".tab-pick-color");
   if (!section) return;
 
-  const productHeadingEl = section.querySelector("[data-product-heading]");
+  const productCodeEl = section.querySelector("[data-product-code]");
+  const productNameEl = section.querySelector("[data-product-name]");
   const colorNameEl = section.querySelector("[data-color-name]");
   const previewImg = section.querySelector("[data-preview-image]");
   const paletteGrid = section.querySelector("[data-color-grid]");
   const loadingEl = section.querySelector("[data-loading]");
   const errorEl = section.querySelector("[data-error]");
   const sideButtons = Array.from(section.querySelectorAll("[data-side-button]"));
-  const cycleButtons = Array.from(section.querySelectorAll("[data-color-cycle]"));
-  const paletteSection = section.querySelector("[data-collapsible]");
-  const collapsibleToggle = section.querySelector("[data-collapsible-toggle]");
-  const collapsibleContent = section.querySelector("[data-collapsible-content]");
+  const colorNavButtons = Array.from(section.querySelectorAll("[data-color-nav]"));
+  const stepNavButtons = Array.from(section.querySelectorAll("[data-preview-step]"));
+  const paletteToggle = section.querySelector("[data-palette-toggle]");
+  const paletteContent = section.querySelector("[data-palette-content]");
+
+  const syncPaletteHeight = () => {
+    if (!paletteContent || !paletteToggle) return;
+    if (paletteToggle.getAttribute("aria-expanded") === "true") {
+      paletteContent.style.height = `${paletteContent.scrollHeight}px`;
+    }
+  };
 
   const state = getState();
   const desiredCode = state.color?.productCode || "3001C_BC_UJSST";
@@ -51,8 +59,11 @@ async function initializePickColor() {
     throw new Error("No colors available for product.");
   }
 
-  if (productHeadingEl) {
-    productHeadingEl.textContent = product.product_name;
+  if (productCodeEl) {
+    productCodeEl.textContent = `[${product.product_code}]`;
+  }
+  if (productNameEl) {
+    productNameEl.textContent = product.product_name;
   }
 
   if (state.color?.productCode !== product.product_code) {
@@ -71,6 +82,11 @@ async function initializePickColor() {
     defaultColorFromDb ||
     colors.find((color) => color.color_code === "black") ||
     colors[0];
+
+  let selectedColorIndex = colors.findIndex((color) => color.color_code === selectedColor.color_code);
+  if (selectedColorIndex < 0) {
+    selectedColorIndex = 0;
+  }
 
   if (selectedSide !== "front" && selectedSide !== "back") {
     selectedSide = "front";
@@ -95,9 +111,7 @@ async function initializePickColor() {
     selectedColor,
     side: selectedSide
   });
-
-  let selectedIndex = colors.findIndex((color) => color.color_code === selectedColor.color_code);
-  if (selectedIndex < 0) selectedIndex = 0;
+  syncPaletteHeight();
 
   paletteGrid.addEventListener("click", (event) => {
     const swatch = event.target.closest("[data-color-code]");
@@ -105,14 +119,11 @@ async function initializePickColor() {
     const code = swatch.dataset.colorCode;
     if (!code || code === selectedColor.color_code) return;
 
-    const nextIndex = colors.findIndex((color) => color.color_code === code);
-    if (nextIndex < 0) return;
-
-    const nextColor = colors[nextIndex];
+    const nextColor = colors.find((color) => color.color_code === code);
     if (!nextColor) return;
 
     selectedColor = nextColor;
-    selectedIndex = nextIndex;
+    selectedColorIndex = colors.findIndex((color) => color.color_code === code);
     setAt("color.selectedColorCode", code);
     renderPalette(colors, paletteGrid, code);
     const active = paletteGrid.querySelector(`[data-color-code="${code}"]`);
@@ -124,6 +135,7 @@ async function initializePickColor() {
       selectedColor,
       side: selectedSide
     });
+    syncPaletteHeight();
   });
 
   sideButtons.forEach((button) => {
@@ -143,12 +155,12 @@ async function initializePickColor() {
     });
   });
 
-  cycleButtons.forEach((button) => {
+  colorNavButtons.forEach((button) => {
     button.addEventListener("click", () => {
       if (!colors.length) return;
-      const direction = button.dataset.colorCycle === "prev" ? -1 : 1;
-      selectedIndex = (selectedIndex + colors.length + direction) % colors.length;
-      selectedColor = colors[selectedIndex];
+      const direction = button.dataset.colorNav === "next" ? 1 : -1;
+      selectedColorIndex = (selectedColorIndex + direction + colors.length) % colors.length;
+      selectedColor = colors[selectedColorIndex];
       setAt("color.selectedColorCode", selectedColor.color_code);
       renderPalette(colors, paletteGrid, selectedColor.color_code);
       updatePreview({
@@ -158,19 +170,41 @@ async function initializePickColor() {
         selectedColor,
         side: selectedSide
       });
+      syncPaletteHeight();
     });
   });
 
-  if (collapsibleToggle && collapsibleContent) {
-    collapsibleToggle.addEventListener("click", () => {
-      const expanded = collapsibleToggle.getAttribute("aria-expanded") === "true";
-      collapsibleToggle.setAttribute("aria-expanded", String(!expanded));
-      collapsibleContent.hidden = expanded;
-      if (paletteSection) {
-        paletteSection.classList.toggle("is-collapsed", expanded);
+  stepNavButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const direction = button.dataset.previewStep;
+      const triggerId = direction === "prev" ? "prev" : "next";
+      document.getElementById(triggerId)?.click();
+    });
+  });
+
+  if (paletteToggle && paletteContent) {
+    paletteToggle.addEventListener("click", () => {
+      const expanded = paletteToggle.getAttribute("aria-expanded") === "true";
+      if (expanded) {
+        paletteContent.style.height = `${paletteContent.scrollHeight}px`;
+        paletteToggle.setAttribute("aria-expanded", "false");
+        requestAnimationFrame(() => {
+          paletteContent.style.height = "0px";
+        });
+      }
+      else {
+        paletteToggle.setAttribute("aria-expanded", "true");
+        paletteContent.style.height = `${paletteContent.scrollHeight}px`;
       }
     });
+
+    if (typeof ResizeObserver === "function") {
+      const observer = new ResizeObserver(syncPaletteHeight);
+      observer.observe(paletteContent);
+    }
   }
+
+  requestAnimationFrame(syncPaletteHeight);
 }
 
 function renderPalette(colors, container, activeCode) {
