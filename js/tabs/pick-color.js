@@ -30,7 +30,6 @@ async function initializePickColor() {
   if (!section) return;
 
   const productNameEl = section.querySelector("[data-product-name]");
-  const productCodeEl = section.querySelector("[data-product-code]");
   const colorNameEl = section.querySelector("[data-color-name]");
   const previewImg = section.querySelector("[data-preview-image]");
   const paletteGrid = section.querySelector("[data-color-grid]");
@@ -41,15 +40,14 @@ async function initializePickColor() {
   const state = getState();
   const desiredCode = state.color?.productCode || "3001C_BC_UJSST";
   let selectedSide = state.color?.side || "front";
-  const defaultColorCode = state.color?.selectedColorCode || "black";
+  const storedColorCode = state.color?.selectedColorCode ?? null;
 
-  const { product, colors } = await getProductWithColors(desiredCode);
+  const { product, colors, defaultColorCode } = await getProductWithColors(desiredCode);
   if (!colors.length) {
     throw new Error("No colors available for product.");
   }
 
-  productNameEl.textContent = product.product_name;
-  productCodeEl.textContent = product.product_code;
+  productNameEl.textContent = `${product.product_name} [${product.product_code}]`;
 
   if (state.color?.productCode !== product.product_code) {
     setAt("color.productCode", product.product_code);
@@ -58,8 +56,13 @@ async function initializePickColor() {
     setAt("color.productId", product.product_id);
   }
 
+  const defaultColorFromDb = defaultColorCode
+    ? colors.find((color) => color.color_code === defaultColorCode)
+    : null;
+
   let selectedColor =
-    colors.find((color) => color.color_code === defaultColorCode) ||
+    (storedColorCode && colors.find((color) => color.color_code === storedColorCode)) ||
+    defaultColorFromDb ||
     colors.find((color) => color.color_code === "black") ||
     colors[0];
 
@@ -137,9 +140,10 @@ function renderPalette(colors, container, activeCode) {
     button.dataset.colorCode = color.color_code;
     button.setAttribute("aria-pressed", String(color.color_code === activeCode));
     button.title = color.color_name;
+    const buttonImage = color.button_300x80_path || color.button_96_path;
     button.innerHTML = `
       <span class="color-swatch__chip">
-        <img src="${color.button_96_path}" alt="" loading="lazy" />
+        <img src="${buttonImage}" alt="" loading="lazy" />
       </span>
       <span class="color-swatch__label">${color.color_name}</span>
     `;
@@ -158,8 +162,7 @@ function renderSideButtons(buttons, activeSide) {
 }
 
 function updatePreview({ colorNameEl, previewImg, productName, selectedColor, side }) {
-  const sideLabel = side === "back" ? "Back" : "Front";
-  colorNameEl.textContent = `${selectedColor.color_name} · ${sideLabel}`;
+  colorNameEl.textContent = selectedColor.color_name;
   const src = side === "back" ? selectedColor.preview_back_path : selectedColor.preview_front_path;
   previewImg.src = src;
   previewImg.alt = `${selectedColor.color_name} ${side} view of ${productName}`;

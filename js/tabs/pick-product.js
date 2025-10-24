@@ -73,9 +73,13 @@ function renderProductButtons({ listEl, products, activeCode, onSelect }) {
     button.className = "product-card";
     button.dataset.productCode = product.product_code;
     button.dataset.productId = String(product.product_id);
+    const previewMarkup = product.default_preview_front_path
+      ? `<span class="product-card__preview"><img src="${product.default_preview_front_path}" alt="" loading="lazy" decoding="async" /></span>`
+      : "";
     button.innerHTML = `
       <span class="product-card__code">${product.product_code}</span>
       <span class="product-card__name">${product.product_name}</span>
+      ${previewMarkup}
     `;
     buttons.push(button);
     item.appendChild(button);
@@ -108,6 +112,7 @@ function ensureProductState(product, state) {
   const currentId = state.color?.productId;
   const desiredCode = product.product_code;
   const desiredId = Number(product.product_id);
+  const desiredColorCode = product.default_color_code ?? null;
 
   if (currentCode !== desiredCode) {
     setAt("color.productCode", desiredCode);
@@ -125,7 +130,8 @@ function ensureProductState(product, state) {
     });
   }
 
-  if (state.color?.selectedColorCode) {
-    setAt("color.selectedColorCode", null);
+  const currentColorSelection = state.color?.selectedColorCode ?? null;
+  if (currentColorSelection !== desiredColorCode) {
+    setAt("color.selectedColorCode", desiredColorCode);
   }
 }
