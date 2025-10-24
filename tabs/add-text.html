@@ -1,0 +1,23 @@
+<section class="tab tab-add-text" aria-labelledby="text-heading">
+  <h2 id="text-heading">Add Text</h2>
+  <div class="grid-2">
+    <div class="card" style="padding:16px;">
+      <label>Text Content</label>
+      <textarea id="textContent" rows="4" placeholder="Your headline here"></textarea>
+      <label style="margin-top:8px;">Font Family</label>
+      <select id="fontFamily">
+        <option>Inter</option>
+        <option>Roboto</option>
+        <option>Georgia</option>
+        <option>Monaco</option>
+      </select>
+      <label style="margin-top:8px;">Font Size (px)</label>
+      <input id="fontSize" type="number" value="32" />
+      <label style="margin-top:8px;">Text Color</label>
+      <input id="textColor" type="color" value="#e6e9ef" />
+    </div>
+    <div class="card preview" id="textPreview" style="font-size:32px; font-family: Inter;">
+      Live text preview
+    </div>
+  </div>
+</section>

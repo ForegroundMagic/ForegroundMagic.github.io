@@ -1,1 +1,0 @@
-# ForegroundMagic.github.io

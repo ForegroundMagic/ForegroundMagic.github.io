@@ -1,0 +1,1 @@
+.tab-pick-design .list{display:grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap:12px;} .tab-pick-design .item{padding:10px;border:1px solid var(--border);border-radius:10px;background:#0f1422;} .item input{margin-right:6px;}
