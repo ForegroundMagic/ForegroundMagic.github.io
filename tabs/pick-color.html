@@ -1,6 +1,6 @@
 <section class="tab tab-pick-color color-tab" aria-labelledby="color-heading">
   <div class="color-body">
-    <h2 id="color-heading" class="color-body__title">Choose a shirt color</h2>
+    <h2 id="color-heading" class="color-body__title" data-product-heading>Loading product…</h2>
     <div class="color-preview card">
       <div class="color-preview__toolbar">
         <div class="color-preview__toggle" role="group" aria-label="Select shirt side">
@@ -9,22 +9,45 @@
         </div>
       </div>
       <div class="color-preview__stage">
+        <button
+          type="button"
+          class="color-preview__nav color-preview__nav--prev"
+          data-color-cycle="prev"
+          aria-label="Show previous color"
+        >
+          <span aria-hidden="true">&#10094;</span>
+        </button>
         <img data-preview-image src="" alt="" loading="lazy" decoding="async" />
+        <button
+          type="button"
+          class="color-preview__nav color-preview__nav--next"
+          data-color-cycle="next"
+          aria-label="Show next color"
+        >
+          <span aria-hidden="true">&#10095;</span>
+        </button>
       </div>
       <div class="color-preview__selection">
         <span class="color-preview__selection-label">Selected color</span>
         <h3 class="color-preview__color" data-color-name>—</h3>
       </div>
+      <div class="color-preview__actions">
+        <button type="button" class="color-preview__cycle" data-color-cycle="prev">Previous color</button>
+        <button type="button" class="color-preview__cycle" data-color-cycle="next">Next color</button>
+      </div>
     </div>
 
-    <div class="color-palette card">
-      <div class="color-palette__header">
+    <div class="color-palette card" data-collapsible>
+      <button class="color-palette__header" type="button" data-collapsible-toggle aria-expanded="true">
         <span class="color-palette__label">Available Colors</span>
+        <span class="color-palette__icon" aria-hidden="true">&#9662;</span>
+      </button>
+      <div class="color-palette__content" data-collapsible-content>
+        <div class="color-palette__grid" data-color-grid>
+          <p class="color-palette__loading" data-loading>Loading colors…</p>
+        </div>
+        <p class="color-palette__error hidden" data-error role="alert"></p>
       </div>
-      <div class="color-palette__grid" data-color-grid>
-        <p class="color-palette__loading" data-loading>Loading colors…</p>
-      </div>
-      <p class="color-palette__error hidden" data-error role="alert"></p>
     </div>
   </div>
 </section>

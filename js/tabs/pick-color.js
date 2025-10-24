@@ -29,13 +29,17 @@ async function initializePickColor() {
   const section = host.querySelector(".tab-pick-color");
   if (!section) return;
 
-  const productNameEl = section.querySelector("[data-product-name]");
+  const productHeadingEl = section.querySelector("[data-product-heading]");
   const colorNameEl = section.querySelector("[data-color-name]");
   const previewImg = section.querySelector("[data-preview-image]");
   const paletteGrid = section.querySelector("[data-color-grid]");
   const loadingEl = section.querySelector("[data-loading]");
   const errorEl = section.querySelector("[data-error]");
   const sideButtons = Array.from(section.querySelectorAll("[data-side-button]"));
+  const cycleButtons = Array.from(section.querySelectorAll("[data-color-cycle]"));
+  const paletteSection = section.querySelector("[data-collapsible]");
+  const collapsibleToggle = section.querySelector("[data-collapsible-toggle]");
+  const collapsibleContent = section.querySelector("[data-collapsible-content]");
 
   const state = getState();
   const desiredCode = state.color?.productCode || "3001C_BC_UJSST";
@@ -47,8 +51,8 @@ async function initializePickColor() {
     throw new Error("No colors available for product.");
   }
 
-  if (productNameEl) {
-    productNameEl.textContent = `${product.product_name} [${product.product_code}]`;
+  if (productHeadingEl) {
+    productHeadingEl.textContent = product.product_name;
   }
 
   if (state.color?.productCode !== product.product_code) {
@@ -92,16 +96,23 @@ async function initializePickColor() {
     side: selectedSide
   });
 
+  let selectedIndex = colors.findIndex((color) => color.color_code === selectedColor.color_code);
+  if (selectedIndex < 0) selectedIndex = 0;
+
   paletteGrid.addEventListener("click", (event) => {
     const swatch = event.target.closest("[data-color-code]");
     if (!swatch) return;
     const code = swatch.dataset.colorCode;
     if (!code || code === selectedColor.color_code) return;
 
-    const nextColor = colors.find((color) => color.color_code === code);
+    const nextIndex = colors.findIndex((color) => color.color_code === code);
+    if (nextIndex < 0) return;
+
+    const nextColor = colors[nextIndex];
     if (!nextColor) return;
 
     selectedColor = nextColor;
+    selectedIndex = nextIndex;
     setAt("color.selectedColorCode", code);
     renderPalette(colors, paletteGrid, code);
     const active = paletteGrid.querySelector(`[data-color-code="${code}"]`);
@@ -131,6 +142,35 @@ async function initializePickColor() {
       });
     });
   });
+
+  cycleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!colors.length) return;
+      const direction = button.dataset.colorCycle === "prev" ? -1 : 1;
+      selectedIndex = (selectedIndex + colors.length + direction) % colors.length;
+      selectedColor = colors[selectedIndex];
+      setAt("color.selectedColorCode", selectedColor.color_code);
+      renderPalette(colors, paletteGrid, selectedColor.color_code);
+      updatePreview({
+        colorNameEl,
+        previewImg,
+        productName: product.product_name,
+        selectedColor,
+        side: selectedSide
+      });
+    });
+  });
+
+  if (collapsibleToggle && collapsibleContent) {
+    collapsibleToggle.addEventListener("click", () => {
+      const expanded = collapsibleToggle.getAttribute("aria-expanded") === "true";
+      collapsibleToggle.setAttribute("aria-expanded", String(!expanded));
+      collapsibleContent.hidden = expanded;
+      if (paletteSection) {
+        paletteSection.classList.toggle("is-collapsed", expanded);
+      }
+    });
+  }
 }
 
 function renderPalette(colors, container, activeCode) {
