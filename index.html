@@ -26,8 +26,14 @@
   <main id="tab-host" class="tab-host" tabindex="-1" aria-live="polite"></main>
 
   <footer class="app-footer">
-    <button id="prev" class="btn-secondary">Back</button>
-    <button id="next" class="btn-primary">Next</button>
+    <button id="prev" class="btn btn-secondary">
+      <span aria-hidden="true" class="btn__icon">‹</span>
+      <span class="btn__label">Previous</span>
+    </button>
+    <button id="next" class="btn btn-primary">
+      <span class="btn__label">Next</span>
+      <span aria-hidden="true" class="btn__icon">›</span>
+    </button>
   </footer>
 </body>
 </html>
