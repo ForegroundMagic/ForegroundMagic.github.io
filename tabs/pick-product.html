@@ -8,14 +8,14 @@
     </div>
     <form class="product-filters" data-product-filters role="search">
       <label class="product-filters__field">
-        <span class="product-filters__label">Search products</span>
-        <input type="search" class="product-filters__input" placeholder="Search by name or code" data-product-search />
-      </label>
-      <label class="product-filters__field">
         <span class="product-filters__label">Product type</span>
         <select class="product-filters__input" data-product-type>
           <option value="all">All types</option>
         </select>
+      </label>
+      <label class="product-filters__field">
+        <span class="product-filters__label">Search products</span>
+        <input type="search" class="product-filters__input" placeholder="Search by name or code" data-product-search />
       </label>
     </form>
   </div>
@@ -24,16 +24,5 @@
     <div class="product-list__status" data-status>Loading products…</div>
     <p class="product-list__error hidden" data-error role="alert"></p>
     <ul class="product-list__grid" data-product-list hidden></ul>
-  </div>
-
-  <div class="product-summary card">
-    <div class="product-summary__content">
-      <span class="product-summary__type" data-product-summary-type>Loading type…</span>
-      <h2 class="product-summary__title" data-product-summary-name>Loading…</h2>
-      <span class="product-summary__code" data-product-summary-code></span>
-      <p class="product-summary__description" data-product-summary-description>
-        We&rsquo;ll show the full product description once the catalog is ready.
-      </p>
-    </div>
   </div>
 </section>

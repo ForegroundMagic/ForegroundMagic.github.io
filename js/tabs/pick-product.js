@@ -34,10 +34,6 @@ async function initializePickProduct() {
   const filtersForm = section.querySelector("[data-product-filters]");
   const searchInput = section.querySelector("[data-product-search]");
   const typeSelect = section.querySelector("[data-product-type]");
-  const summaryTypeEl = section.querySelector("[data-product-summary-type]");
-  const summaryNameEl = section.querySelector("[data-product-summary-name]");
-  const summaryCodeEl = section.querySelector("[data-product-summary-code]");
-  const summaryDescriptionEl = section.querySelector("[data-product-summary-description]");
   const statusEl = section.querySelector("[data-status]");
   const errorEl = section.querySelector("[data-error]");
   const listEl = section.querySelector("[data-product-list]");
@@ -52,25 +48,6 @@ async function initializePickProduct() {
 
   const productMap = new Map(products.map((product) => [product.product_code, product]));
   let activeCode = state.color?.productCode;
-
-  const updateSummary = (code) => {
-    const product = code ? productMap.get(code) : null;
-    if (!product) return;
-
-    if (summaryTypeEl) {
-      summaryTypeEl.textContent = product.product_type_name ?? "Product";
-    }
-    if (summaryNameEl) {
-      summaryNameEl.textContent = product.product_name;
-    }
-    if (summaryCodeEl) {
-      summaryCodeEl.textContent = product.product_code ? `Code: ${product.product_code}` : "";
-    }
-    if (summaryDescriptionEl) {
-      const description = product.description?.trim();
-      summaryDescriptionEl.textContent = description || "This product does not yet have a description.";
-    }
-  };
 
   if (!activeCode || !productMap.has(activeCode)) {
     activeCode = products[0].product_code;
@@ -168,7 +145,6 @@ async function initializePickProduct() {
         button.setAttribute("aria-pressed", String(isActive));
         button.classList.toggle("is-active", isActive);
       });
-      updateSummary(code);
     };
 
     updateActive(activeCode);

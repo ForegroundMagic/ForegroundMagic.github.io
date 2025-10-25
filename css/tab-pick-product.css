@@ -1,14 +1,16 @@
 .product-tab {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: clamp(20px, 4vw, 32px);
+  width: min(100%, 1180px);
+  margin: 0 auto;
 }
 
 .product-header {
-  padding: 24px;
+  padding: clamp(20px, 4vw, 28px);
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: clamp(16px, 3vw, 24px);
   align-items: flex-end;
 }
 
@@ -29,7 +31,7 @@
   min-width: 220px;
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
 .product-filters__field {
@@ -64,7 +66,7 @@
 }
 
 .product-list {
-  padding: 24px;
+  padding: clamp(20px, 4vw, 28px);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -86,7 +88,7 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(clamp(220px, 42vw, 320px), 1fr));
   gap: 16px;
 }
 
@@ -164,10 +166,6 @@
   font-size: 14px;
   line-height: 1.5;
   color: var(--muted);
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .product-card[aria-pressed="true"],
@@ -185,40 +183,6 @@
   transform: translateY(-1px);
 }
 
-.product-summary {
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.product-summary__type {
-  font-size: 13px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.product-summary__title {
-  margin: 0;
-  font-size: 28px;
-  line-height: 1.25;
-}
-
-.product-summary__code {
-  font-size: 14px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.product-summary__description {
-  margin: 0;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.7;
-  max-width: 70ch;
-}
 
 @media (min-width: 640px) {
   .product-card {
@@ -230,13 +194,5 @@
 @media (max-width: 640px) {
   .product-header {
     padding: 20px;
-  }
-
-  .product-summary {
-    padding: 24px;
-  }
-
-  .product-summary__title {
-    font-size: 24px;
   }
 }
