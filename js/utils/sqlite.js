@@ -83,9 +83,13 @@ export async function getAllProducts() {
        p.product_id,
        p.product_code,
        p.product_name,
+       p.description,
+       p.product_type_id,
+       pt.type_name,
        ca.color_code   AS default_color_code,
        ca.preview_front_path AS default_preview_front_path
      FROM products p
+     LEFT JOIN product_types pt ON pt.product_type_id = p.product_type_id
      LEFT JOIN product_default_color dc ON dc.product_id = p.product_id
      LEFT JOIN product_color_assets ca ON ca.color_asset_id = dc.color_asset_id
      ORDER BY p.product_name`
@@ -94,6 +98,9 @@ export async function getAllProducts() {
     product_id: Number(row.product_id),
     product_code: row.product_code,
     product_name: row.product_name,
+    description: row.description ?? "",
+    product_type_id: row.product_type_id ? Number(row.product_type_id) : null,
+    product_type_name: row.type_name ?? null,
     default_color_code: row.default_color_code ?? null,
     default_preview_front_path: row.default_preview_front_path ?? null
   }));

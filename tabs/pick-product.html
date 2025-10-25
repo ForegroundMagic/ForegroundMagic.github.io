@@ -1,26 +1,38 @@
 <section class="tab tab-pick-product product-tab" aria-labelledby="product-heading">
-  <div class="product-intro card">
-    <span class="product-intro__label">Product Catalog</span>
-    <h2 id="product-heading">Choose your base product</h2>
-    <p class="product-intro__hint">
-      Select a product to continue customizing its colours and artwork in the following steps.
-    </p>
+  <div class="product-header card">
+    <div class="product-header__text">
+      <h2 id="product-heading">Choose your base product</h2>
+      <p class="product-header__hint">
+        Search and filter by product type to quickly find the perfect starting point for your design.
+      </p>
+    </div>
+    <form class="product-filters" data-product-filters role="search">
+      <label class="product-filters__field">
+        <span class="product-filters__label">Search products</span>
+        <input type="search" class="product-filters__input" placeholder="Search by name or code" data-product-search />
+      </label>
+      <label class="product-filters__field">
+        <span class="product-filters__label">Product type</span>
+        <select class="product-filters__input" data-product-type>
+          <option value="all">All types</option>
+        </select>
+      </label>
+    </form>
   </div>
 
   <div class="product-list card" data-product-panel>
-    <div class="product-list__status" data-loading>Loading products…</div>
+    <div class="product-list__status" data-status>Loading products…</div>
     <p class="product-list__error hidden" data-error role="alert"></p>
     <ul class="product-list__grid" data-product-list hidden></ul>
   </div>
 
   <div class="product-summary card">
     <div class="product-summary__content">
+      <span class="product-summary__type" data-product-summary-type>Loading type…</span>
       <h2 class="product-summary__title" data-product-summary-name>Loading…</h2>
-      <p class="product-summary__description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec turpis vitae nulla luctus tristique.
-        Curabitur blandit, mauris sit amet dictum interdum, erat elit pharetra nibh, ut congue urna neque at orci.
-        Sed id libero consequat, dignissim ipsum at, euismod nibh. Fusce commodo felis et orci auctor, quis cursus
-        magna scelerisque.
+      <span class="product-summary__code" data-product-summary-code></span>
+      <p class="product-summary__description" data-product-summary-description>
+        We&rsquo;ll show the full product description once the catalog is ready.
       </p>
     </div>
   </div>
