@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1155">
+  <defs>
+    <linearGradient id="shirtGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#d7dde5"/>
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="15" stdDeviation="30" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path fill="url(#shirtGradient)" stroke="#b5bdc5" stroke-width="4" d="M347 132c54-7 97-33 140-82 61 44 117 72 182 81 31 4 87 7 118 8 63 1 140 82 186 170-50 20-103 38-153 59-7 124-10 232-13 356-1 45-9 88-53 128-39 36-102 76-189 76-95 1-157-38-202-77-42-37-50-78-51-130-2-104-4-214-11-341-52-22-105-43-158-62 52-100 118-181 204-186z"/>
+  </g>
+</svg>

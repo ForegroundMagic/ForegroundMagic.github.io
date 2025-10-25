@@ -1,39 +1,156 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Multi‑Tab Designer (Dark)</title>
-  <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="/css/app.css" />
-  <script type="module" src="/js/app.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobile T-Shirt Designer</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body class="theme-dark">
-  <header class="app-header">
-    <h1>Multi‑Tab Designer</h1>
-  </header>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>TeeCraft Studio</h1>
+      <button class="collapse-precision" aria-expanded="false" aria-controls="precision-panel">Adjust</button>
+    </header>
 
-  <nav class="tab-nav" role="tablist" aria-label="Designer steps">
-    <button role="tab" data-tab="welcome" aria-selected="true">Welcome Guide</button>
-    <button role="tab" data-tab="pick-product">Pick Product</button>
-    <button role="tab" data-tab="pick-color">Pick Color</button>
-    <button role="tab" data-tab="pick-design">Pick Design</button>
-    <button role="tab" data-tab="modify-design">Modify Design</button>
-    <button role="tab" data-tab="add-text">Add Text</button>
-    <button role="tab" data-tab="export">Export Settings</button>
-  </nav>
+    <main class="canvas-region">
+      <div class="canvas-wrapper">
+        <div class="canvas-inner">
+          <img src="assets/tshirt-base.svg" alt="Blank T-Shirt" class="tshirt-base" />
+          <div class="svg-container">
+            <svg id="svg-canvas" viewBox="0 0 440 583" role="presentation">
+              <defs>
+                <filter id="selection-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.25" />
+                </filter>
+              </defs>
+              <g id="layer-root"></g>
+            </svg>
+            <div id="selection-overlay" class="selection-overlay" hidden>
+              <div class="selection-frame"></div>
+              <div class="handle handle-tl" data-handle="scale"></div>
+              <div class="handle handle-tr" data-handle="scale"></div>
+              <div class="handle handle-br" data-handle="scale"></div>
+              <div class="handle handle-bl" data-handle="scale"></div>
+              <div class="rotate-handle" data-handle="rotate"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <main id="tab-host" class="tab-host" tabindex="-1" aria-live="polite"></main>
+      <aside id="layer-panel" class="layer-panel" aria-hidden="true">
+        <header>
+          <h2>Layers</h2>
+          <button type="button" class="close-panel" data-close="layer">×</button>
+        </header>
+        <ol class="layer-list" id="layer-list" aria-live="polite"></ol>
+        <p class="layer-hint">Maximum of 9 layers</p>
+      </aside>
 
-  <footer class="app-footer">
-    <button id="prev" class="btn btn-secondary">
-      <span aria-hidden="true" class="btn__icon">‹</span>
-      <span class="btn__label">Previous</span>
+      <section id="gallery-panel" class="gallery-panel" aria-hidden="true">
+        <header>
+          <h2 id="gallery-title">Gallery</h2>
+          <button type="button" class="close-panel" data-close="gallery">Close</button>
+        </header>
+        <div class="gallery-content" id="gallery-content"></div>
+        <footer class="gallery-footer">
+          <button class="action-button" id="add-gallery-item" disabled>Add to Canvas</button>
+        </footer>
+      </section>
+    </main>
+
+    <section id="precision-panel" class="precision-panel" aria-hidden="true">
+      <header>
+        <h2>Precision Controls</h2>
+        <button class="close-panel" data-close="precision">Close</button>
+      </header>
+      <div class="precision-grid">
+        <label>X
+          <input type="number" id="precise-x" step="1" />
+        </label>
+        <label>Y
+          <input type="number" id="precise-y" step="1" />
+        </label>
+        <label>Scale (%)
+          <input type="number" id="precise-scale" min="10" max="400" />
+        </label>
+        <label>Rotation (°)
+          <input type="number" id="precise-rotation" min="-180" max="180" />
+        </label>
+        <label id="color-label">Color
+          <input type="color" id="precise-color" />
+        </label>
+        <label id="font-label">Font
+          <select id="precise-font">
+            <option value="'Montserrat', sans-serif">Montserrat</option>
+            <option value="'Roboto', sans-serif">Roboto</option>
+            <option value="'Georgia', serif">Georgia</option>
+            <option value="'Courier New', monospace">Courier New</option>
+          </select>
+        </label>
+        <label id="font-size-label">Font Size
+          <input type="number" id="precise-font-size" min="8" max="120" />
+        </label>
+        <div class="toggle-group" id="font-style-controls">
+          <label><input type="checkbox" id="toggle-bold" /> Bold</label>
+          <label><input type="checkbox" id="toggle-italic" /> Italic</label>
+        </div>
+        <label id="text-content-label" class="text-full">
+          Text Content
+          <textarea id="precise-text" rows="2"></textarea>
+        </label>
+        <button class="danger" id="delete-layer">Delete Layer</button>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <nav class="toolbar">
+        <button class="toolbar-btn" data-action="designs">
+          <span class="icon" aria-hidden="true">🖼️</span>
+          <span class="label">Designs</span>
+        </button>
+        <button class="toolbar-btn" data-action="elements">
+          <span class="icon" aria-hidden="true">⭐</span>
+          <span class="label">Elements</span>
+        </button>
+        <button class="toolbar-btn" data-action="text">
+          <span class="icon" aria-hidden="true">✍️</span>
+          <span class="label">Text</span>
+        </button>
+        <button class="toolbar-btn" data-action="layers">
+          <span class="icon" aria-hidden="true">🧱</span>
+          <span class="label">Layers</span>
+        </button>
+        <button class="toolbar-btn" data-action="export">
+          <span class="icon" aria-hidden="true">💾</span>
+          <span class="label">Export</span>
+        </button>
+      </nav>
+    </footer>
+  </div>
+
+  <template id="layer-row-template">
+    <li class="layer-row">
+      <button class="layer-select"></button>
+      <span class="layer-name"></span>
+      <div class="layer-controls">
+        <button class="layer-move" data-direction="up" title="Move layer up">▲</button>
+        <button class="layer-move" data-direction="down" title="Move layer down">▼</button>
+        <button class="layer-delete" title="Delete layer">✕</button>
+      </div>
+    </li>
+  </template>
+
+  <template id="gallery-item-template">
+    <button class="gallery-item" type="button">
+      <div class="preview"></div>
+      <span class="gallery-name"></span>
     </button>
-    <button id="next" class="btn btn-primary">
-      <span class="btn__label">Next</span>
-      <span aria-hidden="true" class="btn__icon">›</span>
-    </button>
-  </footer>
+  </template>
+
+  <script src="script.js" type="module"></script>
 </body>
 </html>
