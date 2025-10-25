@@ -1,11 +1,39 @@
 <section class="tab tab-pick-design" aria-labelledby="design-heading">
   <h2 id="design-heading">Pick Design</h2>
-  <p>Choose one of the sample SVG design names (stored for export):</p>
-  <div class="list">
-    <label class="item"><input type="radio" name="design" value="waves" />Waves</label>
-    <label class="item"><input type="radio" name="design" value="mountains" />Mountains</label>
-    <label class="item"><input type="radio" name="design" value="sunburst" />Sunburst</label>
-    <label class="item"><input type="radio" name="design" value="grid" />Grid</label>
-    <label class="item"><input type="radio" name="design" value="dots" />Dots</label>
-  </div>
+  <p class="tab-intro">Browse the gallery to choose an SVG design. Search by name, filter by tags, and preview how the artwork will sit on the shirt before selecting it.</p>
+
+  <form class="design-filters" aria-label="Search designs">
+    <label class="design-filters__field" for="design-search">
+      <span class="design-filters__label">Search by name</span>
+      <input id="design-search" type="search" placeholder="Type a design name…" autocomplete="off" data-filter-name />
+    </label>
+    <div class="design-filters__field design-filters__field--tags">
+      <span class="design-filters__label">Filter by tags</span>
+      <div class="tag-filter" data-filter-tags></div>
+      <button type="button" class="tag-filter__clear" data-clear-tags hidden>Clear tags</button>
+    </div>
+  </form>
+
+  <div class="design-gallery" data-gallery role="radiogroup" aria-label="Available designs"></div>
+  <div class="design-pagination" data-pagination aria-label="Design pages" hidden></div>
+
+  <template id="design-card-template">
+    <article class="design-card" role="radio" tabindex="-1" aria-checked="false" data-design-card>
+      <div class="design-card__preview" aria-hidden="true">
+        <img class="design-card__product" src="/assets/img/products/3001C_BC_UJSST/preview/17_white_front.png" alt="" loading="lazy" />
+        <img class="design-card__overlay" src="" alt="" loading="lazy" />
+      </div>
+      <div class="design-card__body">
+        <div class="design-card__header">
+          <h3 class="design-card__title"></h3>
+          <p class="design-card__likes">
+            <span aria-hidden="true">❤️</span>
+            <span class="design-card__like-count"></span>
+            <span class="sr-only">likes</span>
+          </p>
+        </div>
+        <div class="design-card__tags" data-tag-list></div>
+      </div>
+    </article>
+  </template>
 </section>

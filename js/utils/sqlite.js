@@ -139,3 +139,53 @@ export async function getProductWithColors(productCode) {
 
   return { product, colors, defaultColorCode };
 }
+
+export async function getDesignLibrary() {
+  const db = await getDatabase();
+
+  const designRows = mapRows(db.exec(
+    `SELECT
+       d.design_id,
+       d.filename,
+       d.file_path,
+       COALESCE(d.description, d.filename) AS description,
+       COALESCE(dl.like_count, 0)           AS like_count
+     FROM designs d
+     LEFT JOIN design_likes dl ON dl.design_id = d.design_id
+     ORDER BY d.design_id`
+  ));
+
+  const tagRows = mapRows(db.exec(
+    `SELECT
+       map.design_id,
+       dt.tag_id,
+       dt.tag_name
+     FROM design_tag_map map
+     JOIN design_tags dt ON dt.tag_id = map.tag_id`
+  ));
+
+  const tagsByDesign = new Map();
+  tagRows.forEach((row) => {
+    const designId = Number(row.design_id);
+    const tagName = row.tag_name;
+    if (!tagsByDesign.has(designId)) {
+      tagsByDesign.set(designId, []);
+    }
+    tagsByDesign.get(designId).push(tagName);
+  });
+
+  tagsByDesign.forEach((list) => list.sort((a, b) => a.localeCompare(b)));
+
+  const designs = designRows.map((row) => ({
+    id: Number(row.design_id),
+    filename: row.filename,
+    filePath: row.file_path,
+    description: row.description,
+    likeCount: Number(row.like_count) || 0,
+    tags: tagsByDesign.get(Number(row.design_id)) ?? []
+  }));
+
+  const availableTags = Array.from(new Set(tagRows.map((row) => row.tag_name))).sort((a, b) => a.localeCompare(b));
+
+  return { designs, availableTags };
+}

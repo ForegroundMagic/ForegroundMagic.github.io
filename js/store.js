@@ -5,7 +5,19 @@ const LS_KEY = "designer.state.v1";
 const defaults = {
   project: { name: "demo", version: 1 },
   theme: { palette: "dark", primaryColor: "#7dd3fc" },
-  design: { name: "waves", scale: 100, rotation: 0, density: "regular", fxNoise: false, fxGlow: false },
+  design: {
+    id: 1,
+    name: "test_01",
+    filePath: "assets/img/svg_designs/test_01.svg",
+    description: "Test design #1",
+    likeCount: 0,
+    tags: [],
+    scale: 100,
+    rotation: 0,
+    density: "regular",
+    fxNoise: false,
+    fxGlow: false
+  },
   text: { content: "", fontFamily: "Inter", fontSize: 32, color: "#e6e9ef" },
   color: { productCode: "3001C_BC_UJSST", productId: 1, selectedColorCode: "black", side: "front" },
   product: { id: 1, code: "3001C_BC_UJSST", name: "3001C Bella + Canvas Unisex Jersey Short-Sleeve T-Shirt" }
