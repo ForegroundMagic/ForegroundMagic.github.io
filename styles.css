@@ -108,42 +108,54 @@ body {
 
 .canvas-region {
   position: relative;
-  padding: 0.5rem 1rem 7.5rem;
-  overflow-y: auto;
+  padding: 0.5rem 1rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
 }
 
 .canvas-wrapper {
   width: 100%;
+  height: 100%;
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding: 0.5rem 0 2rem;
+  padding: 0;
+  min-height: 0;
 }
 
 .canvas-inner {
   width: 100%;
   max-width: 420px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0;
+  min-height: 0;
 }
 
 .canvas-stage {
   position: relative;
+  flex: 1 1 auto;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
   border-radius: 1.25rem;
-  padding: 0.75rem;
   box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
   overflow: hidden;
-  transition: aspect-ratio 0.25s ease, padding 0.25s ease;
+  min-height: 0;
 }
 
 .svg-container {
   position: absolute;
-  inset: 0.75rem;
+  top: 2%;
+  bottom: 2%;
+  left: 0;
+  right: 0;
   pointer-events: none;
-  transition: inset 0.25s ease;
+  transition: top 0.25s ease, bottom 0.25s ease;
 }
 
 #svg-canvas {
@@ -719,15 +731,6 @@ body {
   transform: translateY(1px);
 }
 
-.app-shell[data-view-mode="edit"] .canvas-stage {
-  aspect-ratio: 440 / 583;
-  padding: 0.75rem;
-}
-
-.app-shell[data-view-mode="edit"] .svg-container {
-  inset: 0.75rem;
-}
-
 .app-shell[data-view-mode="full"] #layer-root {
   pointer-events: none;
 }
@@ -788,6 +791,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 0;
 }
 
 /* Keep your existing canvas layout inside the fixed-height preview */
@@ -801,7 +805,7 @@ body {
   top: var(--drawer-top);        /* exactly at green preview bottom */
   left: var(--app-left);         /* align to app-shell width when centered */
   width: var(--app-width);
-  height: calc(var(--spacer-h) + var(--footer-h)); /* panel (30%) + footer overlay */
+  height: calc(var(--spacer-h) + var(--footer-h) + env(safe-area-inset-bottom)); /* panel (30%) + footer overlay + safe-area */
   transform: translateY(100%);   /* fully hidden by default */
   visibility: hidden;
   pointer-events: none;
@@ -813,15 +817,15 @@ body {
   border-top: 1px solid var(--border);
 }
 
-/* The visible panel that users interact with: exactly 30% of the available */
+/* The visible panel that users interact with: reserved 30% + footer overlay */
 .drawer-panel{
   position: absolute;
   left: 0; right: 0; top: 0;     /* anchor to TOP so it meets the preview edge */
-  height: var(--spacer-h);
+  height: calc(var(--spacer-h) + var(--footer-h) + env(safe-area-inset-bottom));
   background: var(--bg-panel);
   box-shadow: 0 -20px 40px rgba(0,0,0,.45);
   display: grid;
-  grid-template-rows: 48px 1fr;
+  grid-template-rows: auto 1fr;
   overflow: hidden;
   border-radius: 1rem 1rem 0 0;
 }
