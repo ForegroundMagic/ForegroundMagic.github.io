@@ -2,6 +2,30 @@ import { state } from './state.js';
 
 export function initDrawer(dom, { onPanelChange } = {}) {
   let activeDrawerPanel = null;
+  let isDrawerExpanded = false;
+
+  function applyDrawerExpansion(expanded) {
+    if (!dom.drawer) return;
+    isDrawerExpanded = Boolean(expanded);
+    dom.drawer.classList.toggle('is-expanded', isDrawerExpanded);
+    if (dom.drawerExpand) {
+      dom.drawerExpand.setAttribute('aria-pressed', String(isDrawerExpanded));
+      dom.drawerExpand.setAttribute(
+        'aria-label',
+        isDrawerExpanded ? 'Collapse drawer' : 'Expand drawer'
+      );
+      dom.drawerExpand.setAttribute(
+        'title',
+        isDrawerExpanded ? 'Collapse drawer' : 'Expand drawer'
+      );
+    }
+    if (dom.drawerExpandIcon) {
+      dom.drawerExpandIcon.textContent = isDrawerExpanded ? '⤡' : '⤢';
+    }
+    if (typeof scheduleLayoutUpdate === 'function') {
+      scheduleLayoutUpdate();
+    }
+  }
 
   function updateLayoutMetrics() {
     if (!dom.appShell || !dom.appHeader || !dom.appFooter) return;
@@ -64,6 +88,7 @@ export function initDrawer(dom, { onPanelChange } = {}) {
         dom.galleryButton.disabled = true;
       }
     }
+    applyDrawerExpansion(false);
     dom.drawer.classList.remove('open');
     dom.drawer.setAttribute('aria-hidden', 'true');
     setActiveDrawerPanel(null);
@@ -76,6 +101,14 @@ export function initDrawer(dom, { onPanelChange } = {}) {
   window.addEventListener('resize', scheduleLayoutUpdate);
   window.addEventListener('orientationchange', scheduleLayoutUpdate);
   scheduleLayoutUpdate();
+
+  if (dom.drawerExpand) {
+    dom.drawerExpand.addEventListener('click', () => {
+      applyDrawerExpansion(!isDrawerExpanded);
+    });
+  }
+
+  applyDrawerExpansion(false);
 
   if (dom.drawerClose) {
     dom.drawerClose.addEventListener('click', () => {

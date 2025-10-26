@@ -1,6 +1,7 @@
 export function createDomReferences() {
   const drawer = document.getElementById('drawer');
   const drawerBody = document.getElementById('drawer-body');
+  const drawerExpand = document.getElementById('drawer-expand');
   return {
     appShell: document.querySelector('.app-shell'),
     appHeader: document.querySelector('.app-header'),
@@ -21,6 +22,8 @@ export function createDomReferences() {
     drawerTitle: document.getElementById('drawer-title'),
     drawerBody,
     drawerClose: document.getElementById('drawer-close'),
+    drawerExpand,
+    drawerExpandIcon: drawerExpand ? drawerExpand.querySelector('.drawer-expand-icon') : null,
     drawerSections: drawerBody ? Array.from(drawerBody.querySelectorAll('.drawer-section')) : [],
     layerRoot: document.getElementById('layer-root'),
     layerPanel: document.getElementById('layer-panel'),
