@@ -1021,29 +1021,25 @@ function applyOffset(axis, rawValue) {
   if (!layer) return;
   if (Number.isNaN(rawValue)) return;
 
-  // allow full declared slider range without clamping to visible area
   const maxOffset = 1000;
-  const offset = Math.max(-maxOffset, Math.min(maxOffset, rawValue));
-
-  // get reference center
+  const clampedOffset = clamp(rawValue, -maxOffset, maxOffset);
   const axisCenter = axis === 'x' ? center.x : center.y;
+  const areaLimit = axis === 'x' ? printableArea.width : printableArea.height;
+  const absolute = clamp(axisCenter + clampedOffset, 0, areaLimit);
+  const finalOffset = Math.round(absolute - axisCenter);
 
-  // move freely: no design-area clamp
-  const absolute = axisCenter + offset;
-  const finalOffset = Math.round(offset);
-
-  if (axis === 'x') {
-    layer.cx = absolute;
-    // do NOT overwrite slider value — prevents visible capping
-    if (preciseX) preciseX.value = finalOffset;
-  } else {
-    layer.cy = absolute;
-    if (preciseY) preciseY.value = finalOffset;
-  }
+  // if (axis === 'x') {
+  //   layer.cx = absolute;
+  //   if (preciseXSlider) preciseXSlider.value = finalOffset;
+  //   preciseX.value = finalOffset;
+  // } else {
+  //   layer.cy = absolute;
+  //   if (preciseYSlider) preciseYSlider.value = finalOffset;
+  //   preciseY.value = finalOffset;
+  // }
 
   scheduleRender();
 }
-
 
 function applyScale(rawValue) {
   const layer = getActiveLayer();
