@@ -898,7 +898,9 @@ function refreshLayerList() {
   state.layers.slice().reverse().forEach((layer) => {
     const row = layerTemplate.content.firstElementChild.cloneNode(true);
     row.dataset.layerId = layer.id;
-    row.querySelector('.layer-name').textContent = layer.name;
+    const nameEl = row.querySelector('.layer-name');
+    nameEl.textContent = layer.name;
+    nameEl.title = layer.name;
     const select = row.querySelector('.layer-select');
     select.setAttribute('aria-label', `Select ${layer.name}`);
     select.addEventListener('click', () => setActiveLayer(layer.id));
@@ -909,9 +911,7 @@ function refreshLayerList() {
     }
     const isActive = state.activeLayerId === layer.id;
     select.setAttribute('aria-pressed', String(isActive));
-    if (isActive) {
-      row.classList.add('active');
-    }
+    row.classList.toggle('active', isActive);
     row.querySelectorAll('.layer-move').forEach((btn) => {
       btn.addEventListener('click', () => moveLayer(layer.id, btn.dataset.direction));
       const dirLabel = btn.dataset.direction === 'up' ? 'Move layer up' : 'Move layer down';

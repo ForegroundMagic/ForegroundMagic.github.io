@@ -180,17 +180,23 @@
 
   <template id="layer-row-template">
     <li class="layer-row">
-      <button class="layer-select" type="button">
-        <span class="layer-select-indicator" aria-hidden="true"></span>
+      <div class="layer-header">
         <span class="layer-name"></span>
-      </button>
+      </div>
       <div class="layer-controls">
+        <span class="layer-pad" aria-hidden="true"></span>
+        <button class="layer-select" type="button">Select</button>
+        <span class="layer-space layer-space--narrow" aria-hidden="true"></span>
         <button class="layer-adjust" type="button">Adjust</button>
+        <span class="layer-space layer-space--medium" aria-hidden="true"></span>
         <div class="layer-order">
           <button class="layer-move" data-direction="up" title="Move layer up" type="button">▲</button>
+          <span class="layer-space layer-space--medium" aria-hidden="true"></span>
           <button class="layer-move" data-direction="down" title="Move layer down" type="button">▼</button>
         </div>
+        <span class="layer-spacer" aria-hidden="true"></span>
         <button class="layer-delete" title="Delete layer" type="button">✕</button>
+        <span class="layer-pad" aria-hidden="true"></span>
       </div>
     </li>
   </template>
