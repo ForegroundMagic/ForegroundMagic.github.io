@@ -240,6 +240,12 @@ export function createLayerManager(dom, callbacks = {}) {
         dom.layerSummary.textContent = `${state.layers.length} layer${state.layers.length === 1 ? '' : 's'} total`;
       }
     }
+    if (dom.layerLimitIndicator) {
+      const count = state.layers.length;
+      dom.layerLimitIndicator.textContent = `${count}/9 max`;
+      dom.layerLimitIndicator.setAttribute('aria-label', `${count} of 9 layers used (maximum 9)`);
+      dom.layerLimitIndicator.classList.toggle('is-full', count >= 9);
+    }
   }
 
   function openAdjustPanelForLayer(layerId) {

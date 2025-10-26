@@ -161,7 +161,16 @@
   <section class="drawer" id="drawer" aria-hidden="true">
     <div class="drawer-panel">
       <header class="drawer-head">
-        <h2 id="drawer-title">Menu</h2>
+        <div class="drawer-title-group">
+          <h2 id="drawer-title">Menu</h2>
+          <span
+            class="layer-hint"
+            id="layer-limit-indicator"
+            aria-live="polite"
+            title="Maximum of 9 layers"
+            hidden
+          ></span>
+        </div>
         <button
           class="drawer-expand"
           id="drawer-expand"
@@ -192,16 +201,9 @@
           data-drawer-title="Layers"
           aria-hidden="true"
         >
-          <header class="panel-header">
-            <div class="panel-heading">
-              <h2>Layer Stack</h2>
-              <p class="panel-subtitle">Manage the order and visibility of your artwork.</p>
-            </div>
-          </header>
           <div class="panel-body">
             <div class="panel-summary" id="layer-summary" aria-live="polite"></div>
             <ol class="layer-list" id="layer-list" aria-live="polite"></ol>
-            <p class="layer-hint">Maximum of 9 layers</p>
           </div>
         </aside>
 
@@ -209,6 +211,7 @@
           id="gallery-panel"
           class="drawer-section gallery-panel"
           data-drawer-title="Gallery"
+          data-drawer-fullheight="true"
           aria-hidden="true"
         >
           <div class="gallery-search-panel" id="gallery-search-panel">

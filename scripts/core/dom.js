@@ -20,6 +20,7 @@ export function createDomReferences() {
     fullToolbar: document.querySelector('[data-toolbar="full"]'),
     drawer,
     drawerTitle: document.getElementById('drawer-title'),
+    layerLimitIndicator: document.getElementById('layer-limit-indicator'),
     drawerBody,
     drawerClose: document.getElementById('drawer-close'),
     drawerExpand,

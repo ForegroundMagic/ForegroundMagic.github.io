@@ -3,11 +3,12 @@ import { state } from './state.js';
 export function initDrawer(dom, { onPanelChange } = {}) {
   let activeDrawerPanel = null;
   let isDrawerExpanded = false;
+  let forceFullHeight = false;
 
   function applyDrawerExpansion(expanded) {
     if (!dom.drawer) return;
     isDrawerExpanded = Boolean(expanded);
-    dom.drawer.classList.toggle('is-expanded', isDrawerExpanded);
+    refreshDrawerSizing();
     if (dom.drawerExpand) {
       dom.drawerExpand.setAttribute('aria-pressed', String(isDrawerExpanded));
       dom.drawerExpand.setAttribute(
@@ -25,6 +26,13 @@ export function initDrawer(dom, { onPanelChange } = {}) {
     if (typeof scheduleLayoutUpdate === 'function') {
       scheduleLayoutUpdate();
     }
+  }
+
+  function refreshDrawerSizing() {
+    if (!dom.drawer) return;
+    const shouldFillHeight = isDrawerExpanded || forceFullHeight;
+    dom.drawer.classList.toggle('is-expanded', isDrawerExpanded);
+    dom.drawer.classList.toggle('is-fullheight', shouldFillHeight);
   }
 
   function updateLayoutMetrics() {
@@ -46,6 +54,7 @@ export function initDrawer(dom, { onPanelChange } = {}) {
 
   function setActiveDrawerPanel(panel) {
     if (!dom.drawerSections.length) return;
+    const previousPanel = activeDrawerPanel;
     dom.drawerSections.forEach((section) => {
       const isActive = section === panel;
       section.hidden = !isActive;
@@ -60,6 +69,19 @@ export function initDrawer(dom, { onPanelChange } = {}) {
       dom.galleryButton.toggleAttribute('hidden', !showPrimaryAction);
     }
     activeDrawerPanel = panel || null;
+    forceFullHeight = Boolean(activeDrawerPanel?.dataset.drawerFullheight === 'true');
+    if (dom.layerLimitIndicator) {
+      const showLimit = activeDrawerPanel === dom.layerPanel;
+      dom.layerLimitIndicator.toggleAttribute('hidden', !showLimit);
+      if (!showLimit) {
+        dom.layerLimitIndicator.classList.remove('is-full');
+      }
+    }
+    if (previousPanel !== activeDrawerPanel) {
+      applyDrawerExpansion(false);
+    } else {
+      refreshDrawerSizing();
+    }
     if (typeof onPanelChange === 'function') {
       onPanelChange(activeDrawerPanel);
     }
