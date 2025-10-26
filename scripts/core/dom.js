@@ -27,7 +27,6 @@ export function createDomReferences() {
     layerList: document.getElementById('layer-list'),
     layerSummary: document.getElementById('layer-summary'),
     galleryPanel: document.getElementById('gallery-panel'),
-    galleryTitle: document.getElementById('gallery-title'),
     galleryGrid: document.getElementById('gallery-grid'),
     gallerySearchInput: document.getElementById('gallery-search'),
     galleryTagStrip: document.getElementById('gallery-tags'),

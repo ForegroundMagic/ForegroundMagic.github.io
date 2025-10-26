@@ -162,7 +162,18 @@
     <div class="drawer-panel">
       <header class="drawer-head">
         <h2 id="drawer-title">Menu</h2>
-        <button class="close-panel" id="drawer-close" aria-label="Close">×</button>
+        <div class="drawer-controls">
+          <button
+            class="action-button drawer-primary-action"
+            id="add-gallery-item"
+            type="button"
+            disabled
+            hidden
+          >
+            Add to Canvas
+          </button>
+          <button class="close-panel" id="drawer-close" aria-label="Close">×</button>
+        </div>
       </header>
       <div class="drawer-body" id="drawer-body">
         <aside
@@ -190,27 +201,21 @@
           data-drawer-title="Gallery"
           aria-hidden="true"
         >
-          <header class="panel-header">
-            <div class="panel-heading">
-              <h2 id="gallery-title">Gallery</h2>
-              <p class="panel-subtitle">Browse ready-made designs, elements, and text styles.</p>
-            </div>
-          </header>
+          <div class="gallery-search-panel" id="gallery-search-panel">
+            <label class="search-field" for="gallery-search">
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input
+                type="search"
+                id="gallery-search"
+                name="gallery-search"
+                placeholder="Search by name or #tag"
+                autocomplete="off"
+                aria-label="Search gallery templates"
+              />
+            </label>
+            <div class="gallery-active-tags" id="gallery-active-tags" aria-live="polite"></div>
+          </div>
           <div class="panel-body gallery-panel-body">
-            <div class="gallery-toolbar">
-              <label class="search-field" for="gallery-search">
-                <span class="search-icon" aria-hidden="true">🔍</span>
-                <input
-                  type="search"
-                  id="gallery-search"
-                  name="gallery-search"
-                  placeholder="Search by name or #tag"
-                  autocomplete="off"
-                  aria-label="Search gallery templates"
-                />
-              </label>
-              <div class="gallery-active-tags" id="gallery-active-tags" aria-live="polite"></div>
-            </div>
             <div class="gallery-tag-strip" id="gallery-tags" aria-label="Available tags" role="list"></div>
             <div class="gallery-grid" id="gallery-grid" role="list"></div>
             <div class="gallery-pagination" aria-live="polite">
@@ -219,9 +224,6 @@
               <button class="pager-button" id="gallery-next" type="button" disabled>Next</button>
             </div>
           </div>
-          <footer class="gallery-footer">
-            <button class="action-button" id="add-gallery-item" disabled>Add to Canvas</button>
-          </footer>
         </section>
 
         <section

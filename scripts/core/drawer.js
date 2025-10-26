@@ -30,6 +30,11 @@ export function initDrawer(dom, { onPanelChange } = {}) {
         section.scrollTop = 0;
       }
     });
+    if (dom.galleryButton) {
+      const showPrimaryAction = panel === dom.galleryPanel;
+      dom.galleryButton.classList.toggle('is-visible', showPrimaryAction);
+      dom.galleryButton.toggleAttribute('hidden', !showPrimaryAction);
+    }
     activeDrawerPanel = panel || null;
     if (typeof onPanelChange === 'function') {
       onPanelChange(activeDrawerPanel);

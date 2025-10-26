@@ -151,9 +151,6 @@ export function initGallery(dom, drawerApi, layerManager) {
     state.galleryType = type;
     state.activeTemplate = null;
     dom.galleryButton.disabled = true;
-    if (dom.galleryTitle) {
-      dom.galleryTitle.textContent = `${type} Gallery`;
-    }
     setGalleryState({
       type,
       templates: templates.slice(),

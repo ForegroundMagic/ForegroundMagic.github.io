@@ -35,10 +35,35 @@
 .drawer-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 0.75rem;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
   background: var(--bg-elevated);
   border-bottom: 1px solid var(--border);
+  min-height: 3.25rem;
+}
+
+.drawer-head h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.drawer-controls {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.drawer-head .action-button {
+  min-width: auto;
+  padding: 0.45rem 1.15rem;
+  font-size: 0.85rem;
+  display: none;
+}
+
+.drawer-primary-action.is-visible {
+  display: inline-flex;
 }
 
 .drawer-body {
