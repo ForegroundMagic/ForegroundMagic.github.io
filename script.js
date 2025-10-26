@@ -4,6 +4,8 @@ const selectionOverlay = document.getElementById('selection-overlay');
 const selectionFrame = selectionOverlay.querySelector('.selection-frame');
 const rotateHandle = selectionOverlay.querySelector('.rotate-handle');
 const handles = Array.from(selectionOverlay.querySelectorAll('.handle'));
+const designAreaHitbox = document.getElementById('design-area-hitbox');
+const viewToggleButtons = Array.from(document.querySelectorAll('[data-view-mode]'));
 
 const layerRoot = document.getElementById('layer-root');
 
@@ -34,11 +36,20 @@ const layerTemplate = document.getElementById('layer-row-template');
 const galleryTemplate = document.getElementById('gallery-item-template');
 
 const printableArea = {
+  x: 361,
+  y: 180,
   width: 440,
   height: 583,
   minScale: 0.25,
   maxScale: 4
 };
+
+const viewBoxes = {
+  full: { x: 0, y: 0, width: 1155, height: 1155 },
+  edit: computeEditViewBox()
+};
+
+let currentViewMode = 'full';
 
 function createId(prefix) {
   if (window.crypto && typeof window.crypto.randomUUID === 'function') {
@@ -369,19 +380,19 @@ function updateLayerTransform(layer) {
 
 function updateSelectionOverlay() {
   const layer = getActiveLayer();
-  if (!layer) {
+  if (!layer || !designAreaHitbox) {
     selectionOverlay.hidden = true;
     return;
   }
 
-  const svgRect = svgCanvas.getBoundingClientRect();
+  const areaRect = designAreaHitbox.getBoundingClientRect();
   const containerRect = svgCanvas.parentElement.getBoundingClientRect();
-  const scaleX = svgRect.width / printableArea.width;
-  const scaleY = svgRect.height / printableArea.height;
+  const scaleX = areaRect.width / printableArea.width;
+  const scaleY = areaRect.height / printableArea.height;
   const widthPx = layer.width * layer.scale * scaleX;
   const heightPx = layer.height * layer.scale * scaleY;
-  const centerX = svgRect.left + layer.cx * scaleX;
-  const centerY = svgRect.top + layer.cy * scaleY;
+  const centerX = areaRect.left + layer.cx * scaleX;
+  const centerY = areaRect.top + layer.cy * scaleY;
 
   const overlay = selectionOverlay;
   overlay.hidden = false;
@@ -466,7 +477,7 @@ function onLayerPointerDown(event) {
 function startInteraction(type, event, handlePosition = null) {
   const layer = getActiveLayer();
   if (!layer) return;
-  const pointer = getSvgPoint(event.clientX, event.clientY);
+  const pointer = getDesignPoint(event.clientX, event.clientY);
   const interaction = {
     type,
     pointerId: event.pointerId,
@@ -483,7 +494,7 @@ function updateInteraction(event) {
   const layer = getActiveLayer();
   if (!layer) return;
 
-  const pointer = getSvgPoint(event.clientX, event.clientY);
+  const pointer = getDesignPoint(event.clientX, event.clientY);
   const { startPointer, startLayer, type } = state.interaction;
 
   if (type === 'move') {
@@ -546,6 +557,43 @@ function getSvgPoint(clientX, clientY) {
   return point.matrixTransform(svgCanvas.getScreenCTM().inverse());
 }
 
+function getDesignPoint(clientX, clientY) {
+  const svgPoint = getSvgPoint(clientX, clientY);
+  return {
+    x: svgPoint.x - printableArea.x,
+    y: svgPoint.y - printableArea.y
+  };
+}
+
+function computeEditViewBox(padding = 80) {
+  const paddedWidth = printableArea.width + padding * 2;
+  const paddedHeight = printableArea.height + padding * 2;
+  const viewSize = Math.min(1155, Math.max(paddedWidth, paddedHeight));
+  const centerX = printableArea.x + printableArea.width / 2;
+  const centerY = printableArea.y + printableArea.height / 2;
+  let x = centerX - viewSize / 2;
+  let y = centerY - viewSize / 2;
+  x = clamp(x, 0, 1155 - viewSize);
+  y = clamp(y, 0, 1155 - viewSize);
+  return { x, y, width: viewSize, height: viewSize };
+}
+
+function setViewMode(mode) {
+  if (mode === 'edit') {
+    viewBoxes.edit = computeEditViewBox();
+  }
+  if (!viewBoxes[mode]) return;
+  currentViewMode = mode;
+  const box = viewBoxes[mode];
+  svgCanvas.setAttribute('viewBox', `${box.x} ${box.y} ${box.width} ${box.height}`);
+  viewToggleButtons.forEach((button) => {
+    const isActive = button.dataset.viewMode === mode;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+  requestAnimationFrame(() => updateSelectionOverlay());
+}
+
 svgCanvas.addEventListener('pointermove', updateInteraction);
 svgCanvas.addEventListener('pointerup', endInteraction);
 svgCanvas.addEventListener('pointercancel', endInteraction);
@@ -602,6 +650,12 @@ document.querySelectorAll('.close-panel').forEach((button) => {
       togglePanel(precisionPanel, false);
       collapsePrecision.setAttribute('aria-expanded', 'false');
     }
+  });
+});
+
+viewToggleButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    setViewMode(button.dataset.viewMode);
   });
 });
 
@@ -858,6 +912,8 @@ function updateTextLayer(layer, options = {}) {
 
 function exportSvg() {
   const clone = svgCanvas.cloneNode(true);
+  const fullView = viewBoxes.full;
+  clone.setAttribute('viewBox', `${fullView.x} ${fullView.y} ${fullView.width} ${fullView.height}`);
   clone.querySelectorAll('.layer').forEach((node) => {
     node.removeAttribute('tabindex');
   });
@@ -883,6 +939,7 @@ function init() {
   togglePanel(precisionPanel, false);
   deleteLayerButton.disabled = true;
   togglePrecisionFields(false);
+  setViewMode(currentViewMode);
   layerRoot.addEventListener('click', (event) => {
     const target = event.target.closest('[data-layer-id]');
     if (!target) return;

@@ -19,15 +19,21 @@
     <main class="canvas-region">
       <div class="canvas-wrapper">
         <div class="canvas-inner">
-          <img src="assets/tshirt-base.svg" alt="Blank T-Shirt" class="tshirt-base" />
-          <div class="svg-container">
-            <svg id="svg-canvas" viewBox="0 0 440 583" role="presentation">
-              <defs>
-                <filter id="selection-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.25" />
+          <div class="canvas-stage">
+            <div class="svg-container">
+              <svg id="svg-canvas" viewBox="0 0 1155 1155" role="presentation" aria-labelledby="canvas-title">
+                <title id="canvas-title">T-shirt design canvas</title>
+                <defs>
+                  <filter id="selection-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.25" />
                 </filter>
               </defs>
-              <g id="layer-root"></g>
+              <image href="assets/tshirt-base.svg" width="1155" height="1155" class="product-base" />
+              <image href="assets/design_area.svg" x="361" y="180" width="440" height="583" class="design-area-overlay" />
+              <g id="design-area-group" transform="translate(361 180)">
+                <rect id="design-area-hitbox" width="440" height="583" fill="transparent" />
+                <g id="layer-root"></g>
+              </g>
             </svg>
             <div id="selection-overlay" class="selection-overlay" hidden>
               <div class="selection-frame"></div>
@@ -37,6 +43,11 @@
               <div class="handle handle-bl" data-handle="scale"></div>
               <div class="rotate-handle" data-handle="rotate"></div>
             </div>
+          </div>
+          </div>
+          <div class="view-toggle" role="group" aria-label="Canvas view options">
+            <button type="button" class="view-toggle-btn active" data-view-mode="full">Full Preview</button>
+            <button type="button" class="view-toggle-btn" data-view-mode="edit">Edit Preview</button>
           </div>
         </div>
       </div>
