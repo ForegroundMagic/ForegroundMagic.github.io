@@ -163,14 +163,27 @@
 }
 
 @media (hover: none) and (pointer: coarse) {
+  html,
   body {
-    justify-content: flex-start;
-    width: 100vw;
+    width: 100%;
+    min-width: 0;
     overflow-x: hidden;
   }
 
+  body {
+    display: block;
+    min-height: 100dvh;
+  }
+
   .app-shell {
-    width: 100vw;
-    max-width: 100vw;
+    width: 100%;
+    max-width: none;
+    min-height: 100dvh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .canvas-inner {
+    max-width: 100%;
   }
 }
