@@ -35,6 +35,11 @@ const preciseText = document.getElementById('precise-text');
 const toggleBold = document.getElementById('toggle-bold');
 const toggleItalic = document.getElementById('toggle-italic');
 
+const preciseRotationSlider = document.getElementById('precise-rotation-slider');
+const preciseXSlider = document.getElementById('precise-x-slider');
+const preciseYSlider = document.getElementById('precise-y-slider');
+const preciseScaleSlider = document.getElementById('precise-scale-slider');
+
 const collapsePrecision = document.querySelector('.collapse-precision');
 const toolbarButtons = Array.from(document.querySelectorAll('.toolbar-btn'));
 
@@ -46,8 +51,8 @@ const printableArea = {
   y: 180,
   width: 440,
   height: 583,
-  minScale: 0.25,
-  maxScale: 4
+  minScale: 0.01,
+  maxScale: 10
 };
 
 const FRAME_RADIUS_DEFAULT = 16;
@@ -538,15 +543,29 @@ function updatePrecisionControls() {
       preciseY.value = '';
       preciseScale.value = '';
       preciseRotation.value = '';
+      if (preciseXSlider) preciseXSlider.value = '0';
+      if (preciseYSlider) preciseYSlider.value = '0';
+      if (preciseScaleSlider) preciseScaleSlider.value = '100';
+      if (preciseRotationSlider) preciseRotationSlider.value = '0';
     }
     return;
   }
 
   preciseName.value = layer.name;
-  preciseX.value = layer.cx.toFixed(0);
-  preciseY.value = layer.cy.toFixed(0);
-  preciseScale.value = Math.round(layer.scale * 100);
-  preciseRotation.value = Math.round(layer.rotation);
+  const xOffset = Math.round(layer.cx - center.x);
+  const yOffset = Math.round(layer.cy - center.y);
+  const scaleValue = Math.round(layer.scale * 100);
+  const rotationValue = toPositiveRotation(layer.rotation);
+
+  preciseX.value = xOffset;
+  preciseY.value = yOffset;
+  preciseScale.value = scaleValue;
+  preciseRotation.value = rotationValue;
+
+  if (preciseXSlider) preciseXSlider.value = xOffset;
+  if (preciseYSlider) preciseYSlider.value = yOffset;
+  if (preciseScaleSlider) preciseScaleSlider.value = clamp(scaleValue, Number(preciseScaleSlider.min), Number(preciseScaleSlider.max));
+  if (preciseRotationSlider) preciseRotationSlider.value = rotationValue;
 
   if (layer.type === 'Text') {
     preciseColor.value = toHexColor(layer.fill || '#ffffff');
@@ -659,6 +678,10 @@ function normalizeRotation(value) {
   if (angle > 180) angle -= 360;
   if (angle < -180) angle += 360;
   return angle;
+}
+
+function toPositiveRotation(value) {
+  return Math.round(((value % 360) + 360) % 360);
 }
 
 function getSvgPoint(clientX, clientY) {
@@ -993,40 +1016,107 @@ preciseName.addEventListener('change', () => {
   }
 });
 
-preciseX.addEventListener('change', () => {
+function applyOffset(axis, rawValue) {
   const layer = getActiveLayer();
   if (!layer) return;
-  const value = Number(preciseX.value);
-  if (Number.isNaN(value)) return;
-  layer.cx = clamp(value, 0, printableArea.width);
+  if (Number.isNaN(rawValue)) return;
+
+  const maxOffset = 1000;
+  const clampedOffset = clamp(rawValue, -maxOffset, maxOffset);
+  const axisCenter = axis === 'x' ? center.x : center.y;
+  const areaLimit = axis === 'x' ? printableArea.width : printableArea.height;
+  const absolute = clamp(axisCenter + clampedOffset, 0, areaLimit);
+  const finalOffset = Math.round(absolute - axisCenter);
+
+  if (axis === 'x') {
+    layer.cx = absolute;
+    if (preciseXSlider) preciseXSlider.value = finalOffset;
+    preciseX.value = finalOffset;
+  } else {
+    layer.cy = absolute;
+    if (preciseYSlider) preciseYSlider.value = finalOffset;
+    preciseY.value = finalOffset;
+  }
+
   scheduleRender();
+}
+
+function applyScale(rawValue) {
+  const layer = getActiveLayer();
+  if (!layer) return;
+  if (Number.isNaN(rawValue)) return;
+  const clamped = clamp(rawValue, Number(preciseScale.min), Number(preciseScale.max));
+  if (preciseScaleSlider) preciseScaleSlider.value = clamped;
+  preciseScale.value = clamped;
+  layer.scale = clamp(clamped / 100, printableArea.minScale, printableArea.maxScale);
+  scheduleRender();
+}
+
+function applyRotation(rawValue) {
+  const layer = getActiveLayer();
+  if (!layer) return;
+  if (Number.isNaN(rawValue)) return;
+  const normalized = clamp(rawValue, 0, 360);
+  if (preciseRotationSlider) preciseRotationSlider.value = normalized;
+  preciseRotation.value = normalized;
+  layer.rotation = normalizeRotation(normalized);
+  scheduleRender();
+}
+
+if (preciseXSlider) {
+  preciseXSlider.addEventListener('input', () => applyOffset('x', Number(preciseXSlider.value)));
+}
+
+preciseX.addEventListener('input', () => {
+  if (preciseXSlider && preciseX.value !== '') {
+    preciseXSlider.value = preciseX.value;
+  }
+});
+
+preciseX.addEventListener('change', () => {
+  applyOffset('x', Number(preciseX.value));
+});
+
+if (preciseYSlider) {
+  preciseYSlider.addEventListener('input', () => applyOffset('y', Number(preciseYSlider.value)));
+}
+
+preciseY.addEventListener('input', () => {
+  if (preciseYSlider && preciseY.value !== '') {
+    preciseYSlider.value = preciseY.value;
+  }
 });
 
 preciseY.addEventListener('change', () => {
-  const layer = getActiveLayer();
-  if (!layer) return;
-  const value = Number(preciseY.value);
-  if (Number.isNaN(value)) return;
-  layer.cy = clamp(value, 0, printableArea.height);
-  scheduleRender();
+  applyOffset('y', Number(preciseY.value));
+});
+
+if (preciseScaleSlider) {
+  preciseScaleSlider.addEventListener('input', () => applyScale(Number(preciseScaleSlider.value)));
+}
+
+preciseScale.addEventListener('input', () => {
+  if (preciseScaleSlider && preciseScale.value !== '') {
+    preciseScaleSlider.value = preciseScale.value;
+  }
 });
 
 preciseScale.addEventListener('change', () => {
-  const layer = getActiveLayer();
-  if (!layer) return;
-  const value = Number(preciseScale.value);
-  if (Number.isNaN(value)) return;
-  layer.scale = clamp(value / 100, printableArea.minScale, printableArea.maxScale);
-  scheduleRender();
+  applyScale(Number(preciseScale.value));
+});
+
+if (preciseRotationSlider) {
+  preciseRotationSlider.addEventListener('input', () => applyRotation(Number(preciseRotationSlider.value)));
+}
+
+preciseRotation.addEventListener('input', () => {
+  if (preciseRotationSlider && preciseRotation.value !== '') {
+    preciseRotationSlider.value = preciseRotation.value;
+  }
 });
 
 preciseRotation.addEventListener('change', () => {
-  const layer = getActiveLayer();
-  if (!layer) return;
-  const value = Number(preciseRotation.value);
-  if (Number.isNaN(value)) return;
-  layer.rotation = normalizeRotation(value);
-  scheduleRender();
+  applyRotation(Number(preciseRotation.value));
 });
 
 preciseColor.addEventListener('change', () => {
