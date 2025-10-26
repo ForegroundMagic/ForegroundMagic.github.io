@@ -40,6 +40,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   border-bottom: 1px solid var(--border);
   background: rgba(24, 26, 33, 0.85);
   backdrop-filter: blur(18px);
@@ -53,6 +54,45 @@ body {
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.display-toggles {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-panel);
+  border-radius: 999px;
+  padding: 0.25rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  gap: 0.2rem;
+}
+
+.header-toggle {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.header-toggle.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 10px 18px rgba(124, 92, 255, 0.35);
+}
+
+.header-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
 }
 
 .collapse-precision {
@@ -125,16 +165,25 @@ body {
 }
 
 #design-area-hitbox {
-  fill: rgba(124, 92, 255, 0.08);
-  stroke: rgba(124, 92, 255, 0.35);
-  stroke-width: 2;
-  rx: 16;
-  ry: 16;
+  fill: none;
+  stroke: rgba(124, 92, 255, 0.45);
+  stroke-width: 3;
   pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
 #layer-root {
   pointer-events: auto;
+}
+
+.app-shell[data-frame-visible="false"] .design-area-overlay,
+.app-shell[data-frame-visible="false"] #design-area-hitbox {
+  opacity: 0;
+}
+
+.app-shell[data-design-visible="false"] #layer-root {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .view-toggle {

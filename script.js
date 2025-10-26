@@ -5,10 +5,13 @@ const selectionFrame = selectionOverlay.querySelector('.selection-frame');
 const rotateHandle = selectionOverlay.querySelector('.rotate-handle');
 const handles = Array.from(selectionOverlay.querySelectorAll('.handle'));
 const designAreaHitbox = document.getElementById('design-area-hitbox');
+const designAreaClipRect = document.getElementById('design-area-clip-rect');
 const viewToggleButtons = Array.from(document.querySelectorAll('[data-view-mode]'));
 const appShell = document.querySelector('.app-shell');
 const editToolbar = document.querySelector('[data-toolbar="edit"]');
 const fullToolbar = document.querySelector('[data-toolbar="full"]');
+const frameToggleButton = document.querySelector('[data-toggle="frame"]');
+const designToggleButton = document.querySelector('[data-toggle="design"]');
 
 const layerRoot = document.getElementById('layer-root');
 
@@ -47,12 +50,38 @@ const printableArea = {
   maxScale: 4
 };
 
+const FRAME_RADIUS_DEFAULT = 16;
+const FRAME_RADIUS_EDIT = 0;
+
 const viewBoxes = {
   full: { x: 0, y: 0, width: 1155, height: 1155 },
   edit: computeEditViewBox()
 };
 
 let currentViewMode = 'full';
+let frameVisible = true;
+let designVisiblePreference = true;
+
+function setFrameVisibility(visible) {
+  frameVisible = visible;
+  if (appShell) {
+    appShell.setAttribute('data-frame-visible', visible ? 'true' : 'false');
+  }
+  if (frameToggleButton) {
+    frameToggleButton.classList.toggle('active', visible);
+    frameToggleButton.setAttribute('aria-pressed', String(visible));
+  }
+}
+
+function applyDesignVisibility(visible) {
+  if (appShell) {
+    appShell.setAttribute('data-design-visible', visible ? 'true' : 'false');
+  }
+  if (designToggleButton) {
+    designToggleButton.classList.toggle('active', visible);
+    designToggleButton.setAttribute('aria-pressed', String(visible));
+  }
+}
 
 function createId(prefix) {
   if (window.crypto && typeof window.crypto.randomUUID === 'function') {
@@ -592,6 +621,15 @@ function setViewMode(mode) {
   currentViewMode = mode;
   const box = viewBoxes[mode];
   svgCanvas.setAttribute('viewBox', `${box.x} ${box.y} ${box.width} ${box.height}`);
+  const frameRadius = mode === 'edit' ? FRAME_RADIUS_EDIT : FRAME_RADIUS_DEFAULT;
+  if (designAreaHitbox) {
+    designAreaHitbox.setAttribute('rx', frameRadius);
+    designAreaHitbox.setAttribute('ry', frameRadius);
+  }
+  if (designAreaClipRect) {
+    designAreaClipRect.setAttribute('rx', frameRadius);
+    designAreaClipRect.setAttribute('ry', frameRadius);
+  }
   viewToggleButtons.forEach((button) => {
     const isActive = button.dataset.viewMode === mode;
     button.classList.toggle('active', isActive);
@@ -599,6 +637,14 @@ function setViewMode(mode) {
   });
   if (appShell) {
     appShell.setAttribute('data-view-mode', mode);
+  }
+  if (designToggleButton) {
+    designToggleButton.disabled = mode !== 'full';
+  }
+  if (mode === 'edit') {
+    applyDesignVisibility(true);
+  } else {
+    applyDesignVisibility(designVisiblePreference);
   }
   if (editToolbar) {
     editToolbar.hidden = mode !== 'edit';
@@ -689,6 +735,20 @@ viewToggleButtons.forEach((button) => {
     setViewMode(button.dataset.viewMode);
   });
 });
+
+if (frameToggleButton) {
+  frameToggleButton.addEventListener('click', () => {
+    setFrameVisibility(!frameVisible);
+  });
+}
+
+if (designToggleButton) {
+  designToggleButton.addEventListener('click', () => {
+    if (designToggleButton.disabled || currentViewMode !== 'full') return;
+    designVisiblePreference = !designVisiblePreference;
+    applyDesignVisibility(designVisiblePreference);
+  });
+}
 
 collapsePrecision.addEventListener('click', () => {
   const expanded = collapsePrecision.getAttribute('aria-expanded') === 'true';
@@ -970,6 +1030,7 @@ function init() {
   togglePanel(precisionPanel, false);
   deleteLayerButton.disabled = true;
   togglePrecisionFields(false);
+  setFrameVisibility(frameVisible);
   setViewMode(currentViewMode);
   layerRoot.addEventListener('click', (event) => {
     if (currentViewMode !== 'edit') return;
