@@ -12,6 +12,16 @@ const editToolbar = document.querySelector('[data-toolbar="edit"]');
 const fullToolbar = document.querySelector('[data-toolbar="full"]');
 const frameToggleButton = document.querySelector('[data-toggle="frame"]');
 const designToggleButton = document.querySelector('[data-toggle="design"]');
+const appHeader = document.querySelector('.app-header');
+const appFooter = document.querySelector('.app-footer');
+
+const drawer = document.getElementById('drawer');
+const drawerTitle = document.getElementById('drawer-title');
+const drawerBody = document.getElementById('drawer-body');
+const drawerClose = document.getElementById('drawer-close');
+const drawerSections = drawerBody ? Array.from(drawerBody.querySelectorAll('.drawer-section')) : [];
+const rootElement = document.documentElement;
+let activeDrawerPanel = null;
 
 const layerRoot = document.getElementById('layer-root');
 
@@ -66,6 +76,93 @@ const viewBoxes = {
 let currentViewMode = 'full';
 let frameVisible = true;
 let designVisiblePreference = true;
+
+function updateLayoutMetrics() {
+  if (!appShell || !appHeader || !appFooter) return;
+  const headerRect = appHeader.getBoundingClientRect();
+  const footerRect = appFooter.getBoundingClientRect();
+  const appRect = appShell.getBoundingClientRect();
+  const headerHeight = headerRect.height;
+  const footerHeight = footerRect.height;
+  const available = Math.max(0, window.innerHeight - headerHeight - footerHeight);
+  rootElement.style.setProperty('--header-h', `${headerHeight}px`);
+  rootElement.style.setProperty('--footer-h', `${footerHeight}px`);
+  rootElement.style.setProperty('--avail', `${available}px`);
+  const drawerTop = appRect.top + headerHeight + available * 0.7;
+  rootElement.style.setProperty('--drawer-top', `${drawerTop}px`);
+  rootElement.style.setProperty('--app-left', `${appRect.left}px`);
+  rootElement.style.setProperty('--app-width', `${appRect.width}px`);
+}
+
+function setActiveDrawerPanel(panel) {
+  if (!drawerSections.length) return;
+  drawerSections.forEach((section) => {
+    const isActive = section === panel;
+    section.hidden = !isActive;
+    section.setAttribute('aria-hidden', String(!isActive));
+    if (isActive) {
+      section.scrollTop = 0;
+    }
+  });
+  activeDrawerPanel = panel || null;
+}
+
+function openDrawerPanel(panel, options = {}) {
+  if (!drawer || !panel) return;
+  setActiveDrawerPanel(panel);
+  const resolvedTitle =
+    options.title || panel.dataset.drawerTitle || panel.querySelector('h2')?.textContent || 'Menu';
+  if (drawerTitle) {
+    drawerTitle.textContent = resolvedTitle;
+  }
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden', 'false');
+  if (panel !== precisionPanel && collapsePrecision) {
+    collapsePrecision.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function closeDrawer() {
+  if (!drawer) return;
+  if (activeDrawerPanel === galleryPanel) {
+    state.activeTemplate = null;
+    if (galleryButton) {
+      galleryButton.disabled = true;
+    }
+  }
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
+  setActiveDrawerPanel(null);
+  if (collapsePrecision) {
+    collapsePrecision.setAttribute('aria-expanded', 'false');
+  }
+}
+
+const scheduleLayoutUpdate = () => window.requestAnimationFrame(updateLayoutMetrics);
+window.addEventListener('resize', scheduleLayoutUpdate);
+window.addEventListener('orientationchange', scheduleLayoutUpdate);
+scheduleLayoutUpdate();
+
+if (drawerClose) {
+  drawerClose.addEventListener('click', () => {
+    closeDrawer();
+  });
+}
+
+document.addEventListener('click', (event) => {
+  if (!drawer || !drawer.classList.contains('open')) return;
+  const target = event.target;
+  if (drawer.contains(target)) return;
+  if (target.closest('.toolbar-btn') || target.closest('.collapse-precision')) return;
+  closeDrawer();
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  if (drawer && drawer.classList.contains('open')) {
+    closeDrawer();
+  }
+});
 
 function setFrameVisibility(visible) {
   frameVisible = visible;
@@ -752,12 +849,7 @@ function setViewMode(mode) {
     state.interaction = null;
   }
   if (mode === 'full') {
-    togglePanel(layerPanel, false);
-    togglePanel(galleryPanel, false);
-    togglePanel(precisionPanel, false);
-    if (collapsePrecision) {
-      collapsePrecision.setAttribute('aria-expanded', 'false');
-    }
+    closeDrawer();
   }
   requestAnimationFrame(() => updateSelectionOverlay());
 }
@@ -809,22 +901,6 @@ rotateHandle.addEventListener('pointerdown', (event) => {
   startInteraction('rotate', event);
 });
 
-document.querySelectorAll('.close-panel').forEach((button) => {
-  button.addEventListener('click', () => {
-    const target = button.dataset.close;
-    if (target === 'layer') togglePanel(layerPanel, false);
-    if (target === 'gallery') {
-      togglePanel(galleryPanel, false);
-      state.activeTemplate = null;
-      galleryButton.disabled = true;
-    }
-    if (target === 'precision') {
-      togglePanel(precisionPanel, false);
-      collapsePrecision.setAttribute('aria-expanded', 'false');
-    }
-  });
-});
-
 viewToggleButtons.forEach((button) => {
   button.addEventListener('click', () => {
     setViewMode(button.dataset.viewMode);
@@ -847,9 +923,17 @@ if (designToggleButton) {
 
 collapsePrecision.addEventListener('click', () => {
   const expanded = collapsePrecision.getAttribute('aria-expanded') === 'true';
-  collapsePrecision.setAttribute('aria-expanded', String(!expanded));
-  togglePanel(precisionPanel, !expanded);
-  updatePrecisionControls();
+  const nextState = !expanded;
+  collapsePrecision.setAttribute('aria-expanded', String(nextState));
+  if (nextState) {
+    openDrawerPanel(precisionPanel);
+    updatePrecisionControls();
+  } else if (activeDrawerPanel === precisionPanel) {
+    closeDrawer();
+  } else {
+    precisionPanel.hidden = true;
+    precisionPanel.setAttribute('aria-hidden', 'true');
+  }
 });
 
 toolbarButtons.forEach((button) => {
@@ -862,10 +946,9 @@ toolbarButtons.forEach((button) => {
     } else if (action === 'text') {
       openGallery('Text', textTemplates);
     } else if (action === 'layers') {
-      togglePanel(galleryPanel, false);
-      togglePanel(precisionPanel, false);
-      togglePanel(layerPanel, true);
+      openDrawerPanel(layerPanel);
     } else if (action === 'export') {
+      closeDrawer();
       exportSvg();
     }
   });
@@ -880,12 +963,10 @@ galleryButton.addEventListener('click', () => {
   createLayerFromTemplate(state.activeTemplate);
   state.activeTemplate = null;
   galleryButton.disabled = true;
-  togglePanel(galleryPanel, false);
+  closeDrawer();
 });
 
 function openGallery(type, templates) {
-  togglePanel(layerPanel, false);
-  togglePanel(precisionPanel, false);
   state.galleryType = type;
   state.activeTemplate = null;
   galleryTitle.textContent = `${type} Gallery`;
@@ -905,15 +986,7 @@ function openGallery(type, templates) {
     galleryContent.appendChild(node);
   });
 
-  togglePanel(galleryPanel, true);
-}
-
-function togglePanel(panel, show) {
-  if (show) {
-    panel.setAttribute('aria-hidden', 'false');
-  } else {
-    panel.setAttribute('aria-hidden', 'true');
-  }
+  openDrawerPanel(galleryPanel, { title: `${type} Gallery` });
 }
 
 function refreshLayerList() {
@@ -952,9 +1025,7 @@ function openAdjustPanelForLayer(layerId) {
     setViewMode('edit');
   }
   setActiveLayer(layerId);
-  togglePanel(galleryPanel, false);
-  togglePanel(layerPanel, true);
-  togglePanel(precisionPanel, true);
+  openDrawerPanel(precisionPanel);
   if (collapsePrecision) {
     collapsePrecision.setAttribute('aria-expanded', 'true');
   }
@@ -1230,9 +1301,7 @@ function exportSvg() {
 }
 
 function init() {
-  togglePanel(layerPanel, false);
-  togglePanel(galleryPanel, false);
-  togglePanel(precisionPanel, false);
+  closeDrawer();
   togglePrecisionFields(false);
   setFrameVisibility(frameVisible);
   setViewMode(currentViewMode);
