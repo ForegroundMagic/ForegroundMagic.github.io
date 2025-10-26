@@ -23,6 +23,7 @@ const galleryContent = document.getElementById('gallery-content');
 const galleryButton = document.getElementById('add-gallery-item');
 const precisionPanel = document.getElementById('precision-panel');
 
+const preciseName = document.getElementById('precise-name');
 const preciseX = document.getElementById('precise-x');
 const preciseY = document.getElementById('precise-y');
 const preciseScale = document.getElementById('precise-scale');
@@ -33,7 +34,6 @@ const preciseFontSize = document.getElementById('precise-font-size');
 const preciseText = document.getElementById('precise-text');
 const toggleBold = document.getElementById('toggle-bold');
 const toggleItalic = document.getElementById('toggle-italic');
-const deleteLayerButton = document.getElementById('delete-layer');
 
 const collapsePrecision = document.querySelector('.collapse-precision');
 const toolbarButtons = Array.from(document.querySelectorAll('.toolbar-btn'));
@@ -377,9 +377,81 @@ function createLayerFromTemplate(template) {
   syncLayerDom();
 }
 
-function createLayerName(type) {
-  counters[type] += 1;
-  return `${type}_${counters[type]}`;
+function isLayerNameUnique(name, excludeId = null) {
+  return !state.layers.some((layer) => layer.name === name && layer.id !== excludeId);
+}
+
+function generateSequentialName(type, excludeId = null) {
+  let candidate;
+  do {
+    counters[type] += 1;
+    candidate = `${type}_${counters[type]}`;
+  } while (!isLayerNameUnique(candidate, excludeId));
+  return candidate;
+}
+
+function createLayerName(type, userSuffix = '', excludeId = null) {
+  const suffix = (userSuffix || '').trim();
+  if (suffix) {
+    const direct = `${type}-${suffix}`;
+    if (isLayerNameUnique(direct, excludeId)) {
+      return direct;
+    }
+  }
+
+  const base = generateSequentialName(type, excludeId);
+  if (!suffix) {
+    return base;
+  }
+
+  let composite = `${base} ${suffix}`;
+  if (isLayerNameUnique(composite, excludeId)) {
+    return composite;
+  }
+
+  let attemptIndex = 2;
+  while (!isLayerNameUnique(`${composite} (${attemptIndex})`, excludeId)) {
+    attemptIndex += 1;
+  }
+  return `${composite} (${attemptIndex})`;
+}
+
+function normalizeLayerNameInput(layer, rawName) {
+  if (!layer || typeof rawName !== 'string') {
+    return null;
+  }
+
+  const trimmed = rawName.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const type = layer.type;
+  const hyphenPrefix = `${type}-`;
+  const underscorePrefix = `${type}_`;
+  const lower = trimmed.toLowerCase();
+  let remainder = trimmed;
+
+  if (lower.startsWith(hyphenPrefix.toLowerCase())) {
+    remainder = trimmed.slice(hyphenPrefix.length).trim();
+  } else if (lower.startsWith(underscorePrefix.toLowerCase())) {
+    remainder = trimmed.slice(underscorePrefix.length).trim();
+  }
+
+  if (!remainder) {
+    return null;
+  }
+
+  const normalized = `${type}-${remainder}`;
+  if (normalized === layer.name) {
+    return normalized;
+  }
+
+  if (isLayerNameUnique(normalized, layer.id)) {
+    return normalized;
+  }
+
+  return createLayerName(type, remainder, layer.id);
 }
 
 function setActiveLayer(id) {
@@ -460,8 +532,8 @@ function updatePrecisionControls() {
   const open = !precisionPanel.hasAttribute('aria-hidden') || precisionPanel.getAttribute('aria-hidden') === 'false';
   if (!layer) {
     galleryButton.disabled = true;
-    deleteLayerButton.disabled = true;
     if (open) {
+      preciseName.value = '';
       preciseX.value = '';
       preciseY.value = '';
       preciseScale.value = '';
@@ -470,11 +542,11 @@ function updatePrecisionControls() {
     return;
   }
 
+  preciseName.value = layer.name;
   preciseX.value = layer.cx.toFixed(0);
   preciseY.value = layer.cy.toFixed(0);
   preciseScale.value = Math.round(layer.scale * 100);
   preciseRotation.value = Math.round(layer.rotation);
-  deleteLayerButton.disabled = false;
 
   if (layer.type === 'Text') {
     preciseColor.value = toHexColor(layer.fill || '#ffffff');
@@ -829,9 +901,15 @@ function refreshLayerList() {
     row.querySelector('.layer-name').textContent = layer.name;
     const select = row.querySelector('.layer-select');
     select.setAttribute('aria-label', `Select ${layer.name}`);
-    select.textContent = '●';
     select.addEventListener('click', () => setActiveLayer(layer.id));
-    if (state.activeLayerId === layer.id) {
+    const adjustBtn = row.querySelector('.layer-adjust');
+    if (adjustBtn) {
+      adjustBtn.setAttribute('aria-label', `Adjust settings for ${layer.name}`);
+      adjustBtn.addEventListener('click', () => openAdjustPanelForLayer(layer.id));
+    }
+    const isActive = state.activeLayerId === layer.id;
+    select.setAttribute('aria-pressed', String(isActive));
+    if (isActive) {
       row.classList.add('active');
     }
     row.querySelectorAll('.layer-move').forEach((btn) => {
@@ -844,6 +922,20 @@ function refreshLayerList() {
     deleteBtn.setAttribute('aria-label', `Delete ${layer.name}`);
     layerList.appendChild(row);
   });
+}
+
+function openAdjustPanelForLayer(layerId) {
+  if (currentViewMode !== 'edit') {
+    setViewMode('edit');
+  }
+  setActiveLayer(layerId);
+  togglePanel(galleryPanel, false);
+  togglePanel(layerPanel, true);
+  togglePanel(precisionPanel, true);
+  if (collapsePrecision) {
+    collapsePrecision.setAttribute('aria-expanded', 'true');
+  }
+  updatePrecisionControls();
 }
 
 function moveLayer(id, direction) {
@@ -860,6 +952,7 @@ function moveLayer(id, direction) {
   refreshLayerList();
   syncLayerDom();
   scheduleRender();
+  updatePrecisionControls();
 }
 
 function deleteLayer(id) {
@@ -875,10 +968,28 @@ function deleteLayer(id) {
   scheduleRender();
 }
 
-deleteLayerButton.addEventListener('click', () => {
+preciseName.addEventListener('change', () => {
   const layer = getActiveLayer();
-  if (layer) {
-    deleteLayer(layer.id);
+  if (!layer) {
+    preciseName.value = '';
+    return;
+  }
+
+  const inputValue = preciseName.value;
+  if (inputValue === layer.name) {
+    return;
+  }
+
+  const normalized = normalizeLayerNameInput(layer, inputValue);
+  if (!normalized) {
+    preciseName.value = layer.name;
+    return;
+  }
+
+  if (normalized !== layer.name) {
+    layer.name = normalized;
+    preciseName.value = normalized;
+    refreshLayerList();
   }
 });
 
@@ -1028,7 +1139,6 @@ function init() {
   togglePanel(layerPanel, false);
   togglePanel(galleryPanel, false);
   togglePanel(precisionPanel, false);
-  deleteLayerButton.disabled = true;
   togglePrecisionFields(false);
   setFrameVisibility(frameVisible);
   setViewMode(currentViewMode);

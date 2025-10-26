@@ -59,7 +59,7 @@
       <aside id="layer-panel" class="layer-panel" aria-hidden="true">
         <header>
           <h2>Layers</h2>
-          <button type="button" class="close-panel" data-close="layer">×</button>
+          <button type="button" class="close-panel" data-close="layer" aria-label="Close layers panel">×</button>
         </header>
         <ol class="layer-list" id="layer-list" aria-live="polite"></ol>
         <p class="layer-hint">Maximum of 9 layers</p>
@@ -68,7 +68,7 @@
       <section id="gallery-panel" class="gallery-panel" aria-hidden="true">
         <header>
           <h2 id="gallery-title">Gallery</h2>
-          <button type="button" class="close-panel" data-close="gallery">Close</button>
+          <button type="button" class="close-panel" data-close="gallery" aria-label="Close gallery panel">×</button>
         </header>
         <div class="gallery-content" id="gallery-content"></div>
         <footer class="gallery-footer">
@@ -80,9 +80,13 @@
     <section id="precision-panel" class="precision-panel" aria-hidden="true">
       <header>
         <h2>Precision Controls</h2>
-        <button class="close-panel" data-close="precision">Close</button>
+        <button class="close-panel" data-close="precision" aria-label="Close precision controls">×</button>
       </header>
       <div class="precision-grid">
+        <label class="name-full">
+          Name
+          <input type="text" id="precise-name" maxlength="80" />
+        </label>
         <label>X
           <input type="number" id="precise-x" step="1" />
         </label>
@@ -117,7 +121,6 @@
           Text Content
           <textarea id="precise-text" rows="2"></textarea>
         </label>
-        <button class="danger" id="delete-layer">Delete Layer</button>
       </div>
     </section>
 
@@ -177,12 +180,17 @@
 
   <template id="layer-row-template">
     <li class="layer-row">
-      <button class="layer-select"></button>
-      <span class="layer-name"></span>
+      <button class="layer-select" type="button">
+        <span class="layer-select-indicator" aria-hidden="true"></span>
+        <span class="layer-name"></span>
+      </button>
       <div class="layer-controls">
-        <button class="layer-move" data-direction="up" title="Move layer up">▲</button>
-        <button class="layer-move" data-direction="down" title="Move layer down">▼</button>
-        <button class="layer-delete" title="Delete layer">✕</button>
+        <button class="layer-adjust" type="button">Adjust</button>
+        <div class="layer-order">
+          <button class="layer-move" data-direction="up" title="Move layer up" type="button">▲</button>
+          <button class="layer-move" data-direction="down" title="Move layer down" type="button">▼</button>
+        </div>
+        <button class="layer-delete" title="Delete layer" type="button">✕</button>
       </div>
     </li>
   </template>
