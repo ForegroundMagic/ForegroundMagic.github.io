@@ -575,17 +575,13 @@ function getDesignPoint(clientX, clientY) {
   };
 }
 
-function computeEditViewBox(padding = 80) {
-  const paddedWidth = printableArea.width + padding * 2;
-  const paddedHeight = printableArea.height + padding * 2;
-  const viewSize = Math.min(1155, Math.max(paddedWidth, paddedHeight));
-  const centerX = printableArea.x + printableArea.width / 2;
-  const centerY = printableArea.y + printableArea.height / 2;
-  let x = centerX - viewSize / 2;
-  let y = centerY - viewSize / 2;
-  x = clamp(x, 0, 1155 - viewSize);
-  y = clamp(y, 0, 1155 - viewSize);
-  return { x, y, width: viewSize, height: viewSize };
+function computeEditViewBox() {
+  return {
+    x: printableArea.x,
+    y: printableArea.y,
+    width: printableArea.width,
+    height: printableArea.height
+  };
 }
 
 function setViewMode(mode) {

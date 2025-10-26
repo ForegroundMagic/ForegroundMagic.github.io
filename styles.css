@@ -449,12 +449,12 @@ body {
 }
 
 .app-shell[data-view-mode="edit"] .canvas-stage {
-  aspect-ratio: 1 / 1.15;
-  padding: 0.55rem;
+  aspect-ratio: 440 / 583;
+  padding: 0.75rem;
 }
 
 .app-shell[data-view-mode="edit"] .svg-container {
-  inset: 0.55rem;
+  inset: 0.75rem;
 }
 
 .app-shell[data-view-mode="full"] #layer-root {
