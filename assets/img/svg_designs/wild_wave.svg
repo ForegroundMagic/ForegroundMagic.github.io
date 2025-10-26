@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 220">
+  <path d="M0 150 C30 120 70 160 100 140 C120 128 140 120 170 130 C200 140 220 160 240 150 V220 H0 Z" data-color-primary="true" fill="#0099c6" />
+  <path d="M0 170 C30 150 70 190 110 170 C140 158 170 150 200 162 C220 170 230 180 240 190 V220 H0 Z" fill="#0ea5e9" opacity="0.8" />
+  <circle cx="70" cy="110" r="24" fill="#38bdf8" opacity="0.7" />
+  <circle cx="182" cy="94" r="18" fill="#bae6fd" opacity="0.8" />
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 150">
+  <rect width="320" height="150" rx="28" fill="#0f172a" />
+  <text x="160" y="102" font-family="'Fredoka One', cursive" font-size="72" fill="#60a5fa" text-anchor="middle">Good Vibes</text>
+  <path d="M40 60 C80 20 120 20 160 60" fill="none" stroke="#fbbf24" stroke-width="8" stroke-linecap="round" opacity="0.6" />
+  <path d="M160 60 C200 20 240 20 280 60" fill="none" stroke="#f97316" stroke-width="8" stroke-linecap="round" opacity="0.6" />
+</svg>

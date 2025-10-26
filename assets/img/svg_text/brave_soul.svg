@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 150">
+  <rect width="320" height="150" rx="20" fill="#1f2937" />
+  <text x="160" y="100" font-family="'Anton', sans-serif" font-size="72" fill="#6366f1" text-anchor="middle">BRAVE SOUL</text>
+  <path d="M60 60 H260" stroke="#a855f7" stroke-width="6" stroke-linecap="round" opacity="0.5" />
+</svg>
