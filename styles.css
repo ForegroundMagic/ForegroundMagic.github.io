@@ -340,7 +340,7 @@ body {
   display: grid;
   align-items: center;
   width: 100%;
-  grid-template-columns: 0.5% 21% 2% 21% 3% 10% 2% 10% 7.5% 7.5% 0.5%;
+  grid-template-columns: 0.60% 24.70% 2.40% 24.70% 3.50% 12% 2.40% 12% 3% 14.10% 0.60%;
 }
 
 .layer-controls > * {
