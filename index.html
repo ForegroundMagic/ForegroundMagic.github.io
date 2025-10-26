@@ -11,17 +11,6 @@
 </head>
 <body>
   <div class="app-shell" data-view-mode="full">
-    <header class="app-header">
-      <h1>TeeCraft Studio</h1>
-      <div class="header-actions">
-        <div class="display-toggles" role="group" aria-label="Canvas display options">
-          <button type="button" class="header-toggle active" data-toggle="frame" aria-pressed="true">Frame</button>
-          <button type="button" class="header-toggle active" data-toggle="design" aria-pressed="true">Design</button>
-        </div>
-        <button class="collapse-precision" aria-expanded="false" aria-controls="precision-panel">Adjust</button>
-      </div>
-    </header>
-
     <main class="canvas-region">
       <div class="canvas-wrapper">
         <div class="canvas-inner">
@@ -184,11 +173,18 @@
     </section>
 
     <footer class="app-footer">
-      <div class="footer-controls">
+      <div class="view-controls">
+        <div class="display-toggles" role="group" aria-label="Canvas display options">
+          <button type="button" class="header-toggle active" data-toggle="frame" aria-pressed="true">Frame</button>
+          <button type="button" class="header-toggle active" data-toggle="design" aria-pressed="true">Design</button>
+        </div>
         <div class="view-toggle" role="group" aria-label="Canvas view options">
           <button type="button" class="view-toggle-btn active" data-view-mode="full" aria-pressed="true">Full Preview</button>
           <button type="button" class="view-toggle-btn" data-view-mode="edit" aria-pressed="false">Edit Preview</button>
         </div>
+        <button class="collapse-precision" aria-expanded="false" aria-controls="precision-panel">Adjust</button>
+      </div>
+      <div class="footer-controls">
         <nav class="toolbar" data-toolbar="edit" hidden>
           <button class="toolbar-btn" data-action="designs">
             <span class="icon" aria-hidden="true">🖼️</span>
