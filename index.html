@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="app-shell">
+  <div class="app-shell" data-view-mode="full">
     <header class="app-header">
       <h1>TeeCraft Studio</h1>
       <button class="collapse-precision" aria-expanded="false" aria-controls="precision-panel">Adjust</button>
@@ -43,11 +43,6 @@
               <div class="handle handle-bl" data-handle="scale"></div>
               <div class="rotate-handle" data-handle="rotate"></div>
             </div>
-          </div>
-          </div>
-          <div class="view-toggle" role="group" aria-label="Canvas view options">
-            <button type="button" class="view-toggle-btn active" data-view-mode="full">Full Preview</button>
-            <button type="button" class="view-toggle-btn" data-view-mode="edit">Edit Preview</button>
           </div>
         </div>
       </div>
@@ -118,28 +113,56 @@
     </section>
 
     <footer class="app-footer">
-      <nav class="toolbar">
-        <button class="toolbar-btn" data-action="designs">
-          <span class="icon" aria-hidden="true">🖼️</span>
-          <span class="label">Designs</span>
-        </button>
-        <button class="toolbar-btn" data-action="elements">
-          <span class="icon" aria-hidden="true">⭐</span>
-          <span class="label">Elements</span>
-        </button>
-        <button class="toolbar-btn" data-action="text">
-          <span class="icon" aria-hidden="true">✍️</span>
-          <span class="label">Text</span>
-        </button>
-        <button class="toolbar-btn" data-action="layers">
-          <span class="icon" aria-hidden="true">🧱</span>
-          <span class="label">Layers</span>
-        </button>
-        <button class="toolbar-btn" data-action="export">
-          <span class="icon" aria-hidden="true">💾</span>
-          <span class="label">Export</span>
-        </button>
-      </nav>
+      <div class="footer-controls">
+        <div class="view-toggle" role="group" aria-label="Canvas view options">
+          <button type="button" class="view-toggle-btn active" data-view-mode="full" aria-pressed="true">Full Preview</button>
+          <button type="button" class="view-toggle-btn" data-view-mode="edit" aria-pressed="false">Edit Preview</button>
+        </div>
+        <nav class="toolbar" data-toolbar="edit" hidden>
+          <button class="toolbar-btn" data-action="designs">
+            <span class="icon" aria-hidden="true">🖼️</span>
+            <span class="label">Designs</span>
+          </button>
+          <button class="toolbar-btn" data-action="elements">
+            <span class="icon" aria-hidden="true">⭐</span>
+            <span class="label">Elements</span>
+          </button>
+          <button class="toolbar-btn" data-action="text">
+            <span class="icon" aria-hidden="true">✍️</span>
+            <span class="label">Text</span>
+          </button>
+          <button class="toolbar-btn" data-action="layers">
+            <span class="icon" aria-hidden="true">🧱</span>
+            <span class="label">Layers</span>
+          </button>
+          <button class="toolbar-btn" data-action="export">
+            <span class="icon" aria-hidden="true">💾</span>
+            <span class="label">Export</span>
+          </button>
+        </nav>
+        <nav class="toolbar" data-toolbar="full">
+          <button class="toolbar-btn" data-action="product-type">
+            <span class="icon" aria-hidden="true">👕</span>
+            <span class="label">Product Type</span>
+          </button>
+          <button class="toolbar-btn" data-action="product-color">
+            <span class="icon" aria-hidden="true">🎨</span>
+            <span class="label">Product Color</span>
+          </button>
+          <button class="toolbar-btn" data-action="placeholder-one">
+            <span class="icon" aria-hidden="true">⬜</span>
+            <span class="label">Placeholder</span>
+          </button>
+          <button class="toolbar-btn" data-action="placeholder-two">
+            <span class="icon" aria-hidden="true">⬛</span>
+            <span class="label">Placeholder</span>
+          </button>
+          <button class="toolbar-btn" data-action="placeholder-three">
+            <span class="icon" aria-hidden="true">✨</span>
+            <span class="label">Placeholder</span>
+          </button>
+        </nav>
+      </div>
     </footer>
   </div>
 

@@ -6,6 +6,9 @@ const rotateHandle = selectionOverlay.querySelector('.rotate-handle');
 const handles = Array.from(selectionOverlay.querySelectorAll('.handle'));
 const designAreaHitbox = document.getElementById('design-area-hitbox');
 const viewToggleButtons = Array.from(document.querySelectorAll('[data-view-mode]'));
+const appShell = document.querySelector('.app-shell');
+const editToolbar = document.querySelector('[data-toolbar="edit"]');
+const fullToolbar = document.querySelector('[data-toolbar="full"]');
 
 const layerRoot = document.getElementById('layer-root');
 
@@ -379,6 +382,10 @@ function updateLayerTransform(layer) {
 }
 
 function updateSelectionOverlay() {
+  if (currentViewMode !== 'edit') {
+    selectionOverlay.hidden = true;
+    return;
+  }
   const layer = getActiveLayer();
   if (!layer || !designAreaHitbox) {
     selectionOverlay.hidden = true;
@@ -468,6 +475,7 @@ function toHexColor(value) {
 }
 
 function onLayerPointerDown(event) {
+  if (currentViewMode !== 'edit') return;
   event.preventDefault();
   const layerId = event.currentTarget.dataset.layerId;
   setActiveLayer(layerId);
@@ -475,6 +483,7 @@ function onLayerPointerDown(event) {
 }
 
 function startInteraction(type, event, handlePosition = null) {
+  if (currentViewMode !== 'edit') return;
   const layer = getActiveLayer();
   if (!layer) return;
   const pointer = getDesignPoint(event.clientX, event.clientY);
@@ -490,6 +499,7 @@ function startInteraction(type, event, handlePosition = null) {
 }
 
 function updateInteraction(event) {
+  if (currentViewMode !== 'edit') return;
   if (!state.interaction) return;
   const layer = getActiveLayer();
   if (!layer) return;
@@ -591,6 +601,27 @@ function setViewMode(mode) {
     button.classList.toggle('active', isActive);
     button.setAttribute('aria-pressed', String(isActive));
   });
+  if (appShell) {
+    appShell.setAttribute('data-view-mode', mode);
+  }
+  if (editToolbar) {
+    editToolbar.hidden = mode !== 'edit';
+  }
+  if (fullToolbar) {
+    fullToolbar.hidden = mode !== 'full';
+  }
+  if (mode !== 'edit' && state.interaction) {
+    svgCanvas.releasePointerCapture(state.interaction.pointerId);
+    state.interaction = null;
+  }
+  if (mode === 'full') {
+    togglePanel(layerPanel, false);
+    togglePanel(galleryPanel, false);
+    togglePanel(precisionPanel, false);
+    if (collapsePrecision) {
+      collapsePrecision.setAttribute('aria-expanded', 'false');
+    }
+  }
   requestAnimationFrame(() => updateSelectionOverlay());
 }
 
@@ -604,6 +635,7 @@ svgCanvas.addEventListener('pointerleave', (event) => {
 });
 
 svgCanvas.addEventListener('pointerdown', (event) => {
+  if (currentViewMode !== 'edit') return;
   if (event.target === svgCanvas) {
     state.activeLayerId = null;
     updateSelectionOverlay();
@@ -613,6 +645,7 @@ svgCanvas.addEventListener('pointerdown', (event) => {
 });
 
 document.addEventListener('pointerdown', (event) => {
+  if (currentViewMode !== 'edit') return;
   if (!svgCanvas.contains(event.target) && !selectionOverlay.contains(event.target)) {
     if (!layerPanel.contains(event.target) && !galleryPanel.contains(event.target) && !precisionPanel.contains(event.target)) {
       state.activeLayerId = null;
@@ -625,6 +658,7 @@ document.addEventListener('pointerdown', (event) => {
 
 handles.forEach((handle) => {
   handle.addEventListener('pointerdown', (event) => {
+    if (currentViewMode !== 'edit') return;
     event.stopPropagation();
     event.preventDefault();
     startInteraction('scale', event);
@@ -632,6 +666,7 @@ handles.forEach((handle) => {
 });
 
 rotateHandle.addEventListener('pointerdown', (event) => {
+  if (currentViewMode !== 'edit') return;
   event.stopPropagation();
   event.preventDefault();
   startInteraction('rotate', event);
@@ -941,6 +976,7 @@ function init() {
   togglePrecisionFields(false);
   setViewMode(currentViewMode);
   layerRoot.addEventListener('click', (event) => {
+    if (currentViewMode !== 'edit') return;
     const target = event.target.closest('[data-layer-id]');
     if (!target) return;
     const id = target.dataset.layerId;

@@ -68,7 +68,7 @@ body {
 
 .canvas-region {
   position: relative;
-  padding: 0.5rem 1rem 6rem;
+  padding: 0.5rem 1rem 7.5rem;
   overflow-y: auto;
 }
 
@@ -96,12 +96,14 @@ body {
   padding: 0.75rem;
   box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
   overflow: hidden;
+  transition: aspect-ratio 0.25s ease, padding 0.25s ease;
 }
 
 .svg-container {
   position: absolute;
   inset: 0.75rem;
   pointer-events: none;
+  transition: inset 0.25s ease;
 }
 
 #svg-canvas {
@@ -142,6 +144,7 @@ body {
   border-radius: 999px;
   padding: 0.25rem;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  width: 100%;
 }
 
 .view-toggle-btn {
@@ -405,8 +408,15 @@ body {
   bottom: 0;
   background: rgba(24, 27, 34, 0.95);
   border-top: 1px solid var(--border);
-  padding: 0.5rem 0.75rem calc(env(safe-area-inset-bottom) + 0.5rem);
+  padding: 0.75rem 0.75rem calc(env(safe-area-inset-bottom) + 0.75rem);
   backdrop-filter: blur(18px);
+}
+
+.footer-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: stretch;
 }
 
 .toolbar {
@@ -414,6 +424,7 @@ body {
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
   gap: 0.4rem;
+  width: 100%;
 }
 
 .toolbar-btn {
@@ -437,6 +448,31 @@ body {
   transform: translateY(1px);
 }
 
+.app-shell[data-view-mode="edit"] .canvas-stage {
+  aspect-ratio: 1 / 1.15;
+  padding: 0.55rem;
+}
+
+.app-shell[data-view-mode="edit"] .svg-container {
+  inset: 0.55rem;
+}
+
+.app-shell[data-view-mode="full"] #layer-root {
+  pointer-events: none;
+}
+
+.app-shell[data-view-mode="full"] .selection-overlay {
+  display: none;
+}
+
+.app-shell[data-view-mode="full"] .toolbar[data-toolbar="edit"] {
+  display: none !important;
+}
+
+.app-shell[data-view-mode="edit"] .toolbar[data-toolbar="full"] {
+  display: none !important;
+}
+
 @media (min-width: 520px) {
   .app-shell {
     border-radius: 1.25rem;
@@ -445,6 +481,6 @@ body {
   }
 
   .canvas-region {
-    padding-bottom: 7rem;
+    padding-bottom: 8.5rem;
   }
 }
