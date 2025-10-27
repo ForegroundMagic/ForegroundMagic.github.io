@@ -40,17 +40,15 @@ export function initDrawer(dom, { onPanelChange } = {}) {
   }
 
   function updateLayoutMetrics() {
-    if (!dom.appShell || !dom.appHeader) return;
-    const controlHost = dom.controlsRegion || dom.controlRegion || dom.toolbarRegion;
-    if (!controlHost) return;
+    if (!dom.appShell || !dom.appHeader || !dom.appFooter) return;
     const headerRect = dom.appHeader.getBoundingClientRect();
-    const controlRect = controlHost.getBoundingClientRect();
+    const footerRect = dom.appFooter.getBoundingClientRect();
     const appRect = dom.appShell.getBoundingClientRect();
     const headerHeight = headerRect.height;
-    const controlHeight = controlRect.height;
-    const available = Math.max(0, window.innerHeight - headerHeight - controlHeight);
+    const footerHeight = footerRect.height;
+    const available = Math.max(0, window.innerHeight - headerHeight - footerHeight);
     document.documentElement.style.setProperty('--header-h', `${headerHeight}px`);
-    document.documentElement.style.setProperty('--controls-h', `${controlHeight}px`);
+    document.documentElement.style.setProperty('--footer-h', `${footerHeight}px`);
     document.documentElement.style.setProperty('--avail', `${available}px`);
     const drawerTop = appRect.top + headerHeight + available * 0.7;
     document.documentElement.style.setProperty('--drawer-top', `${drawerTop}px`);

@@ -23,9 +23,7 @@ export function createDomReferences() {
   return {
     appShell: document.querySelector('.app-shell'),
     appHeader: document.querySelector('.app-header'),
-    controlsRegion: document.querySelector('.controls-region'),
-    controlRegion: document.querySelector('.preview-control-region'),
-    toolbarRegion: document.querySelector('.toolbar-region'),
+    appFooter: document.querySelector('.app-footer'),
     svgCanvas: document.getElementById('svg-canvas'),
     selectionOverlay: document.getElementById('selection-overlay'),
     selectionFrame: document.querySelector('#selection-overlay .selection-frame'),
