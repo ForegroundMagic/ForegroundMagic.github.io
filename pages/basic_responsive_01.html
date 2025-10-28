@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3-Row No-Scroll Layout (Header / Dynamic Middle / Footer)</title>
+  <style>
+    /* ===============================
+       0) Base + Reset
+       - We use border-box for predictable sizing.
+       - We remove default margins to prevent unwanted scroll.
+       =============================== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      /* Use the dynamic viewport unit to avoid mobile browser chrome issues.
+         This ensures the layout always fits exactly in the visible area. */
+      min-height: 100dvh;
+
+      /* Prevent the PAGE from scrolling.
+         If content overflows, the middle section will handle its own scroll (optional). */
+      overflow: hidden;
+
+      /* Subtle background so the outer margin/padding is visible as a "gap". */
+      background: #f3f5f7;
+      color: #111;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.4;
+    }
+
+    /* ===============================
+       1) Theme Variables
+       - --page-gap controls the visible gap from the browser edges.
+       - We include safe-area insets for iOS notches.
+       - Header/Footer heights use clamp() for responsive sizing.
+       =============================== */
+    :root {
+      /* Responsive outer gap: grows a bit on larger screens, never too big/small */
+      --page-gap: clamp(10px, 3.5vw, 24px);
+
+      /* Include iOS safe areas so content never hides behind notches/home indicator */
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+
+      /* Header and footer heights scale with viewport size but stay reasonable */
+      --header-h: clamp(48px, 8vh, 72px);
+      --footer-h: clamp(48px, 8vh, 72px);
+
+      /* Rounded corners for nicer visuals within the outer gap */
+      --radius: 14px;
+
+      /* Card backgrounds so the outer gap shows through */
+      --surface: #fff;
+      --surface-alt: #fcfdff;
+
+      /* Optional borders/shadows for definition */
+      --border: 1px solid rgba(0,0,0,0.06);
+      --shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+
+    /* ===============================
+       2) Grid Shell (3 rows)
+       - Grid rows: header (auto), middle (1fr), footer (auto).
+       - Padding creates the consistent “gap” from browser edges.
+       =============================== */
+    .app {
+      display: grid;
+      grid-template-rows: var(--header-h) 1fr var(--footer-h);
+
+      /* Outer gap from the browser edges (plus safe areas).
+         This makes each section appear inset with visible space all around. */
+      padding:
+        calc(var(--page-gap) + var(--safe-top))
+        calc(var(--page-gap) + var(--safe-right))
+        calc(var(--page-gap) + var(--safe-bottom))
+        calc(var(--page-gap) + var(--safe-left));
+
+      gap: var(--page-gap); /* Optional inner spacing between rows */
+      height: 100dvh;       /* Lock to the dynamic viewport height */
+      max-width: 1200px;    /* Optional max width for nicer desktop presentation */
+      margin-inline: auto;  /* Center on wide screens */
+    }
+
+    /* ===============================
+       3) Section Basics
+       - We use rounded "cards" so the gap is obvious.
+       - Header/Footer have fixed heights via the grid; Middle expands.
+       =============================== */
+    header, main, footer {
+      background: var(--surface);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+
+      /* Inner padding so content isn't glued to edges */
+      padding: 0 16px;
+      display: flex;
+      align-items: center; /* Vertically centers content for header/footer */
+    }
+
+    /* Header content layout */
+    header {
+      justify-content: space-between;
+      /* Make header content not wrap weirdly on tiny screens */
+      min-width: 0;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .brand__logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #6ea8fe, #9ec5fe);
+      flex: 0 0 auto;
+    }
+    .brand__name {
+      font-weight: 700;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .header__actions {
+      display: flex;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+    .btn {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: var(--surface-alt);
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* Middle region:
+       - It *flexes* to occupy the leftover space between header and footer.
+       - If its content ever exceeds the available space, you can allow
+         it to scroll internally using `overflow:auto`. Since you asked for
+         NO page scrolling, the page remains fixed height either way. */
+    main {
+      /* Comment out the next line if you want to strictly clip middle content instead */
+      overflow: auto; /* internal scrolling only, page itself stays fixed */
+
+      padding: 16px;              /* a bit more padding for content */
+      display: grid;              /* demo inner layout */
+      align-content: start;
+      gap: 12px;
+    }
+
+    /* Footer content layout */
+    footer {
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    /* Demo cards to show middle content scaling inside the available space */
+    .card {
+      background: #fff;
+      border: var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+    .muted { color: #5b6470; }
+
+    /* ===============================
+       4) Accessibility + Prefs
+       =============================== */
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <!--
+    High-Level Structure:
+    - A single grid container with three semantic sections.
+    - Header row: fixed height via CSS variable (auto in grid template).
+    - Main row: grows/shrinks to fill remaining space.
+    - Footer row: fixed height via CSS variable.
+    - The page never scrolls because the body is locked to 100dvh and overflow is hidden.
+      Any overflow is handled *inside* <main> (optional, easy to change).
+  -->
+  <div class="app" role="application" aria-label="Three-row responsive layout">
+    <!-- HEADER (Top Row) -->
+    <header role="banner" aria-label="Header bar">
+      <div class="brand">
+        <div class="brand__logo" aria-hidden="true"></div>
+        <div class="brand__name">My App</div>
+      </div>
+      <div class="header__actions">
+        <button class="btn" type="button">Action</button>
+        <button class="btn" type="button">Menu</button>
+      </div>
+    </header>
+
+    <!-- MIDDLE (Dynamic Row) -->
+    <main role="main" aria-label="Content area">
+      <!--
+        This area stretches to consume all free space between header and footer.
+        The page has no vertical scrolling; if content here gets long,
+        it can scroll *within this main* thanks to overflow:auto.
+        If you want to completely forbid any scrolling anywhere, remove overflow:auto
+        and ensure you keep content within bounds.
+      -->
+      <section class="card">
+        <h3>Responsive Middle</h3>
+        <p class="muted">
+          This middle section expands and contracts with the viewport.
+          Resize the window or rotate your phone to see it adapt.
+        </p>
+      </section>
+
+      <section class="card">
+        <h3>No Page Scroll</h3>
+        <p class="muted">
+          The page height is locked to <code>100dvh</code> (dynamic viewport height),
+          so the footer always stays pinned to the bottom. The outer gap is controlled
+          by <code>--page-gap</code> and includes iOS safe-area insets.
+        </p>
+      </section>
+
+      <section class="card">
+        <h3>Tweak Sizes Quickly</h3>
+        <ul class="muted">
+          <li>Change <code>--header-h</code> and <code>--footer-h</code> to adjust bar heights.</li>
+          <li>Change <code>--page-gap</code> to grow/shrink the browser-edge gap.</li>
+          <li>Remove <code>overflow:auto</code> on <code>main</code> to forbid inner scrolling too.</li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- FOOTER (Bottom Row) -->
+    <footer role="contentinfo" aria-label="Footer bar">
+      <div>© 2025 Your Company</div>
+      <div class="muted">Status: All systems operational</div>
+    </footer>
+  </div>
+</body>
+</html>
