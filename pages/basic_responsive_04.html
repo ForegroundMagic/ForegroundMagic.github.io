@@ -215,6 +215,9 @@
       pointer-events: none;
       transform: translateY(6px);
       transition: opacity 160ms ease, transform 160ms ease;
+      /* NEW: ensure it fills main and owns the scroll when open */
+      height: 100%;
+      overflow: auto;
     }
     .overlay-header{
       display: flex; align-items: center; justify-content: space-between;
@@ -223,6 +226,9 @@
     .overlay-close{
       border: 0; background: rgba(0,0,0,0.06); border-radius: 10px; padding: 6px 10px; cursor: pointer;
     }
+
+    /* When any design page is open, lock the underlying main scroll to prevent double scrollbars */
+    html[data-design-page] main { overflow: hidden; }
 
     /* Active state switch driven by [data-design-page] on <html> */
     html[data-design-page="color"]  .overlay-layer{ pointer-events: auto; }
