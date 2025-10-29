@@ -118,6 +118,23 @@
       overflow: clip;
     }
 
+    /* ============ Header design controls (overlay in brand space) ============ */
+    .design-head{
+      grid-column: 1 / span 3;
+      display: none; /* only visible in Design section */
+      grid-template-columns: repeat(3, 1fr);
+      height: 100%;
+      overflow: clip;
+      border-right: var(--border);
+    }
+    html[data-active-section="design"] .design-head{ display: grid; }
+    html[data-active-section="design"] .brand{ display: none; }
+
+    /* Compact labels on header to fit comfortably */
+    .design-head .tool .tool__label{ font-size: 11px; opacity: .9; }
+
+    /* Selected / toggled states reuse aria-pressed styling already present */
+
     /* ============ 5) Toolbar button (shared) ============ */
     .tool{
       display: grid;
@@ -206,7 +223,7 @@
       align-content: start;
       gap: 12px;
       padding: 16px;
-      background: --page-color;
+      background: var(--page-color);
       color: var(--page-color-text);
       border-radius: inherit;
       border: var(--border);
@@ -229,9 +246,6 @@
 
     /* When any design page is open, lock the underlying main scroll to prevent double scrollbars */
     html[data-design-page] main { overflow: hidden; }
-
-    /* --- NEW: enable overlay layer while in Design section, even with no tool page open --- */
-    html[data-active-section="design"] .overlay-layer{ pointer-events: auto; }
 
     /* Active state switch driven by [data-design-page] on <html> */
     html[data-design-page="color"]  .overlay-layer{ pointer-events: auto; }
@@ -260,21 +274,6 @@
     html[data-design-page="edit"]    { --page-color:#fff7d6; --page-color-text:#3a2c0b; }
     html[data-design-page="layers"]  { --page-color:#f0f5f9; --page-color-text:#0b243a; }
 
-    /* --- NEW: persistent DESIGN ROOT overlay styles --- */
-    .overlay-panel[data-page="design-root"]{
-      background: red;  /* requested background */
-      color: #fff;
-      z-index: 0;       /* sit beneath tool overlays */
-    }
-    /* Make tool overlays stack above the root overlay */
-    .overlay-panel:not([data-page="design-root"]){ z-index: 1; }
-    /* Show the root overlay only on Design section when no tool is selected */
-    html[data-active-section="design"][data-design-page=""] .overlay-panel[data-page="design-root"]{
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
     /* Reduce motion preference */
     @media (prefers-reduced-motion: reduce){
       * { scroll-behavior: auto !important; }
@@ -290,6 +289,44 @@
         <div class="brand__logo" aria-hidden="true"></div>
         <div class="brand__name">My App</div>
       </div>
+
+      <!-- Left overlay controls shown only in Design section -->
+      <nav class="design-head" role="navigation" aria-label="Design header controls">
+        <!-- Frame toggle -->
+        <button class="tool" type="button" data-toggle="frame" aria-label="Toggle frame" aria-pressed="true" title="Show/Hide Frame">
+          <span class="tool__icon" aria-hidden="true">
+            <!-- frame icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"/>
+              <rect x="7" y="7" width="10" height="10" rx="1.5" opacity=".6"/>
+            </svg>
+          </span>
+          <span class="tool__label">Frame</span>
+        </button>
+        <!-- Graphic toggle -->
+        <button class="tool" type="button" data-toggle="graphic" aria-label="Toggle graphic" aria-pressed="true" title="Show/Hide Graphic">
+          <span class="tool__icon" aria-hidden="true">
+            <!-- picture icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3.5" y="5" width="17" height="14" rx="2"/>
+              <circle cx="9" cy="10" r="2"/>
+              <path d="M6 17l4.5-4 3 3 3.5-3.5 3 3.5"/>
+            </svg>
+          </span>
+          <span class="tool__label">Graphic</span>
+        </button>
+        <!-- View mode toggle (Preview/Edit) -->
+        <button class="tool" type="button" data-toggle="view" aria-label="View mode" aria-pressed="false" title="Preview / Edit">
+          <span class="tool__icon" aria-hidden="true" data-icon-slot>
+            <!-- pencil (Edit) default -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21l3-1 12-12-2-2L4 18l-1 3z"/>
+              <path d="M14 4l2 2"/>
+            </svg>
+          </span>
+          <span class="tool__label" data-label-slot>Edit</span>
+        </button>
+      </nav>
 
       <!-- Right side: header mini-toolbar (Wares / Design / Order) -->
       <nav class="header-tools" role="navigation" aria-label="Section selector">
@@ -349,23 +386,6 @@
 
       <!-- Overlay layer sits inside main so it covers just the content area -->
       <div class="overlay-layer" aria-live="polite">
-        <!-- NEW: persistent Design overlay (shows when in Design and no tool page is selected) -->
-        <section class="overlay-panel" data-page="design-root" role="region" aria-labelledby="title-design-root">
-          <div class="overlay-header">
-            <h2 id="title-design-root" class="overlay-title">Design</h2>
-            <!-- No close button: persists; hidden behind tool overlays -->
-          </div>
-          <p>
-            This is the Design overview overlay. It’s always present in the Design section and will sit underneath
-            the tool overlays (Color, Designs, Elements, Text, Edit, Layers). When no tool is selected, this is fully visible.
-          </p>
-          <ul>
-            <li>Shows: overview, tips, and design-state summary.</li>
-            <li>Hidden under tool overlays; not closed—just covered.</li>
-            <li>Visible only on the Design page.</li>
-          </ul>
-        </section>
-
         <section class="overlay-panel" data-page="color" role="dialog" aria-modal="true" aria-labelledby="title-color">
           <div class="overlay-header">
             <h2 id="title-color" class="overlay-title">Color</h2>
@@ -654,9 +674,56 @@
       x.addEventListener('click', () => setDesignPage(''));
     });
 
+    // ===== Header design toggles (Frame, Graphic, View Mode) =====
+    const root = document.documentElement;
+    const btnFrame = document.querySelector('.design-head [data-toggle="frame"]');
+    const btnGraphic = document.querySelector('.design-head [data-toggle="graphic"]');
+    const btnView = document.querySelector('.design-head [data-toggle="view"]');
+    const viewIconSlot = btnView?.querySelector('[data-icon-slot]');
+    const viewLabelSlot = btnView?.querySelector('[data-label-slot]');
+
+    // Initial state
+    let showFrame = true;
+    let showGraphic = true;
+    let viewMode = 'edit'; // 'edit' | 'preview'
+
+    function syncHeaderState(){
+      root.setAttribute('data-show-frame', String(showFrame));
+      root.setAttribute('data-show-graphic', String(showGraphic));
+      root.setAttribute('data-view-mode', viewMode);
+
+      btnFrame?.setAttribute('aria-pressed', String(showFrame));
+      btnGraphic?.setAttribute('aria-pressed', String(showGraphic));
+      btnView?.setAttribute('aria-pressed', String(viewMode === 'preview'));
+
+      if(viewIconSlot && viewLabelSlot){
+        if(viewMode === 'preview'){
+          // eye icon
+          viewIconSlot.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+          viewLabelSlot.textContent = 'Preview';
+        } else {
+          // pencil icon
+          viewIconSlot.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l3-1 12-12-2-2L4 18l-1 3z"/><path d="M14 4l2 2"/></svg>';
+          viewLabelSlot.textContent = 'Edit';
+        }
+      }
+    }
+
+    btnFrame?.addEventListener('click', () => { showFrame = !showFrame; syncHeaderState(); });
+    btnGraphic?.addEventListener('click', () => { showGraphic = !showGraphic; syncHeaderState(); });
+    btnView?.addEventListener('click', () => { viewMode = (viewMode === 'edit') ? 'preview' : 'edit'; syncHeaderState(); });
+
+    // Keyboard toggle support
+    [btnFrame, btnGraphic, btnView].forEach(btn => {
+      btn?.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); btn.click(); }
+      });
+    });
+
     // Ensure initial state matches attributes
     setActive(document.documentElement.getAttribute('data-active-section') || 'wares');
     setDesignPage(document.documentElement.getAttribute('data-design-page') || '');
+    syncHeaderState();
   </script>
 </body>
 </html>

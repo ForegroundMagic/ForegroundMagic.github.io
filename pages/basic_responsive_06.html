@@ -206,7 +206,7 @@
       align-content: start;
       gap: 12px;
       padding: 16px;
-      background: --page-color;
+      background: var(--page-color);
       color: var(--page-color-text);
       border-radius: inherit;
       border: var(--border);
@@ -229,9 +229,6 @@
 
     /* When any design page is open, lock the underlying main scroll to prevent double scrollbars */
     html[data-design-page] main { overflow: hidden; }
-
-    /* --- NEW: enable overlay layer while in Design section, even with no tool page open --- */
-    html[data-active-section="design"] .overlay-layer{ pointer-events: auto; }
 
     /* Active state switch driven by [data-design-page] on <html> */
     html[data-design-page="color"]  .overlay-layer{ pointer-events: auto; }
@@ -259,21 +256,6 @@
     html[data-design-page="text"]    { --page-color:#f4edff; --page-color-text:#2c0b3a; }
     html[data-design-page="edit"]    { --page-color:#fff7d6; --page-color-text:#3a2c0b; }
     html[data-design-page="layers"]  { --page-color:#f0f5f9; --page-color-text:#0b243a; }
-
-    /* --- NEW: persistent DESIGN ROOT overlay styles --- */
-    .overlay-panel[data-page="design-root"]{
-      background: red;  /* requested background */
-      color: #fff;
-      z-index: 0;       /* sit beneath tool overlays */
-    }
-    /* Make tool overlays stack above the root overlay */
-    .overlay-panel:not([data-page="design-root"]){ z-index: 1; }
-    /* Show the root overlay only on Design section when no tool is selected */
-    html[data-active-section="design"][data-design-page=""] .overlay-panel[data-page="design-root"]{
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
 
     /* Reduce motion preference */
     @media (prefers-reduced-motion: reduce){
@@ -349,23 +331,6 @@
 
       <!-- Overlay layer sits inside main so it covers just the content area -->
       <div class="overlay-layer" aria-live="polite">
-        <!-- NEW: persistent Design overlay (shows when in Design and no tool page is selected) -->
-        <section class="overlay-panel" data-page="design-root" role="region" aria-labelledby="title-design-root">
-          <div class="overlay-header">
-            <h2 id="title-design-root" class="overlay-title">Design</h2>
-            <!-- No close button: persists; hidden behind tool overlays -->
-          </div>
-          <p>
-            This is the Design overview overlay. It’s always present in the Design section and will sit underneath
-            the tool overlays (Color, Designs, Elements, Text, Edit, Layers). When no tool is selected, this is fully visible.
-          </p>
-          <ul>
-            <li>Shows: overview, tips, and design-state summary.</li>
-            <li>Hidden under tool overlays; not closed—just covered.</li>
-            <li>Visible only on the Design page.</li>
-          </ul>
-        </section>
-
         <section class="overlay-panel" data-page="color" role="dialog" aria-modal="true" aria-labelledby="title-color">
           <div class="overlay-header">
             <h2 id="title-color" class="overlay-title">Color</h2>
