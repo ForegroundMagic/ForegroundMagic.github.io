@@ -3,26 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Customize — Dark Mode UI with Distinct Surfaces</title>
+  <title>Customize — Compact View Toolbar + Dropdown Panels</title>
   <style>
-    /* =============================================================
-       0) Base + Reset
-       ------------------------------------------------------------- */
+    /* ============ 0) Base + Reset ============ */
     *, *::before, *::after { box-sizing: border-box; }
     html, body { height: 100%; }
-    /* Dark page background uses a subtle radial gradient for depth */
-    body {
-      margin: 0; min-height: 100dvh; overflow: hidden;
-      background: radial-gradient(1200px 800px at 20% -10%, #15213d 0%, #0b1220 55%) fixed;
-      color: var(--text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.4;
-    }
+    body { margin: 0; min-height: 100dvh; overflow: hidden; background: #f3f5f7; color: #111; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height: 1.4; }
 
-    /* =============================================================
-       1) Theme Variables — Midnight Indigo Dark Pack
-       - Surfaces are intentionally separated by clear shade steps.
-       ------------------------------------------------------------- */
+    /* ============ 1) Theme Variables ============ */
     :root{
       --page-gap: clamp(10px, 3.5vw, 24px);
       --safe-top: env(safe-area-inset-top, 0px);
@@ -33,27 +21,12 @@
       --header-top-h: clamp(56px, 10vh, 88px);
       --header-second-h: clamp(56px, 10vh, 96px);
 
-      /* Color System */
-      --bg: #0b1220;            /* page background base */
-      --surface-1: #101826;     /* primary container (header/main) */
-      --surface-2: #0e1522;     /* header top row / toolbars */
-      --surface-3: #121a2b;     /* cards + inner panels */
-      --panel-bar: #0d1528;     /* panel title bars */
-      --text: #e5e9f3;          /* primary text */
-      --text-muted: #98a3b8;    /* secondary text */
-      --border: 1px solid rgba(255,255,255,0.08);
-      --shadow: 0 10px 30px rgba(0,0,0,0.55);
-      --radius: 14px;
+      --radius: 14px; --surface: #fff; --border: 1px solid rgba(0,0,0,0.06); --shadow: 0 6px 20px rgba(0,0,0,0.06);
 
-      /* Accent hue (electric indigo/blue blend) */
-      --accent: #7c9dfb;
-      --accent-600: #5f86fb;
-      --accent-glow: 0 0 0 3px rgba(124,157,251,0.25);
-
-      /* Toolbar sizing */
+      /* Toolbar-specific (shared across all 6-icon toolbars) */
       --tool-icon: clamp(20px, 5.2vh, 28px);
       --tool-label: clamp(10px, 1.7vh, 13px);
-      --tool-gap: 4px;
+      --tool-gap: 4px; --accent: #0d6efd;
 
       /* Compact overrides specifically for VIEW toolbar */
       --view-toolbar-h: clamp(36px, 5.5vh, 48px);
@@ -62,90 +35,49 @@
       --view-gap: 2px;
     }
 
-    /* =============================================================
-       2) App Shell
-       ------------------------------------------------------------- */
-    .app{
-      position: relative; display: grid; grid-template-rows: auto 1fr;
-      padding: calc(var(--page-gap) + var(--safe-top))
-               calc(var(--page-gap) + var(--safe-right))
-               calc(var(--page-gap) + var(--safe-bottom))
-               calc(var(--page-gap) + var(--safe-left));
-      gap: var(--page-gap); height: 100dvh; max-width: 1200px; margin-inline: auto;
-    }
-    header, main{
-      background: var(--surface-1);
-      border: var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
-      backdrop-filter: saturate(110%) blur(2px);
-    }
+    /* ============ 2) App Shell ============ */
+    .app{ position: relative; display: grid; grid-template-rows: auto 1fr; padding: calc(var(--page-gap) + var(--safe-top)) calc(var(--page-gap) + var(--safe-right)) calc(var(--page-gap) + var(--safe-bottom)) calc(var(--page-gap) + var(--safe-left)); gap: var(--page-gap); height: 100dvh; max-width: 1200px; margin-inline: auto; }
+    header, main{ background: var(--surface); border: var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
 
     /* MAIN: view toolbar + content */
     main{ overflow: hidden; display: grid; grid-template-rows: auto 1fr; position: relative; }
-    .viewport{ overflow: auto; padding: 16px; display: grid; align-content: start; gap: 12px; background: var(--surface-2); }
-    .card{ background: var(--surface-3); border: var(--border); border-radius: 12px; padding: 14px; box-shadow: var(--shadow); }
+    .viewport{ overflow: auto; padding: 16px; display: grid; align-content: start; gap: 12px; }
+    .card{ background: #fff; border: var(--border); border-radius: 12px; padding: 14px; box-shadow: var(--shadow); }
     .card h3{ margin: 0 0 6px; font-size: 16px; }
-    .muted{ color: var(--text-muted); }
+    .muted{ color: #5b6470; }
 
-    /* =============================================================
-       3) Header (2 internal rows)
-       ------------------------------------------------------------- */
+    /* ============ 3) Header (2 internal rows) ============ */
     header{ display: grid; grid-template-rows: var(--header-top-h) 0fr; transition: grid-template-rows 200ms ease; overflow: clip; min-width: 0; }
-    .header-row-top{
-      display: grid; grid-template-columns: repeat(6, 1fr); align-items: center;
-      padding: 0 8px; gap: 0; min-width: 0; border-bottom: var(--border); background: var(--surface-2);
-    }
-    .brand{
-      grid-column: 1 / span 3; display: flex; align-items: center; gap: 10px; min-width: 0; padding-inline: 8px; height: 100%;
-    }
-    .brand__logo{
-      width: 32px; height: 32px; border-radius: 8px;
-      background: conic-gradient(from 210deg, #5f86fb, #7c9dfb, #67e8f9, #5f86fb);
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.06), 0 8px 18px rgba(95,134,251,0.35);
-      flex: 0 0 auto;
-    }
-    .brand__name{ font-weight: 800; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; color: var(--text); letter-spacing: .2px; }
-    .header-tools{
-      grid-column: 4 / span 3; display: grid; grid-template-columns: repeat(3, 1fr);
-      height: 100%; border-left: var(--border); overflow: clip; background: var(--surface-2);
-    }
+    .header-row-top{ display: grid; grid-template-columns: repeat(6, 1fr); align-items: center; padding: 0 8px; gap: 0; min-width: 0; border-bottom: var(--border); }
+    .brand{ grid-column: 1 / span 3; display: flex; align-items: center; gap: 10px; min-width: 0; padding-inline: 8px; height: 100%; }
+    .brand__logo{ width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #6ea8fe, #9ec5fe); flex: 0 0 auto; }
+    .brand__name{ font-weight: 800; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+    .header-tools{ grid-column: 4 / span 3; display: grid; grid-template-columns: repeat(3, 1fr); height: 100%; border-left: var(--border); overflow: clip; }
 
-    .header-row-secondary{ display: grid; grid-auto-rows: 1fr; padding: 0; background: var(--surface-1); transition: opacity 160ms ease; opacity: 0; }
+    .header-row-secondary{ display: grid; grid-auto-rows: 1fr; padding: 0; background: var(--surface); transition: opacity 160ms ease; opacity: 0; }
     html[data-active-section] header { grid-template-rows: var(--header-top-h) var(--header-second-h); }
     html[data-active-section] .header-row-secondary { opacity: 1; }
 
     .toolbar-deck{ position: relative; height: 100%; display: grid; }
-    .toolbar{
-      display: grid; grid-template-columns: repeat(6, 1fr); padding: 0; overflow: clip; grid-area: 1 / 1;
-      opacity: 0; pointer-events: none; transition: opacity 150ms ease; height: 100%; background: var(--surface-2);
-    }
+    .toolbar{ display: grid; grid-template-columns: repeat(6, 1fr); padding: 0; overflow: clip; grid-area: 1 / 1; opacity: 0; pointer-events: none; transition: opacity 150ms ease; height: 100%; }
     html[data-active-section="wares"]  .toolbar[data-section="wares"],
     html[data-active-section="customize"] .toolbar[data-section="customize"],
     html[data-active-section="order"]  .toolbar[data-section="order"]{ opacity: 1; pointer-events: auto; }
 
-    /* =============================================================
-       4) View Toolbar IN MAIN (mirrors header-row-secondary)
-       ------------------------------------------------------------- */
-    .view-mode-toolbar{
-      display: none; border-bottom: var(--border); background: var(--surface-2);
-      border-radius: var(--radius) var(--radius) 0 0; height: var(--view-toolbar-h);
-    }
+    /* ============ 4) View Toolbar IN MAIN (mirrors header-row-secondary) ============ */
+    .view-mode-toolbar{ display: none; border-bottom: var(--border); background: #fff; border-radius: var(--radius) var(--radius) 0 0; height: var(--view-toolbar-h); }
     html[data-active-section="customize"] .view-mode-toolbar{ display: block; }
+    /* Same grid and visibility */
     .view-mode-toolbar .toolbar{ grid-template-columns: repeat(6, 1fr); height: 100%; opacity: 1 !important; pointer-events: auto !important; }
 
-    /* =============================================================
-       Buttons (shared visuals)
-       ------------------------------------------------------------- */
-    .tool{
-      display: grid; grid-template-rows: auto auto; align-content: center; justify-items: center;
-      gap: var(--tool-gap); width: 100%; height: 100%; border: 0; background: transparent; font: inherit; cursor: pointer; padding: 6px 0; position: relative;
-      color: var(--text-muted);
-    }
-    .tool:focus-visible{ outline: 2px solid var(--accent-600); outline-offset: -2px; border-radius: 12px; box-shadow: var(--accent-glow); }
-    .tool:hover{ background: rgba(124,157,251,0.12); }
-    .tool:active{ background: rgba(124,157,251,0.18); }
+    /* Buttons (shared visuals) */
+    .tool{ display: grid; grid-template-rows: auto auto; align-content: center; justify-items: center; gap: var(--tool-gap); width: 100%; height: 100%; border: 0; background: transparent; font: inherit; cursor: pointer; padding: 6px 0; position: relative; }
+    .tool:focus-visible{ outline: 2px solid color-mix(in oklab, var(--accent) 65%, black); outline-offset: -2px; border-radius: 12px; }
+    .tool:hover{ background: rgba(13,110,253,0.06); }
+    .tool:active{ background: rgba(13,110,253,0.12); }
     .tool[aria-pressed="true"] .tool__icon, .tool[aria-pressed="true"] .tool__label{ color: var(--accent); font-weight: 700; }
-    .tool__icon{ width: var(--tool-icon); height: var(--tool-icon); color: currentColor; }
-    .tool__label{ font-size: var(--tool-label); line-height: 1; color: currentColor; user-select: none; }
+    .tool__icon{ width: var(--tool-icon); height: var(--tool-icon); color: #222; }
+    .tool__label{ font-size: var(--tool-label); line-height: 1; color: #222; user-select: none; }
     .tool__icon svg{ width: 100%; height: 100%; display: block; }
 
     /* Compact overrides ONLY for the view-mode-toolbar buttons */
@@ -153,28 +85,21 @@
     .view-mode-toolbar .tool__icon{ width: var(--view-icon); height: var(--view-icon); }
     .view-mode-toolbar .tool__label{ font-size: var(--view-label); }
 
-    /* =============================================================
-       5) Dropdown Panels
-       ------------------------------------------------------------- */
+    /* ============ 5) Dropdown Panels (cover Header + Main) ============ */
     .dropdown-panels{ position: absolute; inset: 0; display: grid; grid-template: 1fr / 1fr; pointer-events: none; z-index: 20; }
-    .panel{
-      grid-area: 1 / 1; display: grid; grid-template-rows: auto 1fr;
-      background: var(--surface-1); border-radius: var(--radius); border: var(--border);
-      box-shadow: var(--shadow); transform: translateY(-102%); opacity: 0;
-      transition: transform 220ms ease, opacity 180ms ease; overflow: hidden;
-    }
-    .panel__bar{ display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: var(--border); background: var(--panel-bar); }
-    .panel__title{ font-weight: 800; letter-spacing: .2px; color: var(--text); }
-    .panel__close{ border: 0; background: rgba(255,255,255,0.06); border-radius: 10px; padding: 6px 10px; cursor: pointer; color: var(--text); }
+    .panel{ grid-area: 1 / 1; display: grid; grid-template-rows: auto 1fr; background: #fff; border-radius: var(--radius); border: var(--border); box-shadow: var(--shadow); transform: translateY(-102%); opacity: 0; transition: transform 220ms ease, opacity 180ms ease; overflow: hidden; }
+    .panel__bar{ display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: var(--border); background: linear-gradient(180deg, #fff, #f7f9ff); }
+    .panel__title{ font-weight: 800; letter-spacing: .2px; }
+    .panel__close{ border: 0; background: rgba(0,0,0,0.06); border-radius: 10px; padding: 6px 10px; cursor: pointer; }
     .panel__body{ overflow: auto; padding: 16px; }
-    .panel[data-panel="designs"] .panel__body{ background: #0e1c3b; color: #c8d9ff; }
-    .panel[data-panel="elements"] .panel__body{ background: #0b2f2b; color: #a6f4df; }
-    .panel[data-panel="text"] .panel__body{ background: #1d1538; color: #dec8ff; }
+    .panel[data-panel="designs"] .panel__body{ background: #eaf6ff; color: #0b2a3a; }
+    .panel[data-panel="elements"] .panel__body{ background: #eef8e6; color: #1f3a0b; }
+    .panel[data-panel="text"] .panel__body{ background: #f4edff; color: #2c0b3a; }
 
-    /* New color/edit/layers themes for distinct looks */
-    .panel[data-panel="color"]  .panel__body{ background: #2b230e; color: #ffdca8; }
-    .panel[data-panel="edit"]   .panel__body{ background: #2b0f1b; color: #ffb5c7; }
-    .panel[data-panel="layers"] .panel__body{ background: #0a2238; color: #b9e3ff; }
+    /* New color/edit/layers themes for quick visual distinction */
+    .panel[data-panel="color"] .panel__body{ background: #fff7e6; color: #3a290b; }
+    .panel[data-panel="edit"] .panel__body{ background: #ffeaf0; color: #3a0b1d; }
+    .panel[data-panel="layers"] .panel__body{ background: #e6f9ff; color: #0b2a3a; }
 
     /* When any panel is open, enable pointer events and slide in the matching panel */
     html[data-open-panel="designs"]  .dropdown-panels,
@@ -195,19 +120,13 @@
 
     /* Stronger visual for active header button (stays on while selected) */
     .header-tools .tool.is-active {
-      background: rgba(124, 157, 251, 0.16);
-      box-shadow: inset 0 -3px 0 var(--accent-600);
-      color: var(--accent);
+      background: rgba(13, 110, 253, 0.1);
+      box-shadow: inset 0 -3px 0 var(--accent);
     }
-
-    /* Scrollbar (WebKit) for better dark ergonomics */
-    .viewport::-webkit-scrollbar, .panel__body::-webkit-scrollbar{ width: 10px; height: 10px; }
-    .viewport::-webkit-scrollbar-thumb, .panel__body::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.15); border-radius: 10px; }
-    .viewport::-webkit-scrollbar-thumb:hover, .panel__body::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,0.25); }
   </style>
 </head>
 <body>
-  <div class="app" role="application" aria-label="Customize — dark mode with distinct panels">
+  <div class="app" role="application" aria-label="Customize — view toolbar mirrors header-row-secondary toolbar">
 
     <!-- DROPDOWN PANELS (cover Header + Main) -->
     <div class="dropdown-panels" aria-live="polite">
@@ -245,7 +164,7 @@
         </div>
       </section>
 
-      <!-- Color Panel -->
+      <!-- NEW: Color Panel -->
       <section class="panel" data-panel="color" aria-label="Color panel" role="dialog" aria-modal="true">
         <div class="panel__bar">
           <div class="panel__title">Color</div>
@@ -257,7 +176,7 @@
         </div>
       </section>
 
-      <!-- Edit Panel -->
+      <!-- NEW: Edit Panel -->
       <section class="panel" data-panel="edit" aria-label="Edit panel" role="dialog" aria-modal="true">
         <div class="panel__bar">
           <div class="panel__title">Edit</div>
@@ -269,7 +188,7 @@
         </div>
       </section>
 
-      <!-- Layers Panel -->
+      <!-- NEW: Layers Panel -->
       <section class="panel" data-panel="layers" aria-label="Layers panel" role="dialog" aria-modal="true">
         <div class="panel__bar">
           <div class="panel__title">Layers</div>
@@ -290,6 +209,7 @@
           <div class="brand__name">My App</div>
         </div>
         <nav class="header-tools" role="navigation" aria-label="Section selector">
+          <!-- NOTE: Default pressed state now handled in JS via setActive('wares') -->
           <button class="tool" type="button" data-section="wares" aria-label="Wares">
             <span class="tool__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -335,6 +255,7 @@
           </nav>
 
           <nav class="toolbar" data-section="customize" role="navigation" aria-label="Customize tools">
+            <!-- NOTE: data-tool names map 1:1 to panel[data-panel="..."] names below -->
             <button class="tool" type="button" data-tool="color"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18h2a2.5 2.5 0 0 0 0-5h-1a3 3 0 0 1-3-3v-1a9 9 0 0 1 2-9Z"/><circle cx="7.5" cy="10.5" r="1.2"/><circle cx="9.5" cy="6.8" r="1.2"/><circle cx="14.5" cy="6.8" r="1.2"/><circle cx="16.5" cy="10.5" r="1.2"/></svg></span><span class="tool__label">Color</span></button>
             <button class="tool" type="button" data-tool="designs"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12M6 21h12M4 7h16M8 7v10M16 7v10M4 17h16"/></svg></span><span class="tool__label">Designs</span></button>
             <button class="tool" type="button" data-tool="elements"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="2"/><circle cx="17" cy="7" r="4"/><path d="M12 14l-4 7h8l-4-7Z"/></svg></span><span class="tool__label">Elements</span></button>
@@ -395,7 +316,7 @@
       <div class="viewport">
         <section class="card">
           <h3>Main view area</h3>
-          <p class="muted">This dark theme uses three clear surface tiers so sections stand apart without clashing.</p>
+          <p class="muted">The view toolbar is now compact with minimal vertical padding while keeping icons and labels crisp.</p>
         </section>
         <section class="card"><h3>More content</h3><p class="muted">Add your canvas, preview, or editor here.</p></section>
       </div>
@@ -410,13 +331,20 @@
     // ============================================================
     const headerButtons = document.querySelectorAll('.header-tools .tool');
 
+    /**
+     * Set the active top-level section.
+     * This sets a data attribute on <html> and applies visual/ARIA states.
+     */
     function setActive(section){
+      // Reflect active section on the <html> element (drives CSS and secondary toolbars)
       document.documentElement.setAttribute('data-active-section', section);
+
+      // Update button states
       headerButtons.forEach(btn => {
         const isActive = btn.dataset.section === section;
-        btn.toggleAttribute('aria-current', isActive);
-        btn.setAttribute('aria-pressed', isActive);
-        btn.classList.toggle('is-active', isActive);
+        btn.toggleAttribute('aria-current', isActive); // Semantics: current page/section
+        btn.setAttribute('aria-pressed', isActive);    // Visual: pressed button look
+        btn.classList.toggle('is-active', isActive);   // Optional: stronger visual class
       });
     }
 
@@ -436,12 +364,20 @@
     // ============================================================
     const viewToolbarEl = document.querySelector('.view-mode-toolbar');
 
+    /**
+     * Make buttons mutually exclusive within a named group (radio-button-like behavior)
+     * Uses aria-pressed to indicate selection.
+     */
     function makeExclusiveWithin(container, groupName){
       const buttons = [...container.querySelectorAll(`[data-group="${groupName}"]`)];
       buttons.forEach(btn => btn.addEventListener('click', () => {
         buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
       }));
     }
+
+    /**
+     * Make [data-toggle] buttons act as simple on/off toggles (no grouping)
+     */
     function wireToggles(container){
       container.querySelectorAll('[data-toggle]')
         .forEach(b => b.addEventListener('click', () => {
@@ -449,29 +385,58 @@
           b.setAttribute('aria-pressed', String(next));
         }));
     }
+
+    // Apply to the view-mode-toolbar (mirrors header toolbar interactions)
     makeExclusiveWithin(viewToolbarEl, 'side');
     makeExclusiveWithin(viewToolbarEl, 'mode');
     wireToggles(viewToolbarEl);
 
     // ============================================================
     // DROPDOWN PANELS LOGIC (Customize toolbar -> Panels)
+    // - Adds panels for: designs, elements, text, color, edit, layers
+    // - Clicking a tool opens its panel and marks the button as pressed
+    // - Closing a panel unpresses the matching button
     // ============================================================
     const customizeToolbar = document.querySelector('.toolbar[data-section="customize"]');
     const customizeButtons = customizeToolbar ? customizeToolbar.querySelectorAll('.tool[data-tool]') : [];
+
+    /** Track the currently open panel's name so we can unpress its button on close */
     let currentOpenPanel = '';
+
+    /**
+     * Get the toolbar button for a given tool/panel name.
+     */
     function getCustomizeButtonByName(name){
       return customizeToolbar && customizeToolbar.querySelector(`.tool[data-tool="${name}"]`);
     }
+
+    /**
+     * Open a dropdown panel by name.
+     * - Sets the HTML data attribute (drives CSS transition/visibility)
+     * - Presses the corresponding toolbar button
+     * - Unpresses any previously-open button
+     */
     function openPanel(name){
+      // If a different panel was open, clear its button state
       if(currentOpenPanel && currentOpenPanel !== name){
         const prevBtn = getCustomizeButtonByName(currentOpenPanel);
         if(prevBtn){ prevBtn.setAttribute('aria-pressed', 'false'); }
       }
+
+      // Update the root state
       document.documentElement.setAttribute('data-open-panel', name);
       currentOpenPanel = name;
+
+      // Press the matching button (persistent visual while panel is open)
       const btn = getCustomizeButtonByName(name);
       if(btn){ btn.setAttribute('aria-pressed', 'true'); }
     }
+
+    /**
+     * Close whatever panel is open.
+     * - Clears the HTML data attribute
+     * - Unpresses the corresponding toolbar button
+     */
     function closePanel(){
       const name = document.documentElement.getAttribute('data-open-panel') || '';
       if(name){
@@ -481,14 +446,23 @@
       document.documentElement.setAttribute('data-open-panel', '');
       currentOpenPanel = '';
     }
+
+    // Wire up clicks on all customize tools that have a matching panel
     const panelNames = ['designs', 'elements', 'text', 'color', 'edit', 'layers'];
     customizeButtons.forEach(btn => {
       const t = btn.getAttribute('data-tool');
-      if(panelNames.includes(t)){ btn.addEventListener('click', () => openPanel(t)); }
+      if(panelNames.includes(t)){
+        btn.addEventListener('click', () => openPanel(t));
+      }
     });
+
+    // Close buttons inside each panel
     document.querySelectorAll('[data-close-panel]').forEach(b => b.addEventListener('click', closePanel));
 
+    // ============================================================
     // INITIAL STATE
+    // - Default to 'wares' as the active top-level section
+    // ============================================================
     setActive(document.documentElement.getAttribute('data-active-section') || 'wares');
   </script>
 </body>
