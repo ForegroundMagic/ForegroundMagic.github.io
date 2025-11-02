@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en" data-active-section="explore" data-open-panel="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dark UI — 3-Row Header with Panels (v37)</title>
+  <style>
+    /* =============================================================
+       0) Base + Reset
+       ------------------------------------------------------------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; min-height: 100dvh; overflow: hidden;
+      background: radial-gradient(1200px 800px at 20% -10%, #15213d 0%, #0b1220 55%) fixed;
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.4;
+    }
+
+    /* =============================================================
+       1) Theme Variables — Midnight Indigo Dark Pack
+       ------------------------------------------------------------- */
+    :root{
+      --page-gap: clamp(10px, 3.5vw, 24px);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+
+      /* Header row heights */
+      --header-top-h: clamp(56px, 10vh, 88px);
+      --headers-toolbar-h: clamp(28px, 5vh, 36px);   /* middle row just for headers */
+      --header-third-h: clamp(56px, 10vh, 88px);
+
+      /* Color System */
+      --bg: #0b1220;
+      --surface-1: #101826;
+      --surface-2: #0e1522;
+      --surface-3: #121a2b;
+      --surface-headers: #080C16;  /* darker middle header row per request */
+      --panel-bar: #0d1528;
+      --text: #e5e9f3;
+      --text-muted: #98a3b8;
+      --border: 1px solid rgba(255,255,255,0.08);
+      --shadow: 0 10px 30px rgba(0,0,0,0.55);
+      --radius: 14px;
+
+      --accent: #7c9dfb;
+      --accent-600: #5f86fb;
+      --accent-glow: 0 0 0 3px rgba(124,157,251,0.25);
+
+      /* Toolbar sizing */
+      --tool-icon: clamp(20px, 5.2vh, 28px);
+      --tool-label: clamp(10px, 1.7vh, 13px);
+      --tool-gap: 4px;
+
+      /* View toolbar */
+      --view-toolbar-h: clamp(36px, 5.5vh, 48px);
+      --view-icon: clamp(16px, 4vh, 22px);
+      --view-label: clamp(10px, 1.5vh, 12px);
+      --view-gap: 2px;
+
+      /* Dividers */
+      --divider-color-headers: rgba(255,255,255,0.18);
+    }
+
+    /* =============================================================
+       2) App Shell
+       ------------------------------------------------------------- */
+    .app{
+      position: relative; display: grid; grid-template-rows: auto 1fr;
+      padding: calc(var(--page-gap) + var(--safe-top))
+               calc(var(--page-gap) + var(--safe-right))
+               calc(var(--page-gap) + var(--safe-bottom))
+               calc(var(--page-gap) + var(--safe-left));
+      gap: var(--page-gap); height: 100dvh; max-width: 1200px; margin-inline: auto;
+    }
+    header, main{
+      background: var(--surface-1);
+      border: var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      backdrop-filter: saturate(110%) blur(2px);
+    }
+
+    main{
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      position: relative;
+      min-height: 0;
+    }
+
+    .card{ background: var(--surface-3); border: var(--border); border-radius: 12px; padding: 14px; box-shadow: var(--shadow); }
+    .card h3{ margin: 0 0 6px; font-size: 16px; }
+    .muted{ color: var(--text-muted); }
+
+    /* =============================================================
+       PANELS (restored from last working version)
+       ------------------------------------------------------------- */
+    .dropdown-panels{
+      position: absolute;
+      top: calc(var(--page-gap) + var(--safe-top));
+      right: calc(var(--page-gap) + var(--safe-right));
+      bottom: calc(var(--page-gap) + var(--safe-bottom));
+      left: calc(var(--page-gap) + var(--safe-left));
+      display: grid; grid-template: 1fr / 1fr; pointer-events: none; z-index: 20;
+    }
+    .panel{
+      grid-area: 1 / 1; display: grid; grid-template-rows: auto 1fr;
+      background: var(--surface-1); border-radius: var(--radius); border: var(--border);
+      box-shadow: var(--shadow); transform: translateY(-102%); opacity: 0;
+      transition: transform 220ms ease, opacity 180ms ease; overflow: hidden;
+    }
+    .panel__bar{ display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: var(--border); background: var(--panel-bar); }
+    .panel__title{ font-weight: 800; letter-spacing: .2px; color: var(--text); }
+    .panel__close{ border: 0; background: rgba(255,255,255,0.06); border-radius: 10px; padding: 6px 10px; cursor: pointer; color: var(--text); }
+    .panel__body{ overflow: auto; padding: 16px; }
+    .panel[data-panel="designs"] .panel__body{ background: #0e1c3b; color: #c8d9ff; }
+    .panel[data-panel="elements"] .panel__body{ background: #0b2f2b; color: #a6f4df; }
+    .panel[data-panel="text"] .panel__body{ background: #1d1538; color: #dec8ff; }
+    .panel[data-panel="color"] .panel__body{ background: #2b230e; color: #ffdca8; }
+    .panel[data-panel="properties"] .panel__body{ background: #2b0f1b; color: #ffb5c7; }
+    .panel[data-panel="layers"] .panel__body{ background: #0a2238; color: #b9e3ff; }
+
+    html[data-open-panel="designs"]  .dropdown-panels,
+    html[data-open-panel="elements"] .dropdown-panels,
+    html[data-open-panel="text"]     .dropdown-panels,
+    html[data-open-panel="color"]    .dropdown-panels,
+    html[data-open-panel="properties"] .dropdown-panels,
+    html[data-open-panel="layers"]   .dropdown-panels{
+      pointer-events: auto;
+    }
+    html[data-open-panel="designs"]  .panel[data-panel="designs"],
+    html[data-open-panel="elements"] .panel[data-panel="elements"],
+    html[data-open-panel="text"]     .panel[data-panel="text"],
+    html[data-open-panel="color"]    .panel[data-panel="color"],
+    html[data-open-panel="properties"] .panel[data-panel="properties"],
+    html[data-open-panel="layers"]   .panel[data-panel="layers"]{ transform: translateY(0); opacity: 1; }
+
+    /* =============================================================
+       3) Header (3 internal rows)
+       ------------------------------------------------------------- */
+    header{
+      display: grid;
+      grid-template-rows: var(--header-top-h) var(--headers-toolbar-h) var(--header-third-h);
+      overflow: clip; min-width: 0;
+    }
+
+    /* Row 1: Brand + Section Tabs */
+    .header-row-top{
+      display: grid; grid-template-columns: repeat(6, 1fr); align-items: center;
+      padding: 0; gap: 0; min-width: 0; border-bottom: var(--border); background: var(--surface-2);
+      border-top-left-radius: var(--radius); border-top-right-radius: var(--radius);
+    }
+    .brand{
+      grid-column: 1 / span 3; display: flex; align-items: center; gap: 10px; min-width: 0; padding-inline: 8px; height: 100%;
+    }
+    .brand__logo{
+      width: 32px; height: 32px; border-radius: 8px;
+      background: conic-gradient(from 210deg, #5f86fb, #7c9dfb, #67e8f9, #5f86fb);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.06), 0 8px 18px rgba(95,134,251,0.35);
+      flex: 0 0 auto;
+    }
+    .brand__name{ font-weight: 800; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; color: var(--text); letter-spacing: .2px; }
+    .header-tools{
+      grid-column: 4 / span 3; display: grid; grid-template-columns: repeat(3, 1fr);
+      height: 100%; border-left: var(--border); overflow: clip; background: var(--surface-2);
+    }
+
+    /* Row 2: Toolbar Headers (inert buttons with ONLY boundary dividers) */
+    .header-row-headers{
+      display: grid; grid-auto-rows: 1fr; background: var(--surface-headers);
+      border-bottom: var(--border);
+    }
+    .headers-deck{ position: relative; height: 100%; display: grid; }
+    .headers-block{
+      display: grid; grid-area: 1 / 1; grid-template-columns: repeat(6, 1fr);
+      opacity: 0; pointer-events: none; transition: opacity 150ms ease;
+      align-items: stretch; background: var(--surface-headers);
+    }
+    html[data-active-section="explore"]  .headers-block[data-section="explore"],
+    html[data-active-section="customize"] .headers-block[data-section="customize"],
+    html[data-active-section="order"]     .headers-block[data-section="order"]{
+      opacity: 1; pointer-events: auto;
+    }
+    .header-row-headers .tool{
+      display: grid; place-items: center; height: 100%;
+      padding: 0; gap: 0; border-radius: 0; pointer-events: none; cursor: default;
+      background: transparent; color: var(--text);
+    }
+    .header-row-headers .tool__label{ font-size: var(--view-label); font-weight: 600; }
+    .headers-block .tool + .tool{ border-left: 1px solid var(--divider-color-headers); }
+
+    /* Row 3: Toolbars (interactive) */
+    .header-row-toolbar{
+      display: grid; grid-auto-rows: 1fr; background: var(--surface-2);
+      border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);
+    }
+    .toolbar-deck{ position: relative; height: 100%; display: grid; }
+    .toolbar-block{
+      display: grid; grid-area: 1 / 1;
+      opacity: 0; pointer-events: none; transition: opacity 150ms ease; height: 100%;
+      background: var(--surface-2);
+    }
+    html[data-active-section="explore"]  .toolbar-block[data-section="explore"],
+    html[data-active-section="customize"] .toolbar-block[data-section="customize"],
+    html[data-active-section="order"]     .toolbar-block[data-section="order"]{
+      opacity: 1; pointer-events: auto;
+    }
+    .toolbar{
+      display: grid; grid-template-columns: repeat(6, 1fr); padding: 0; overflow: clip;
+      height: 100%;
+    }
+
+    /* Buttons (shared visuals) */
+    .tool{
+      display: grid; grid-template-rows: auto auto; align-content: center; justify-items: center;
+      gap: var(--tool-gap); width: 100%; height: 100%; border: 0; background: transparent; font: inherit; cursor: pointer; padding: 6px 0; position: relative;
+      color: var(--text-muted);
+    }
+    .tool:focus-visible{ outline: 2px solid var(--accent-600); outline-offset: -2px; border-radius: 12px; box-shadow: var(--accent-glow); }
+    .tool:hover{ background: rgba(124,157,251,0.12); }
+    .tool:active{ background: rgba(124,157,251,0.18); }
+    .tool[aria-pressed="true"] .tool__icon, .tool[aria-pressed="true"] .tool__label{ color: var(--accent); font-weight: 700; }
+    .tool__icon{ width: var(--tool-icon); height: var(--tool-icon); color: currentColor; }
+    .tool__label{ font-size: var(--tool-label); line-height: 1; color: currentColor; user-select: none; }
+    .tool__icon svg{ width: 100%; height: 100%; display: block; }
+
+    .header-tools .tool.is-active {
+      background: rgba(124, 157, 251, 0.16);
+      box-shadow: inset 0 -3px 0 var(--accent-600);
+      color: var(--accent);
+    }
+
+    /* =============================================================
+       4) View toolbar (shows only in Customize)
+       ------------------------------------------------------------- */
+    .view-mode-toolbar{
+      display: none; border-bottom: var(--border); background: var(--surface-2);
+      border-radius: var(--radius) var(--radius) 0 0; height: var(--view-toolbar-h);
+    }
+    html[data-active-section="customize"] .view-mode-toolbar{ display: block; }
+    .view-mode-toolbar .toolbar{ grid-template-columns: repeat(6, 1fr); height: 100%; }
+    .view-mode-toolbar .tool{ padding: 2px 0; gap: var(--view-gap); }
+    .view-mode-toolbar .tool__icon{ width: var(--view-icon); height: var(--view-icon); }
+    .view-mode-toolbar .tool__label{ font-size: var(--view-label); }
+
+    /* =============================================================
+       5) Main Content Area — per-section "pages"
+       ------------------------------------------------------------- */
+    .content-deck{
+      position: relative;
+      display: grid;
+      grid-template: 1fr / 1fr;
+      min-height: 0;
+      overflow: hidden;
+      background: var(--surface-2);
+    }
+    .content-block{
+      grid-area: 1 / 1;
+      display: grid;
+      grid-template: 1fr / 1fr;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 160ms ease;
+      min-height: 0;
+    }
+    html[data-active-section="explore"]  .content-block[data-section="explore"],
+    html[data-active-section="customize"] .content-block[data-section="customize"],
+    html[data-active-section="order"]     .content-block[data-section="order"]{
+      opacity: 1; pointer-events: auto;
+    }
+
+    /* Page instances within a section */
+    .content-page{
+      grid-area: 1 / 1;
+      display: none;         /* one active at a time */
+      padding: var(--page-gap);
+      min-height: 0;
+    }
+    .content-page.is-active{ display: grid; grid-template-rows: 1fr; }
+
+    /* Empty state (shows until a toolbar button is chosen) */
+    .empty-state{
+      grid-area: 1 / 1;
+      display: grid;
+      place-items: center;
+      padding: var(--page-gap);
+    }
+    .empty-state-inner{
+      text-align: center;
+      color: var(--text-muted);
+      max-width: 520px;
+    }
+    .empty-state-inner h3{ color: var(--text); margin-bottom: 6px; }
+
+    /* =============================================================
+       6) Customize — Editor Page fills 100%
+       ------------------------------------------------------------- */
+    .editor-card{
+      display: grid;
+      grid-template-rows: 1fr;
+      background: transparent; border: 0; border-radius: 0; padding: 0;
+      min-height: 0;
+    }
+    .image-stage{
+      grid-area: 1 / 1;
+      display: grid; place-items: center;
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+    #sceneSvg.scene-svg{ width: 100%; height: 100%; display: block; background: var(--surface-2); }
+    #frameOverlay #frameRectDesign{ fill: none; stroke: rgba(255,255,255,0.95); stroke-width: 2.5; stroke-dasharray: 7 6; vector-effect: non-scaling-stroke; }
+
+    /* Scrollbars */
+    .content-page::-webkit-scrollbar{ width:10px; height:10px; }
+    .content-page::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.15); border-radius: 10px; }
+    .content-page::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,0.25); }
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Dark app with section pages and panels">
+
+    <!-- DROPDOWN PANELS (Customize) -->
+    <div class="dropdown-panels" aria-live="polite">
+      <section class="panel" data-panel="designs" role="dialog" aria-modal="true" aria-label="Designs panel">
+        <div class="panel__bar"><div class="panel__title">Designs</div><button class="panel__close" data-close-panel aria-label="Close Designs">✕</button></div>
+        <div class="panel__body"><h2>Designs Browser</h2><p>Sample content for the Designs panel. Use this space to browse and pick templates.</p></div>
+      </section>
+      <section class="panel" data-panel="elements" role="dialog" aria-modal="true" aria-label="Elements panel">
+        <div class="panel__bar"><div class="panel__title">Elements</div><button class="panel__close" data-close-panel aria-label="Close Elements">✕</button></div>
+        <div class="panel__body"><h2>Elements Library</h2><p>Insert shapes, icons, and graphics here.</p></div>
+      </section>
+      <section class="panel" data-panel="text" role="dialog" aria-modal="true" aria-label="Text panel">
+        <div class="panel__bar"><div class="panel__title">Text</div><button class="panel__close" data-close-panel aria-label="Close Text">✕</button></div>
+        <div class="panel__body"><h2>Text Tools</h2><p>Add headlines, paragraphs, and fonts here.</p></div>
+      </section>
+      <section class="panel" data-panel="color" role="dialog" aria-modal="true" aria-label="Color panel">
+        <div class="panel__bar"><div class="panel__title">Color</div><button class="panel__close" data-close-panel aria-label="Close Color">✕</button></div>
+        <div class="panel__body"><h2>Color Picker</h2><p>Adjust primary, secondary and accent colors. Add swatches, palettes, and brand presets here.</p></div>
+      </section>
+      <section class="panel" data-panel="properties" role="dialog" aria-modal="true" aria-label="Properties panel">
+        <div class="panel__bar"><div class="panel__title">Properties</div><button class="panel__close" data-close-panel aria-label="Close Properties">✕</button></div>
+        <div class="panel__body"><h2>Object Properties</h2><p>Move, scale, rotate, align and more.</p></div>
+      </section>
+      <section class="panel" data-panel="layers" role="dialog" aria-modal="true" aria-label="Layers panel">
+        <div class="panel__bar"><div class="panel__title">Layers</div><button class="panel__close" data-close-panel aria-label="Close Layers">✕</button></div>
+        <div class="panel__body"><h2>Layers Manager</h2><p>Reorder, lock, hide, or group layers. Provide thumbnails and status indicators here.</p></div>
+      </section>
+    </div>
+
+    <!-- HEADER -->
+    <header role="banner" aria-label="Header with section selector and toolbars">
+      <!-- Row 1: Brand + Sections -->
+      <div class="header-row-top">
+        <div class="brand">
+          <div class="brand__logo" aria-hidden="true"></div>
+          <div class="brand__name">My App</div>
+        </div>
+        <nav class="header-tools" role="navigation" aria-label="Section selector">
+          <button class="tool is-active" type="button" data-section="explore" aria-label="Explore">
+            <span class="tool__icon" aria-hidden="true">
+              <!-- Compass icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M14.5 9.5l-2.8 6-6 2.8 2.8-6 6-2.8z"/>
+              </svg>
+            </span>
+            <span class="tool__label">Explore</span>
+          </button>
+
+          <button class="tool" type="button" data-section="customize" aria-label="Customize">
+            <span class="tool__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12M6 21h12M4 7h16M8 7v10M16 7v10M4 17h16"/>
+              </svg>
+            </span>
+            <span class="tool__label">Customize</span>
+          </button>
+
+          <button class="tool" type="button" data-section="order" aria-label="Order">
+            <span class="tool__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="20" r="1.6"/>
+                <circle cx="17" cy="20" r="1.6"/>
+                <path d="M3 4h2l2.5 11.5a2 0 0 0 2 1.5h7a2 0 0 0 2-1.5L21 8H7"/>
+              </svg>
+            </span>
+            <span class="tool__label">Order</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Row 2: Toolbar Headers (as BUTTONS, inert) -->
+      <div class="header-row-headers" role="region" aria-label="Section toolbar headers">
+        <div class="headers-deck">
+          <!-- Explore headers -->
+          <div class="headers-block" data-section="explore" aria-hidden="false">
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 1 / span 2;"><span class="tool__label">Start</span></button>
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 3 / span 4;"><span class="tool__label">Discover</span></button>
+          </div>
+          <!-- Customize headers -->
+          <div class="headers-block" data-section="customize" aria-hidden="true">
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 1 / span 3;"><span class="tool__label">Add</span></button>
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 4 / span 3;"><span class="tool__label">Adjust</span></button>
+          </div>
+          <!-- Order headers -->
+          <div class="headers-block" data-section="order" aria-hidden="true">
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 1 / span 2;"><span class="tool__label">Best Deals</span></button>
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 3 / span 3;"><span class="tool__label">External Stores</span></button>
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 6 / span 1;"><span class="tool__label">Share</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Toolbars -->
+      <div class="header-row-toolbar" role="region" aria-label="Section toolbars">
+        <div class="toolbar-deck">
+          <!-- ===== EXPLORE ===== -->
+          <section class="toolbar-block" data-section="explore" aria-label="Explore toolbar">
+            <nav class="toolbar" data-section="explore" role="navigation" aria-label="Explore tools">
+              <button class="tool" type="button" title="Welcome" data-page="welcome">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Welcome</span>
+              </button>
+              <button class="tool" type="button" title="Design Guide" data-page="design-guide">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 4h7a4 4 0 0 1 4 4v12H7a4 4 0 0 0-4 4V4z" transform="translate(0 -4)"/>
+                    <path d="M21 4h-7a4 4 0 0 0-4 4v12h7a4 4 0 0 1 4 4V4z" transform="translate(0 -4)"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Design Guide</span>
+              </button>
+              <button class="tool" type="button" title="Featured" data-page="featured">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3l3.4 6.9 7.6 1.1-5.5 5.3 1.3 7.5L12 20l-6.8 3.6 1.3-7.5L1 11.1l7.6-1.2L12 3z"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Featured</span>
+              </button>
+              <button class="tool" type="button" title="Hot Picks" data-page="hot-picks">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2s4 3 4 7a4 4 0 0 1-8 0c0-4 4-7 4-7z"/>
+                    <path d="M8 13a4 4 0 1 0 8 0"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Hot Picks</span>
+              </button>
+              <button class="tool" type="button" title="Categories" data-page="categories">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Categories</span>
+              </button>
+              <button class="tool" type="button" title="All Products" data-page="all-products">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M3 15l9 5 9-5"/>
+                    <path d="M12 4v10"/>
+                  </svg>
+                </span>
+                <span class="tool__label">All Products</span>
+              </button>
+            </nav>
+          </section>
+
+          <!-- ===== CUSTOMIZE ===== -->
+          <section class="toolbar-block" data-section="customize" aria-label="Customize toolbar">
+            <nav class="toolbar" data-section="customize" role="navigation" aria-label="Customize tools">
+              <button class="tool" type="button" data-tool="designs"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 3h12M6 21h12M4 7h16M8 7v10M16 7v10M4 17h16"/></svg></span><span class="tool__label">Designs</span></button>
+              <button class="tool" type="button" data-tool="elements"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="8" height="8" rx="2"/><circle cx="17" cy="7" r="4"/><path d="M12 14l-4 7h8l-4-7Z"/></svg></span><span class="tool__label">Elements</span></button>
+              <button class="tool" type="button" data-tool="text"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 5h14M12 5v14"/></svg></span><span class="tool__label">Text</span></button>
+              <button class="tool" type="button" data-tool="color"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3a9 9 0 1 0 0 18h2a2.5 2.5 0 0 0 0-5h-1a3 3 0 0 1-3-3v-1a9 9 0 0 1 2-9Z"/>
+                  <circle cx="7.5" cy="10.5" r="1.2"/><circle cx="9.5" cy="6.8" r="1.2"/>
+                  <circle cx="14.5" cy="6.8" r="1.2"/><circle cx="16.5" cy="10.5" r="1.2"/></svg></span><span class="tool__label">Color</span></button>
+              <button class="tool" type="button" data-tool="properties"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21l3-1 12-12-2-2L4 18l-1 3z"/><path d="M14 4l2 2"/></svg></span><span class="tool__label">Properties</span></button>
+              <button class="tool" type="button" data-tool="layers"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M21 13l-9 5-9-5"/><path d="M21 17l-9 5-9-5"/></svg></span><span class="tool__label">Layers</span></button>
+            </nav>
+          </section>
+
+          <!-- ===== ORDER ===== -->
+          <section class="toolbar-block" data-section="order" aria-label="Order toolbar">
+            <nav class="toolbar" data-section="order" role="navigation" aria-label="Order tools">
+              <button class="tool" type="button" data-page="shop-1"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l2-5h14l2 5"/><path d="M4 9h16v10H4z"/><path d="M9 19v-6h6v6"/></svg></span><span class="tool__label">Shop 1</span></button>
+              <button class="tool" type="button" data-page="shop-2"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9h12l-1.5 11H7.5L6 9z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg></span><span class="tool__label">Shop 2</span></button>
+              <button class="tool" type="button" data-page="ebay"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13l-7 7-9-9 7-7 9 9z"/><circle cx="15.5" cy="8.5" r="1.2"/></svg></span><span class="tool__label">eBay</span></button>
+              <button class="tool" type="button" data-page="etsy"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 8h6M9 12h5M9 16h6"/></svg></span><span class="tool__label">Etsy</span></button>
+              <button class="tool" type="button" data-page="amazon"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/><path d="M3 5h3l2 10h9l2-7H7"/></svg></span><span class="tool__label">Amazon</span></button>
+              <button class="tool" type="button" data-page="share-link"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14l-2 2a4 4 0 0 1-6-6l2-2"/><path d="M14 10l2-2a4 4 0 0 1 6 6l-2 2"/><path d="M8 12h8"/></svg></span><span class="tool__label">Design Link</span></button>
+            </nav>
+          </section>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN: role="main" Content Area -->
+    <main role="main" aria-label="Content area">
+      <!-- Shows only in Customize -->
+      <div class="view-mode-toolbar" role="region" aria-label="View mode toolbar">
+        <nav class="toolbar" data-section="view" role="toolbar" aria-label="View & comparison">
+          <button class="tool" type="button" data-group="side" data-value="front" aria-pressed="true">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></span>
+            <span class="tool__label">Front</span>
+          </button>
+          <button class="tool" type="button" data-group="side" data-value="back" aria-pressed="false">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8v8H8z"/></svg></span>
+            <span class="tool__label">Back</span>
+          </button>
+          <button class="tool" type="button" data-group="mode" data-value="preview" aria-pressed="true">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+            <span class="tool__label">Preview</span>
+          </button>
+          <button class="tool" type="button" data-group="mode" data-value="edit" aria-pressed="false">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l3-1 12-12-2-2L4 18l-1 3z"/><path d="M14 4l2 2"/></svg></span>
+            <span class="tool__label">Edit</span>
+          </button>
+          <button class="tool" type="button" data-toggle="frame" aria-pressed="true">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h8v8H8z"/></svg></span>
+            <span class="tool__label">Frame</span>
+          </button>
+          <button class="tool" type="button" data-toggle="design" aria-pressed="true">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l3.4 6.9 7.6 1.1-5.5 5.3 1.3 7.5L12 20l-6.8 3.6 1.3-7.5L1 11.1l7.6-1.2L12 3z"/></svg></span>
+            <span class="tool__label">Design</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Per-section page decks -->
+      <div class="content-deck">
+        <!-- ================= EXPLORE PAGES ================= -->
+        <section class="content-block" data-section="explore" aria-label="Explore pages">
+          <div class="empty-state" data-empty-for="explore">
+            <div class="empty-state-inner">
+              <h3>Explore</h3>
+              <p class="muted">Pick a tool above to load its page.</p>
+            </div>
+          </div>
+
+          <article class="content-page" data-page="welcome" aria-label="Welcome page">
+            <div class="card">
+              <h3>Welcome</h3>
+              <p class="muted">This is a placeholder page for Welcome. Fill 100% of the content area with any layout you want.</p>
+            </div>
+          </article>
+
+          <article class="content-page" data-page="design-guide" aria-label="Design Guide page">
+            <div class="card">
+              <h3>Design Guide</h3>
+              <p class="muted">Typography, spacing, and usage guidelines go here.</p>
+            </div>
+          </article>
+
+          <article class="content-page" data-page="featured" aria-label="Featured page">
+            <div class="card">
+              <h3>Featured</h3>
+              <p class="muted">Showcase your curated designs.</p>
+            </div>
+          </article>
+
+          <article class="content-page" data-page="hot-picks" aria-label="Hot Picks page">
+            <div class="card">
+              <h3>Hot Picks</h3>
+              <p class="muted">Trending products or designs.</p>
+            </div>
+          </article>
+
+          <article class="content-page" data-page="categories" aria-label="Categories page">
+            <div class="card">
+              <h3>Categories</h3>
+              <p class="muted">Grid of categories here.</p>
+            </div>
+          </article>
+
+          <article class="content-page" data-page="all-products" aria-label="All Products page">
+            <div class="card">
+              <h3>All Products</h3>
+              <p class="muted">Full catalog view.</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- ================= CUSTOMIZE PAGES ================= -->
+        <section class="content-block" data-section="customize" aria-label="Customize pages">
+          <article class="content-page is-active" data-page="editor" aria-label="Editor page">
+            <div class="editor-card">
+              <svg id="sceneSvg" class="scene-svg" viewBox="0 0 1155 1155" preserveAspectRatio="xMidYMid meet" aria-hidden="false">
+                <image id="raster"
+                       href="assets/img/products/product-preview_front.png"
+                       data-front-src="assets/img/products/product-preview_front.png"
+                       data-back-src="assets/img/products/product-preview_back.png"
+                       x="0" y="0" width="1155" height="1155" preserveAspectRatio="none" />
+                <g id="designOverlay" style="display:block;">
+                  <rect id="svg_canvas_area" x="361" y="180" width="440" height="583" fill="rgba(255,214,0,0.22)" stroke="none" stroke-width="2" vector-effect="non-scaling-stroke" rx="6" ry="6" />
+                </g>
+                <g id="frameOverlay" style="display:block;">
+                  <rect id="frameRectDesign" x="361" y="180" width="440" height="583" />
+                </g>
+              </svg>
+            </div>
+          </article>
+        </section>
+
+        <!-- ================= ORDER PAGES ================= -->
+        <section class="content-block" data-section="order" aria-label="Order pages">
+          <div class="empty-state" data-empty-for="order">
+            <div class="empty-state-inner">
+              <h3>Order</h3>
+              <p class="muted">Pick a shop above to load its page.</p>
+            </div>
+          </div>
+
+          <article class="content-page" data-page="shop-1" aria-label="Shop 1 page">
+            <div class="card"><h3>Shop 1</h3><p class="muted">Embed your store here.</p></div>
+          </article>
+          <article class="content-page" data-page="shop-2" aria-label="Shop 2 page">
+            <div class="card"><h3>Shop 2</h3><p class="muted">Another storefront placeholder.</p></div>
+          </article>
+          <article class="content-page" data-page="ebay" aria-label="eBay page">
+            <div class="card"><h3>eBay</h3><p class="muted">eBay integration view.</p></div>
+          </article>
+          <article class="content-page" data-page="etsy" aria-label="Etsy page">
+            <div class="card"><h3>Etsy</h3><p class="muted">Etsy listings.</p></div>
+          </article>
+          <article class="content-page" data-page="amazon" aria-label="Amazon page">
+            <div class="card"><h3>Amazon</h3><p class="muted">Amazon storefront.</p></div>
+          </article>
+          <article class="content-page" data-page="share-link" aria-label="Share link page">
+            <div class="card"><h3>Design Link</h3><p class="muted">Share a direct link to this design.</p></div>
+          </article>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Safety: noop if JS fails early
+    (function(){ if(!document || !document.documentElement) return; })();
+
+    /* ============================================================
+       SECTION SWITCHING — Explore / Customize / Order
+       ============================================================ */
+    const headerButtons = document.querySelectorAll('.header-tools .tool');
+    function setActive(section){
+      document.documentElement.setAttribute('data-active-section', section);
+      headerButtons.forEach(btn => {
+        const isActive = btn.dataset.section === section;
+        btn.toggleAttribute('aria-current', isActive);
+        btn.setAttribute('aria-pressed', isActive);
+        btn.classList.toggle('is-active', isActive);
+      });
+      if(section === 'customize'){ setActivePage('customize', 'editor'); }
+      else{ setActivePage(section, ''); }
+      updatePreviewLock();
+    }
+    headerButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => { e.preventDefault(); setActive(btn.dataset.section); });
+      btn.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); setActive(btn.dataset.section); }
+      });
+    });
+
+    /* ============================================================
+       VIEW TOOLBAR — exclusive groups + independent toggles
+       ============================================================ */
+    const viewToolbarEl = document.querySelector('.view-mode-toolbar');
+    function makeExclusiveWithin(container, groupName){
+      const buttons = [...container.querySelectorAll(`[data-group="${groupName}"]`)];
+      buttons.forEach(btn => btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+        updatePreviewLock();
+        updateEditViewBox();
+        if(groupName === 'side'){ applyImageForSide(btn.getAttribute('data-value')); }
+      }));
+    }
+    function wireToggles(container){
+      container.querySelectorAll('[data-toggle]')
+        .forEach(b => b.addEventListener('click', (e) => {
+          e.preventDefault();
+          const next = b.getAttribute('aria-pressed') !== 'true';
+          b.setAttribute('aria-pressed', String(next));
+          if(b.dataset.toggle === 'design') updateDesignOverlay();
+          if(b.dataset.toggle === 'frame')  updateFrameOverlay();
+        }));
+    }
+    makeExclusiveWithin(viewToolbarEl, 'side');
+    makeExclusiveWithin(viewToolbarEl, 'mode');
+    wireToggles(viewToolbarEl);
+
+    /* ============================================================
+       MAIN CONTENT PAGES — per-section subpages
+       ============================================================ */
+    function setActivePage(section, page){
+      const block = document.querySelector(`.content-block[data-section="${section}"]`);
+      if(!block) return;
+      // Toggle empty-state
+      const empty = block.querySelector(`.empty-state[data-empty-for="${section}"]`);
+      if(empty) empty.style.display = page ? 'none' : 'grid';
+
+      // Toggle pages
+      block.querySelectorAll('.content-page').forEach(p => {
+        p.classList.toggle('is-active', p.getAttribute('data-page') === page && !!page);
+      });
+
+      // Update aria-pressed on toolbar buttons within this section
+      const toolbar = document.querySelector(`.toolbar[data-section="${section}"]`);
+      if(toolbar){
+        toolbar.querySelectorAll('[data-page]').forEach(btn => {
+          const isActive = btn.getAttribute('data-page') === page && !!page;
+          btn.setAttribute('aria-pressed', String(isActive));
+        });
+      }
+    }
+
+    // Wire Explore & Order toolbar buttons -> content pages
+    document.querySelectorAll('.toolbar[data-section="explore"] [data-page], .toolbar[data-section="order"] [data-page]')
+      .forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const toolbar = btn.closest('.toolbar');
+          const section = toolbar ? toolbar.getAttribute('data-section') : '';
+          const page = btn.getAttribute('data-page') || '';
+          setActivePage(section, page);
+        });
+      });
+
+    /* ============================================================
+       PREVIEW LOCK — match reference: disable ALL header toolbars during Preview
+       ============================================================ */
+    const headerToolbarDeck = document.querySelector('.header-row-toolbar .toolbar-deck');
+    function setDeckDisabled(disabled){
+      if(!headerToolbarDeck) return;
+      const buttons = headerToolbarDeck.querySelectorAll('.tool');
+      buttons.forEach(b => {
+        b.disabled = !!disabled;
+        b.setAttribute('aria-disabled', String(!!disabled));
+      });
+    }
+    function isPreviewActive(){
+      const previewBtn = viewToolbarEl && viewToolbarEl.querySelector('[data-group="mode"][data-value="preview"]');
+      return previewBtn && previewBtn.getAttribute('aria-pressed') === 'true';
+    }
+    function isEditActive(){
+      const editBtn = viewToolbarEl && viewToolbarEl.querySelector('[data-group="mode"][data-value="edit"]');
+      return editBtn && editBtn.getAttribute('aria-pressed') === 'true';
+    }
+    function updatePreviewLock(){
+      const inCustomize = document.documentElement.getAttribute('data-active-section') === 'customize';
+      const lock = inCustomize && isPreviewActive() && !isEditActive();
+      setDeckDisabled(lock);
+    }
+
+    /* ============================================================
+       PANELS — Customize toolbar -> Panels (restored behavior)
+       ============================================================ */
+    const customizeToolbar = document.querySelector('.toolbar[data-section="customize"]');
+    const panelNames = ['designs', 'elements', 'text', 'color', 'properties', 'layers'];
+    function getCustomizeButtonByName(name){
+      return customizeToolbar && customizeToolbar.querySelector(`.tool[data-tool="${name}"]`);
+    }
+    function openPanel(name){
+      if(!panelNames.includes(name)) return;
+      // Turn on current pressed state and clear others
+      panelNames.forEach(n => {
+        const b = getCustomizeButtonByName(n);
+        if(b) b.setAttribute('aria-pressed', String(n === name));
+      });
+      document.documentElement.setAttribute('data-open-panel', name);
+    }
+    function closePanel(){
+      document.documentElement.setAttribute('data-open-panel', '');
+      panelNames.forEach(n => {
+        const b = getCustomizeButtonByName(n);
+        if(b) b.setAttribute('aria-pressed', 'false');
+      });
+    }
+    if(customizeToolbar){
+      customizeToolbar.querySelectorAll('.tool[data-tool]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const name = btn.getAttribute('data-tool');
+          // Toggle same-panel click -> close; otherwise open requested panel
+          const currentlyOpen = document.documentElement.getAttribute('data-open-panel') || '';
+          if(currentlyOpen === name){ closePanel(); }
+          else { openPanel(name); }
+        });
+      });
+    }
+    document.querySelectorAll('[data-close-panel]').forEach(b => b.addEventListener('click', (e) => {
+      e.preventDefault();
+      closePanel();
+    }));
+
+    /* ============================================================
+       IMAGE STAGE (SVG): front/back + preview/edit viewBox + overlays
+       ============================================================ */
+    const svg = document.getElementById('sceneSvg');
+    const raster = document.getElementById('raster');
+    const frontURL = raster ? raster.getAttribute('data-front-src') : '';
+    const backURL  = raster ? raster.getAttribute('data-back-src')  : '';
+    function applyImageForSide(side){
+      if(!raster) return;
+      const url = side === 'back' ? backURL : frontURL;
+      if(url){ raster.setAttribute('href', url); raster.setAttribute('xlink:href', url); }
+    }
+
+    const VIEWBOX_PREVIEW = { x:0, y:0, w:1155, h:1155 };
+    const DESIGN_RECT     = { x:361, y:180, w:440, h:583 };
+    const IMAGE_BOUNDS    = { x:0, y:0, w:1155, h:1155 };
+    const PADDING_RATIO   = 0.05;
+    function clampRect(rect,b){
+      let {x,y,w,h} = rect;
+      if(w>b.w) w=b.w; if(h>b.h) h=b.h;
+      if(x<b.x) x=b.x; if(y<b.y) y=b.y;
+      if(x+w>b.x+b.w) x=b.x+b.w-w;
+      if(y+h>b.y+b.h) y=b.y+b.h-h;
+      return {x,y,w,h};
+    }
+    function expandRect(r){
+      const padX = r.w * PADDING_RATIO;
+      const padY = r.h * PADDING_RATIO;
+      return clampRect({ x:r.x-padX, y:r.y-padY, w:r.w+2*padX, h:r.h+2*padY }, IMAGE_BOUNDS);
+    }
+    function setViewBox({x,y,w,h}){ if(svg) svg.setAttribute('viewBox', `${x} ${y} ${w} ${h}`); }
+    function updateEditViewBox(){
+      const inCustomize = document.documentElement.getAttribute('data-active-section') === 'customize';
+      const editPressed = isEditActive();
+      if(inCustomize && editPressed){ setViewBox(expandRect(DESIGN_RECT)); }
+      else { setViewBox(VIEWBOX_PREVIEW); }
+    }
+
+    // Overlays
+    const designToggle = document.querySelector('.view-mode-toolbar [data-toggle="design"]');
+    const frameToggle  = document.querySelector('.view-mode-toolbar [data-toggle="frame"]');
+    const designOverlay= document.getElementById('designOverlay');
+    const frameOverlay = document.getElementById('frameOverlay');
+    function updateDesignOverlay(){ if(designOverlay && designToggle){ designOverlay.style.display = designToggle.getAttribute('aria-pressed') === 'true' ? 'block' : 'none'; } }
+    function updateFrameOverlay(){ if(frameOverlay && frameToggle){ frameOverlay.style.display = frameToggle.getAttribute('aria-pressed') === 'true' ? 'block' : 'none'; } }
+
+    // React to section changes
+    const sectionObserver = new MutationObserver(() => {
+      const section = document.documentElement.getAttribute('data-active-section');
+      if(section === 'customize'){
+        applyImageForSide((document.querySelector('.view-mode-toolbar [data-group="side"][aria-pressed="true"]') || {}).dataset?.value || 'front');
+      }
+      updatePreviewLock();
+      updateEditViewBox();
+      updateDesignOverlay();
+      updateFrameOverlay();
+    });
+    sectionObserver.observe(document.documentElement, { attributes:true, attributeFilter:['data-active-section'] });
+
+    // INITIAL STATE
+    setActive('explore'); // app loads on Explore, empty content until a tool is chosen
+    updatePreviewLock();
+    updateEditViewBox();
+    updateDesignOverlay();
+    updateFrameOverlay();
+  </script>
+</body>
+</html>
