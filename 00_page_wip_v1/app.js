@@ -357,7 +357,7 @@ function createGalleryController(panel, type, templates, templateNode){
       tagToggleButton.setAttribute('aria-expanded', state.tagsExpanded ? 'true' : 'false');
       const label = tagToggleButton.querySelector('.toggle-label');
       if(label){
-        label.textContent = state.tagsExpanded ? 'Hide tags' : 'See all tags';
+        label.textContent = state.tagsExpanded ? 'Hide tags' : 'See All tags';
       }
     }
     if(tagStrip){
