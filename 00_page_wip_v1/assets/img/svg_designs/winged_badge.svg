@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <path d="M120 32 C100 32 80 52 80 72 V104 C80 124 100 144 120 144 C140 144 160 124 160 104 V72 C160 52 140 32 120 32 Z" data-color-primary="true" fill="#f4a259" />
+  <path d="M40 72 C52 52 76 44 100 52 V112 C76 120 52 112 40 92 Z" fill="#f5b97a" />
+  <path d="M200 72 C188 52 164 44 140 52 V112 C164 120 188 112 200 92 Z" fill="#f5b97a" />
+  <path d="M60 84 C70 72 90 68 110 74 V110 C90 116 70 112 60 100 Z" fill="#fcd9b0" opacity="0.8" />
+  <path d="M180 84 C170 72 150 68 130 74 V110 C150 116 170 112 180 100 Z" fill="#fcd9b0" opacity="0.8" />
+  <circle cx="120" cy="88" r="20" fill="#fff" opacity="0.9" />
+  <path d="M120 70 L128 98 H112 Z" fill="#f4a259" />
+</svg>

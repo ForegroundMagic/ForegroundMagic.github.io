@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en" data-active-section="explore" data-open-panel="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dark UI — 3-Row Header with Panels (v37)</title>
+  <!-- ================= EXTERNAL STYLES ================= -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!--
+    Dark UI Demo — Structured rewrite of basic_responsive_44.html
+    HTML is segmented into clearly labeled sections while preserving
+    all original controls, labels, icons, and behavior.
+  -->
+  <div class="app" role="application" aria-label="Dark app with section pages and panels">
+
+    <!-- ================= DROPDOWN PANELS (CUSTOMIZE) ================= -->
+    <div class="dropdown-panels" aria-live="polite">
+      <section class="panel panel--gallery" data-panel="designs" data-gallery-type="design" role="dialog" aria-modal="true" aria-label="Designs panel">
+        <div class="panel__bar"><div class="panel__title">Designs</div><button class="panel__close" data-close-panel aria-label="Close Designs">✕</button></div>
+        <div class="panel__body panel__body--gallery">
+          <div class="gallery-search" role="search">
+            <div class="search-field" role="combobox" aria-haspopup="listbox" aria-expanded="false">
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input type="search" class="gallery-search-input" autocomplete="off" aria-autocomplete="list" aria-label="Search design templates" placeholder="Search designs by name or #tag" />
+            </div>
+            <div class="gallery-suggestions" role="listbox" aria-label="Tag suggestions"></div>
+          </div>
+          <div class="gallery-active-row">
+            <div class="gallery-active-tags" aria-live="polite"></div>
+            <div class="gallery-tag-controls">
+              <label class="match-toggle"><input type="checkbox" class="gallery-match-toggle" /> <span>Match any tag (instead of all)</span></label>
+              <button class="gallery-clear-tags" type="button" disabled>Clear tags</button>
+            </div>
+          </div>
+          <div class="gallery-tag-explorer">
+            <button class="gallery-tag-toggle" type="button" aria-expanded="false"><span class="toggle-label">See all tags</span><span class="toggle-caret" aria-hidden="true"></span></button>
+            <div class="gallery-tag-strip" role="list" aria-label="Available tags" hidden></div>
+          </div>
+          <div class="gallery-grid" role="list"></div>
+          <div class="gallery-pagination" aria-live="polite">
+            <div class="pager-controls">
+              <button class="pager-button gallery-prev" type="button" disabled>Previous</button>
+              <span class="page-indicator">Page 1 of 1</span>
+              <button class="pager-button gallery-next" type="button" disabled>Next</button>
+            </div>
+            <div class="gallery-actions">
+              <span class="gallery-selection-status" aria-live="polite">Select an item to enable</span>
+              <button class="gallery-add-button" type="button" disabled>Add to Canvas</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="panel panel--gallery" data-panel="elements" data-gallery-type="element" role="dialog" aria-modal="true" aria-label="Elements panel">
+        <div class="panel__bar"><div class="panel__title">Elements</div><button class="panel__close" data-close-panel aria-label="Close Elements">✕</button></div>
+        <div class="panel__body panel__body--gallery">
+          <div class="gallery-search" role="search">
+            <div class="search-field" role="combobox" aria-haspopup="listbox" aria-expanded="false">
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input type="search" class="gallery-search-input" autocomplete="off" aria-autocomplete="list" aria-label="Search design elements" placeholder="Search elements by name or #tag" />
+            </div>
+            <div class="gallery-suggestions" role="listbox" aria-label="Tag suggestions"></div>
+          </div>
+          <div class="gallery-active-row">
+            <div class="gallery-active-tags" aria-live="polite"></div>
+            <div class="gallery-tag-controls">
+              <label class="match-toggle"><input type="checkbox" class="gallery-match-toggle" /> <span>Match any tag (instead of all)</span></label>
+              <button class="gallery-clear-tags" type="button" disabled>Clear tags</button>
+            </div>
+          </div>
+          <div class="gallery-tag-explorer">
+            <button class="gallery-tag-toggle" type="button" aria-expanded="false"><span class="toggle-label">See all tags</span><span class="toggle-caret" aria-hidden="true"></span></button>
+            <div class="gallery-tag-strip" role="list" aria-label="Available tags" hidden></div>
+          </div>
+          <div class="gallery-grid" role="list"></div>
+          <div class="gallery-pagination" aria-live="polite">
+            <div class="pager-controls">
+              <button class="pager-button gallery-prev" type="button" disabled>Previous</button>
+              <span class="page-indicator">Page 1 of 1</span>
+              <button class="pager-button gallery-next" type="button" disabled>Next</button>
+            </div>
+            <div class="gallery-actions">
+              <span class="gallery-selection-status" aria-live="polite">Select an item to enable</span>
+              <button class="gallery-add-button" type="button" disabled>Add to Canvas</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="panel panel--gallery" data-panel="text" data-gallery-type="text" role="dialog" aria-modal="true" aria-label="Text panel">
+        <div class="panel__bar"><div class="panel__title">Text</div><button class="panel__close" data-close-panel aria-label="Close Text">✕</button></div>
+        <div class="panel__body panel__body--gallery">
+          <div class="gallery-search" role="search">
+            <div class="search-field" role="combobox" aria-haspopup="listbox" aria-expanded="false">
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input type="search" class="gallery-search-input" autocomplete="off" aria-autocomplete="list" aria-label="Search text presets" placeholder="Search text by name or #tag" />
+            </div>
+            <div class="gallery-suggestions" role="listbox" aria-label="Tag suggestions"></div>
+          </div>
+          <div class="gallery-active-row">
+            <div class="gallery-active-tags" aria-live="polite"></div>
+            <div class="gallery-tag-controls">
+              <label class="match-toggle"><input type="checkbox" class="gallery-match-toggle" /> <span>Match any tag (instead of all)</span></label>
+              <button class="gallery-clear-tags" type="button" disabled>Clear tags</button>
+            </div>
+          </div>
+          <div class="gallery-tag-explorer">
+            <button class="gallery-tag-toggle" type="button" aria-expanded="false"><span class="toggle-label">See all tags</span><span class="toggle-caret" aria-hidden="true"></span></button>
+            <div class="gallery-tag-strip" role="list" aria-label="Available tags" hidden></div>
+          </div>
+          <div class="gallery-grid" role="list"></div>
+          <div class="gallery-pagination" aria-live="polite">
+            <div class="pager-controls">
+              <button class="pager-button gallery-prev" type="button" disabled>Previous</button>
+              <span class="page-indicator">Page 1 of 1</span>
+              <button class="pager-button gallery-next" type="button" disabled>Next</button>
+            </div>
+            <div class="gallery-actions">
+              <span class="gallery-selection-status" aria-live="polite">Select an item to enable</span>
+              <button class="gallery-add-button" type="button" disabled>Add to Canvas</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="panel" data-panel="color" role="dialog" aria-modal="true" aria-label="Color panel">
+        <div class="panel__bar"><div class="panel__title">Color</div><button class="panel__close" data-close-panel aria-label="Close Color">✕</button></div>
+        <div class="panel__body"><h2>Color Picker</h2><p>Adjust primary, secondary and accent colors. Add swatches, palettes, and brand presets here.</p></div>
+      </section>
+      <section class="panel" data-panel="properties" role="dialog" aria-modal="true" aria-label="Properties panel">
+        <div class="panel__bar"><div class="panel__title">Properties</div><button class="panel__close" data-close-panel aria-label="Close Properties">✕</button></div>
+        <div class="panel__body"><h2>Object Properties</h2><p>Move, scale, rotate, align and more.</p></div>
+      </section>
+      <section class="panel" data-panel="layers" role="dialog" aria-modal="true" aria-label="Layers panel">
+        <div class="panel__bar"><div class="panel__title">Layers</div><button class="panel__close" data-close-panel aria-label="Close Layers">✕</button></div>
+        <div class="panel__body"><h2>Layers Manager</h2><p>Reorder, lock, hide, or group layers. Provide thumbnails and status indicators here.</p></div>
+      </section>
+    </div>
+
+    <!-- ================= HEADER ================= -->
+    <header role="banner" aria-label="Header with section selector and toolbars">
+      <!-- Row 1: Brand + Sections -->
+      <div class="header-row-top">
+        <div class="brand">
+          <div class="brand__logo" aria-hidden="true"></div>
+          <div class="brand__name">My App</div>
+        </div>
+        <nav class="header-tools" role="navigation" aria-label="Section selector">
+          <button class="tool is-active" type="button" data-section="explore" aria-label="Explore">
+            <span class="tool__icon" aria-hidden="true">
+              <!-- Compass icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M14.5 9.5l-2.8 6-6 2.8 2.8-6 6-2.8z"/>
+              </svg>
+            </span>
+            <span class="tool__label">Explore</span>
+          </button>
+
+          <button class="tool" type="button" data-section="customize" aria-label="Customize">
+            <span class="tool__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12M6 21h12M4 7h16M8 7v10M16 7v10M4 17h16"/>
+              </svg>
+            </span>
+            <span class="tool__label">Customize</span>
+          </button>
+
+          <button class="tool" type="button" data-section="order" aria-label="Order">
+            <span class="tool__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="20" r="1.6"/>
+                <circle cx="17" cy="20" r="1.6"/>
+                <path d="M3 4h2l2.5 11.5a2 0 0 0 2 1.5h7a2 0 0 0 2-1.5L21 8H7"/>
+              </svg>
+            </span>
+            <span class="tool__label">Order</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Row 2: Toolbar Headers (as BUTTONS, inert) -->
+      <div class="header-row-headers" role="region" aria-label="Section toolbar headers">
+        <div class="headers-deck">
+          <!-- Explore headers -->
+          <div class="headers-block" data-section="explore" aria-hidden="false">
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 1 / span 2;"><span class="tool__label">Start</span></button>
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 3 / span 4;"><span class="tool__label">Discover</span></button>
+          </div>
+          <!-- Customize headers -->
+          <div class="headers-block" data-section="customize" aria-hidden="true">
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 1 / span 3;"><span class="tool__label">Add</span></button>
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 4 / span 3;"><span class="tool__label">Adjust</span></button>
+          </div>
+          <!-- Order headers -->
+          <div class="headers-block" data-section="order" aria-hidden="true">
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 1 / span 2;"><span class="tool__label">Best Deals</span></button>
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 3 / span 3;"><span class="tool__label">External Stores</span></button>
+            <button class="tool" type="button" disabled aria-disabled="true" style="grid-column: 6 / span 1;"><span class="tool__label">Share</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Toolbars -->
+      <div class="header-row-toolbar" role="region" aria-label="Section toolbars">
+        <div class="toolbar-deck">
+          <!-- ===== EXPLORE ===== -->
+          <section class="toolbar-block" data-section="explore" aria-label="Explore toolbar">
+            <nav class="toolbar" data-section="explore" role="navigation" aria-label="Explore tools">
+              <button class="tool" type="button" title="Welcome" data-page="welcome">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Welcome</span>
+              </button>
+              <button class="tool" type="button" title="Design Guide" data-page="design-guide">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 4h7a4 4 0 0 1 4 4v12H7a4 4 0 0 0-4 4V4z" transform="translate(0 -4)"/>
+                    <path d="M21 4h-7a4 4 0 0 0-4 4v12h7a4 4 0 0 1 4 4V4z" transform="translate(0 -4)"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Design Guide</span>
+              </button>
+              <button class="tool" type="button" title="Featured" data-page="featured">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3l3.4 6.9 7.6 1.1-5.5 5.3 1.3 7.5L12 20l-6.8 3.6 1.3-7.5L1 11.1l7.6-1.2L12 3z"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Featured</span>
+              </button>
+              <button class="tool" type="button" title="Hot Picks" data-page="hot-picks">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2s4 3 4 7a4 4 0 0 1-8 0c0-4 4-7 4-7z"/>
+                    <path d="M8 13a4 4 0 1 0 8 0"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Hot Picks</span>
+              </button>
+              <button class="tool" type="button" title="Categories" data-page="categories">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                  </svg>
+                </span>
+                <span class="tool__label">Categories</span>
+              </button>
+              <button class="tool" type="button" title="All Products" data-page="all-products">
+                <span class="tool__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M3 15l9 5 9-5"/>
+                    <path d="M12 4v10"/>
+                  </svg>
+                </span>
+                <span class="tool__label">All Products</span>
+              </button>
+            </nav>
+          </section>
+
+          <!-- ===== CUSTOMIZE ===== -->
+          <section class="toolbar-block" data-section="customize" aria-label="Customize toolbar">
+            <nav class="toolbar" data-section="customize" role="navigation" aria-label="Customize tools">
+              <button class="tool" type="button" data-tool="designs"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 3h12M6 21h12M4 7h16M8 7v10M16 7v10M4 17h16"/></svg></span><span class="tool__label">Designs</span></button>
+              <button class="tool" type="button" data-tool="elements"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="8" height="8" rx="2"/><circle cx="17" cy="7" r="4"/><path d="M12 14l-4 7h8l-4-7Z"/></svg></span><span class="tool__label">Elements</span></button>
+              <button class="tool" type="button" data-tool="text"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 5h14M12 5v14"/></svg></span><span class="tool__label">Text</span></button>
+              <button class="tool" type="button" data-tool="color"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3a9 9 0 1 0 0 18h2a2.5 2.5 0 0 0 0-5h-1a3 3 0 0 1-3-3v-1a9 9 0 0 1 2-9Z"/>
+                  <circle cx="7.5" cy="10.5" r="1.2"/><circle cx="9.5" cy="6.8" r="1.2"/>
+                  <circle cx="14.5" cy="6.8" r="1.2"/><circle cx="16.5" cy="10.5" r="1.2"/></svg></span><span class="tool__label">Color</span></button>
+              <button class="tool" type="button" data-tool="properties"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21l3-1 12-12-2-2L4 18l-1 3z"/><path d="M14 4l2 2"/></svg></span><span class="tool__label">Properties</span></button>
+              <button class="tool" type="button" data-tool="layers"><span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M21 13l-9 5-9-5"/><path d="M21 17l-9 5-9-5"/></svg></span><span class="tool__label">Layers</span></button>
+            </nav>
+          </section>
+
+          <!-- ===== ORDER ===== -->
+          <section class="toolbar-block" data-section="order" aria-label="Order toolbar">
+            <nav class="toolbar" data-section="order" role="navigation" aria-label="Order tools">
+              <button class="tool" type="button" data-page="shop-1"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l2-5h14l2 5"/><path d="M4 9h16v10H4z"/><path d="M9 19v-6h6v6"/></svg></span><span class="tool__label">Shop 1</span></button>
+              <button class="tool" type="button" data-page="shop-2"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9h12l-1.5 11H7.5L6 9z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg></span><span class="tool__label">Shop 2</span></button>
+              <button class="tool" type="button" data-page="ebay"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13l-7 7-9-9 7-7 9 9z"/><circle cx="15.5" cy="8.5" r="1.2"/></svg></span><span class="tool__label">eBay</span></button>
+              <button class="tool" type="button" data-page="etsy"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 8h6M9 12h5M9 16h6"/></svg></span><span class="tool__label">Etsy</span></button>
+              <button class="tool" type="button" data-page="amazon"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/><path d="M3 5h3l2 10h9l2-7H7"/></svg></span><span class="tool__label">Amazon</span></button>
+              <button class="tool" type="button" data-page="share-link"><span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14l-2 2a4 4 0 0 1-6-6l2-2"/><path d="M14 10l2-2a4 4 0 0 1 6 6l-2 2"/><path d="M8 12h8"/></svg></span><span class="tool__label">Design Link</span></button>
+            </nav>
+          </section>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main role="main" aria-label="Content area">
+      <!-- View mode toolbar shows only in Customize -->
+      <div class="view-mode-toolbar" role="region" aria-label="View mode toolbar">
+        <nav class="toolbar" data-section="view" role="toolbar" aria-label="View & comparison">
+          <button class="tool" type="button" data-group="side" data-value="front" aria-pressed="true">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></span>
+            <span class="tool__label">Front</span>
+          </button>
+          <button class="tool" type="button" data-group="side" data-value="back" aria-pressed="false">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8v8H8z"/></svg></span>
+            <span class="tool__label">Back</span>
+          </button>
+          <button class="tool" type="button" data-group="mode" data-value="preview" aria-pressed="true">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+            <span class="tool__label">Full View</span>
+          </button>
+          <button class="tool" type="button" data-group="mode" data-value="edit" aria-pressed="false">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l3-1 12-12-2-2L4 18l-1 3z"/><path d="M14 4l2 2"/></svg></span>
+            <span class="tool__label">Edit View</span>
+          </button>
+          <button class="tool" type="button" data-toggle="frame" aria-pressed="true">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h8v8H8z"/></svg></span>
+            <span class="tool__label">Frame</span>
+          </button>
+          <button class="tool" type="button" data-toggle="design" aria-pressed="true">
+            <span class="tool__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l3.4 6.9 7.6 1.1-5.5 5.3 1.3 7.5L12 20l-6.8 3.6 1.3-7.5L1 11.1l7.6-1.2L12 3z"/></svg></span>
+            <span class="tool__label">Design</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Per-section page decks -->
+      <div class="content-deck">
+        <!-- ================= EXPLORE PAGES ================= -->
+        <section class="content-block" data-section="explore" aria-label="Explore pages">
+          <div class="empty-state" data-empty-for="explore">
+            <div class="empty-state-inner">
+              <h3>Explore</h3>
+              <p class="muted">Pick a tool above to load its page.</p>
+            </div>
+          </div>
+
+          
+<article class="content-page" data-page="welcome" aria-label="Welcome page">
+  <div class="welcome-demo">
+    <!-- HERO -->
+    <section class="section hero">
+      <div>
+        <h2>Welcome to the Designer</h2>
+        <p class="muted">Explore ideas, customize every detail, and order with confidence. This demo fills the page with varied content so we can test mobile scrolling and density.</p>
+        <div class="cta-row">
+          <button class="btn">Start Exploring</button>
+          <button class="btn secondary">See Templates</button>
+        </div>
+      </div>
+      <div class="ph-img is-tall" aria-label="Hero image placeholder"></div>
+    </section>
+
+    <!-- IMAGE GRID -->
+    <section class="section">
+      <h2>Gallery Highlights</h2>
+      <p class="muted">A responsive grid of graphic placeholders (no external images) to preview spacing and breakpoints.</p>
+      <div class="ph-grid">
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img is-wide"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section">
+      <h2>Why Use This Tool</h2>
+      <div class="features">
+        <div class="feature-card">
+          <h3>Live Preview</h3>
+          <p class="muted">Switch between <strong>Full View</strong> and <strong>Edit View</strong> to focus either on the entire product or your design area.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Layer Control</h3>
+          <p class="muted">Reorder graphics and text, lock layers, and toggle visibility to fine‑tune your composition.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Color System</h3>
+          <p class="muted">Experiment with palettes and brand presets. We keep contrast readable and accessible.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Smart Guides</h3>
+          <p class="muted">Snap and align with subtle guides so your layout stays clean.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Responsive Canvas</h3>
+          <p class="muted">The editor scales from phones to desktops, maintaining a consistent feel.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Export Ready</h3>
+          <p class="muted">Preview export bounds with the <em>Frame</em> toggle and avoid surprises at checkout.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section">
+      <h2>What People Say</h2>
+      <div class="testimonials">
+        <div class="quote">
+          <strong>Alex</strong>
+          <p class="muted">“Loved how fast I could try ideas—no lag, no clutter.”</p>
+        </div>
+        <div class="quote">
+          <strong>Riley</strong>
+          <p class="muted">“The color tools helped me stick to my brand palette.”</p>
+        </div>
+        <div class="quote">
+          <strong>Jordan</strong>
+          <p class="muted">“Layer management feels like a pro app, but simpler.”</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANS / TABLE -->
+    <section class="section plans">
+      <h2>Plans Comparison</h2>
+      <table class="table" role="table" aria-label="Plan comparison">
+        <thead>
+          <tr><th>Feature</th><th>Starter</th><th>Creator</th><th>Studio</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Uploads</td><td>5 / project</td><td>50 / project</td><td>Unlimited</td></tr>
+          <tr><td>Custom Fonts</td><td>—</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Team Library</td><td>—</td><td>—</td><td>✓</td></tr>
+          <tr><td>Export Formats</td><td>PNG</td><td>PNG, JPG</td><td>PNG, JPG, SVG</td></tr>
+          <tr><td>Priority Support</td><td>—</td><td>—</td><td>✓</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+      <h2>FAQ</h2>
+      <div class="faq">
+        <details>
+          <summary>How do I switch between Front and Back?</summary>
+          <p class="muted">Use the <em>Front/Back</em> toggle in the view toolbar within Customize.</p>
+        </details>
+        <details>
+          <summary>Can I hide the frame?</summary>
+          <p class="muted">Yes—toggle <em>Frame</em> in the view toolbar.</p>
+        </details>
+        <details>
+          <summary>Where are my templates?</summary>
+          <p class="muted">Open the <strong>Designs</strong> panel in Customize.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- LONG COPY (to force vertical overflow on phones) -->
+    <section class="section">
+      <h2>Design Notes</h2>
+      <div class="longcopy">
+        <p>Great custom products come from a steady rhythm: pick a base, layer graphics, refine color, and review the final frame. This page intentionally includes long text to confirm that the content area scrolls independently from the header.</p>
+        <p>On small screens, sections stack into a single column and images use aspect‑ratio boxes so that the layout remains stable as assets load. Spacing uses fluid clamp units to keep things comfortable without wasting room.</p>
+        <p>Typography favors system fonts for speed. Buttons share a consistent silhouette and rely on subtle gradients instead of heavy borders to fit the dark theme.</p>
+        <p>Try rotating your phone or resizing the window to watch the gallery shift from 1 → 2 → 3 columns. The comparison table keeps a minimum width and scrolls horizontally if needed.</p>
+        <p>We peppered the layout with enough content to ensure there’s meaningful scroll length—roughly the equivalent of several screens on a phone. If any area fails to scroll, we’ll know immediately.</p>
+      </div>
+    </section>
+
+    <!-- Extra filler to guarantee long scroll -->
+    <section class="section">
+      <h2>More Inspiration</h2>
+      <div class="ph-grid">
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+        <div class="ph-img"></div>
+      </div>
+    </section>
+  </div>
+</article>
+
+
+          <article class="content-page" data-page="design-guide" aria-label="Design Guide page">
+            <div class="card">
+              <h3>Design Guide</h3>
+              <p class="muted">Typography, spacing, and usage guidelines go here.</p>
+            </div>
+          </article>
+
+          <article class="content-page" data-page="featured" aria-label="Featured page">
+            <div class="card">
+              <h3>Featured</h3>
+              <p class="muted">Showcase your curated designs.</p>
+            </div>
+          </article>
+
+          <article class="content-page" data-page="hot-picks" aria-label="Hot Picks page">
+            <div class="card">
+              <h3>Hot Picks</h3>
+              <p class="muted">Trending products or designs.</p>
+            </div>
+          </article>
+
+          <article class="content-page" data-page="categories" aria-label="Categories page">
+            <div class="card">
+              <h3>Categories</h3>
+              <p class="muted">Grid of categories here.</p>
+            </div>
+          </article>
+
+          <article class="content-page" data-page="all-products" aria-label="All Products page">
+            <div class="card">
+              <h3>All Products</h3>
+              <p class="muted">Full catalog view.</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- ================= CUSTOMIZE PAGES ================= -->
+        <section class="content-block" data-section="customize" aria-label="Customize pages">
+          <article class="content-page is-active" data-page="editor" aria-label="Editor page">
+            <div class="editor-card">
+              <svg id="sceneSvg" class="scene-svg" viewBox="0 0 1155 1155" preserveAspectRatio="xMidYMid meet" aria-hidden="false">
+                <image id="raster"
+                       href="assets/img/products/product-preview_front.png"
+                       data-front-src="assets/img/products/product-preview_front.png"
+                       data-back-src="assets/img/products/product-preview_back.png"
+                       x="0" y="0" width="1155" height="1155" preserveAspectRatio="none" />
+                <g id="designOverlay" style="display:block;">
+                  <rect id="svg_canvas_area" x="361" y="180" width="440" height="583" fill="rgba(255,214,0,0.22)" stroke="none" stroke-width="2" vector-effect="non-scaling-stroke"  rx="0" ry="0"/>
+                </g>
+                <g id="frameOverlay" style="display:block;">
+                  <rect id="frameRectDesign" x="361" y="180" width="440" height="583" />
+                </g>
+              </svg>
+            </div>
+          </article>
+        </section>
+
+        <!-- ================= ORDER PAGES ================= -->
+        <section class="content-block" data-section="order" aria-label="Order pages">
+          <div class="empty-state" data-empty-for="order">
+            <div class="empty-state-inner">
+              <h3>Order</h3>
+              <p class="muted">Pick a shop above to load its page.</p>
+            </div>
+          </div>
+
+          <article class="content-page" data-page="shop-1" aria-label="Shop 1 page">
+            <div class="card"><h3>Shop 1</h3><p class="muted">Embed your store here.</p></div>
+          </article>
+          <article class="content-page" data-page="shop-2" aria-label="Shop 2 page">
+            <div class="card"><h3>Shop 2</h3><p class="muted">Another storefront placeholder.</p></div>
+          </article>
+          <article class="content-page" data-page="ebay" aria-label="eBay page">
+            <div class="card"><h3>eBay</h3><p class="muted">eBay integration view.</p></div>
+          </article>
+          <article class="content-page" data-page="etsy" aria-label="Etsy page">
+            <div class="card"><h3>Etsy</h3><p class="muted">Etsy listings.</p></div>
+          </article>
+          <article class="content-page" data-page="amazon" aria-label="Amazon page">
+            <div class="card"><h3>Amazon</h3><p class="muted">Amazon storefront.</p></div>
+          </article>
+          <article class="content-page" data-page="share-link" aria-label="Share link page">
+            <div class="card"><h3>Design Link</h3><p class="muted">Share a direct link to this design.</p></div>
+          </article>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <template id="gallery-item-template">
+    <button class="gallery-item" type="button">
+      <div class="gallery-item-preview" aria-hidden="true"></div>
+      <div class="gallery-item-meta">
+        <span class="gallery-name"></span>
+        <span class="gallery-tag-list"></span>
+      </div>
+    </button>
+  </template>
+
+  <!-- ================= APPLICATION SCRIPT ================= -->
+  <script src="app.js"></script>
+</body>
+</html>

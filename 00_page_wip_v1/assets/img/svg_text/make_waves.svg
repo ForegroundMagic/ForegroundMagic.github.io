@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160">
+  <rect width="320" height="160" rx="26" fill="#0f172a" />
+  <text x="160" y="96" font-family="'Satisfy', cursive" font-size="72" fill="#0ea5e9" text-anchor="middle">Make Waves</text>
+  <path d="M60 120 C90 104 120 136 150 120 C180 104 210 136 240 120" fill="none" stroke="#22d3ee" stroke-width="8" stroke-linecap="round" opacity="0.5" />
+</svg>

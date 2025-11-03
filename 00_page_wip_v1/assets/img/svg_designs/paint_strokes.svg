@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 220">
+  <path d="M20 60 C80 30 120 90 220 40" data-color-primary="true" fill="#ff8a65" opacity="0.85" />
+  <path d="M20 110 C70 80 130 150 220 90" fill="#ff7043" opacity="0.75" />
+  <path d="M20 160 C80 130 140 200 220 140" fill="#ffab91" opacity="0.8" />
+  <path d="M28 60 Q120 120 212 60" fill="none" stroke="#fff5f5" stroke-width="8" stroke-linecap="round" opacity="0.6" />
+  <path d="M28 110 Q120 170 212 110" fill="none" stroke="#ffe8e0" stroke-width="8" stroke-linecap="round" opacity="0.6" />
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <path d="M120 32 L204 76 V164 L120 208 L36 164 V76 Z" data-color-primary="true" fill="#2f6f4e" />
+  <path d="M120 56 L184 88 V152 L120 184 L56 152 V88 Z" fill="#3b7f5b" />
+  <path d="M120 84 L160 104 V148 L120 168 L80 148 V104 Z" fill="#d1fae5" opacity="0.8" />
+  <path d="M120 84 L132 120 H108 Z" fill="#2f6f4e" />
+  <path d="M120 104 L138 144 H102 Z" fill="#2f6f4e" opacity="0.85" />
+  <circle cx="120" cy="120" r="12" fill="#fef3c7" />
+</svg>

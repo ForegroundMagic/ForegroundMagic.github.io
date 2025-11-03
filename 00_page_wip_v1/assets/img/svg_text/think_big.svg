@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
+  <rect width="300" height="150" rx="20" fill="#111827" />
+  <text x="150" y="94" font-family="'Exo 2', sans-serif" font-size="68" font-weight="700" fill="#f97316" text-anchor="middle">Think Big</text>
+  <path d="M60 54 L90 34 L120 54" fill="none" stroke="#fb923c" stroke-width="6" stroke-linecap="round" opacity="0.5" />
+</svg>

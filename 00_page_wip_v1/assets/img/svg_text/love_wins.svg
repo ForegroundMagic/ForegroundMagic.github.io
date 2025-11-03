@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
+  <rect width="300" height="150" rx="24" fill="#fee2e2" />
+  <text x="150" y="96" font-family="'Dancing Script', cursive" font-size="68" fill="#fb7185" text-anchor="middle">Love Wins</text>
+  <path d="M60 76 C70 60 90 60 100 76" fill="none" stroke="#fca5a5" stroke-width="6" stroke-linecap="round" />
+</svg>
