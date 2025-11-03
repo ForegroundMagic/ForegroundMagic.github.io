@@ -20,23 +20,21 @@
       <section class="panel panel--gallery" data-panel="designs" data-gallery-type="design" role="dialog" aria-modal="true" aria-label="Designs panel">
         <div class="panel__bar"><div class="panel__title">Designs</div><button class="panel__close" data-close-panel aria-label="Close Designs">✕</button></div>
         <div class="panel__body panel__body--gallery">
-          <div class="gallery-search" role="search">
-            <div class="search-field" role="combobox" aria-haspopup="listbox" aria-expanded="false">
-              <span class="search-icon" aria-hidden="true">🔍</span>
-              <input type="search" class="gallery-search-input" autocomplete="off" aria-autocomplete="list" aria-label="Search designs by tag or name" placeholder="Search by tag or name" />
+          <div class="gallery-control-grid">
+            <div class="gallery-search" role="search">
+              <div class="search-field" role="combobox" aria-haspopup="listbox" aria-expanded="false">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="search" class="gallery-search-input" autocomplete="off" aria-autocomplete="list" aria-label="Search by name or #tag" placeholder="Search by name or #tag" />
+              </div>
+              <div class="gallery-suggestions" role="listbox" aria-label="Tag suggestions"></div>
             </div>
-            <div class="gallery-suggestions" role="listbox" aria-label="Tag suggestions"></div>
-          </div>
-          <div class="gallery-active-row">
+            <button class="gallery-control-button gallery-clear-tags" type="button" disabled>Clear tags</button>
             <div class="gallery-active-tags" aria-live="polite"></div>
-            <div class="gallery-tag-controls">
-              <label class="match-toggle"><input type="checkbox" class="gallery-match-toggle" /> <span>Match any tag (instead of all)</span></label>
-              <button class="gallery-clear-tags" type="button" disabled>Clear tags</button>
-            </div>
+            <button class="gallery-control-button gallery-match-mode" type="button" data-mode="all">Match All</button>
           </div>
           <div class="gallery-tag-explorer">
             <button class="gallery-tag-toggle" type="button" aria-expanded="false"><span class="toggle-label">See All tags</span><span class="toggle-caret" aria-hidden="true"></span></button>
-            <div class="gallery-tag-strip" role="list" aria-label="Available tags" hidden></div>
+            <div class="gallery-tag-strip" role="list" aria-label="Available tags" aria-hidden="true"></div>
           </div>
           <div class="gallery-results-shell">
             <div class="gallery-grid" role="list"></div>
@@ -57,23 +55,21 @@
       <section class="panel panel--gallery" data-panel="elements" data-gallery-type="element" role="dialog" aria-modal="true" aria-label="Elements panel">
         <div class="panel__bar"><div class="panel__title">Elements</div><button class="panel__close" data-close-panel aria-label="Close Elements">✕</button></div>
         <div class="panel__body panel__body--gallery">
-          <div class="gallery-search" role="search">
-            <div class="search-field" role="combobox" aria-haspopup="listbox" aria-expanded="false">
-              <span class="search-icon" aria-hidden="true">🔍</span>
-              <input type="search" class="gallery-search-input" autocomplete="off" aria-autocomplete="list" aria-label="Search elements by tag or name" placeholder="Search by tag or name" />
+          <div class="gallery-control-grid">
+            <div class="gallery-search" role="search">
+              <div class="search-field" role="combobox" aria-haspopup="listbox" aria-expanded="false">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="search" class="gallery-search-input" autocomplete="off" aria-autocomplete="list" aria-label="Search by name or #tag" placeholder="Search by name or #tag" />
+              </div>
+              <div class="gallery-suggestions" role="listbox" aria-label="Tag suggestions"></div>
             </div>
-            <div class="gallery-suggestions" role="listbox" aria-label="Tag suggestions"></div>
-          </div>
-          <div class="gallery-active-row">
+            <button class="gallery-control-button gallery-clear-tags" type="button" disabled>Clear tags</button>
             <div class="gallery-active-tags" aria-live="polite"></div>
-            <div class="gallery-tag-controls">
-              <label class="match-toggle"><input type="checkbox" class="gallery-match-toggle" /> <span>Match any tag (instead of all)</span></label>
-              <button class="gallery-clear-tags" type="button" disabled>Clear tags</button>
-            </div>
+            <button class="gallery-control-button gallery-match-mode" type="button" data-mode="all">Match All</button>
           </div>
           <div class="gallery-tag-explorer">
             <button class="gallery-tag-toggle" type="button" aria-expanded="false"><span class="toggle-label">See All tags</span><span class="toggle-caret" aria-hidden="true"></span></button>
-            <div class="gallery-tag-strip" role="list" aria-label="Available tags" hidden></div>
+            <div class="gallery-tag-strip" role="list" aria-label="Available tags" aria-hidden="true"></div>
           </div>
           <div class="gallery-results-shell">
             <div class="gallery-grid" role="list"></div>
@@ -94,23 +90,21 @@
       <section class="panel panel--gallery" data-panel="text" data-gallery-type="text" role="dialog" aria-modal="true" aria-label="Text panel">
         <div class="panel__bar"><div class="panel__title">Text</div><button class="panel__close" data-close-panel aria-label="Close Text">✕</button></div>
         <div class="panel__body panel__body--gallery">
-          <div class="gallery-search" role="search">
-            <div class="search-field" role="combobox" aria-haspopup="listbox" aria-expanded="false">
-              <span class="search-icon" aria-hidden="true">🔍</span>
-              <input type="search" class="gallery-search-input" autocomplete="off" aria-autocomplete="list" aria-label="Search text presets by tag or name" placeholder="Search by tag or name" />
+          <div class="gallery-control-grid">
+            <div class="gallery-search" role="search">
+              <div class="search-field" role="combobox" aria-haspopup="listbox" aria-expanded="false">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="search" class="gallery-search-input" autocomplete="off" aria-autocomplete="list" aria-label="Search by name or #tag" placeholder="Search by name or #tag" />
+              </div>
+              <div class="gallery-suggestions" role="listbox" aria-label="Tag suggestions"></div>
             </div>
-            <div class="gallery-suggestions" role="listbox" aria-label="Tag suggestions"></div>
-          </div>
-          <div class="gallery-active-row">
+            <button class="gallery-control-button gallery-clear-tags" type="button" disabled>Clear tags</button>
             <div class="gallery-active-tags" aria-live="polite"></div>
-            <div class="gallery-tag-controls">
-              <label class="match-toggle"><input type="checkbox" class="gallery-match-toggle" /> <span>Match any tag (instead of all)</span></label>
-              <button class="gallery-clear-tags" type="button" disabled>Clear tags</button>
-            </div>
+            <button class="gallery-control-button gallery-match-mode" type="button" data-mode="all">Match All</button>
           </div>
           <div class="gallery-tag-explorer">
             <button class="gallery-tag-toggle" type="button" aria-expanded="false"><span class="toggle-label">See All tags</span><span class="toggle-caret" aria-hidden="true"></span></button>
-            <div class="gallery-tag-strip" role="list" aria-label="Available tags" hidden></div>
+            <div class="gallery-tag-strip" role="list" aria-label="Available tags" aria-hidden="true"></div>
           </div>
           <div class="gallery-results-shell">
             <div class="gallery-grid" role="list"></div>
@@ -588,13 +582,13 @@
   </div>
 
   <template id="gallery-item-template">
-    <button class="gallery-item" type="button">
+    <div class="gallery-item" role="button" tabindex="0">
       <div class="gallery-item-preview" aria-hidden="true"></div>
       <div class="gallery-item-meta">
         <span class="gallery-name"></span>
-        <span class="gallery-tag-list"></span>
+        <div class="gallery-tag-list" role="list"></div>
       </div>
-    </button>
+    </div>
   </template>
 
   <!-- ================= APPLICATION SCRIPT ================= -->

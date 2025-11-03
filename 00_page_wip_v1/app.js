@@ -305,12 +305,13 @@ function createGalleryController(panel, type, templates, templateNode){
   const searchInput = panel.querySelector('.gallery-search-input');
   const suggestionsEl = panel.querySelector('.gallery-suggestions');
   const activeTagsEl = panel.querySelector('.gallery-active-tags');
-  const matchToggle = panel.querySelector('.gallery-match-toggle');
+  const matchModeButton = panel.querySelector('.gallery-match-mode');
   const clearTagsButton = panel.querySelector('.gallery-clear-tags');
   const tagExplorer = panel.querySelector('.gallery-tag-explorer');
   const tagToggleButton = panel.querySelector('.gallery-tag-toggle');
   const tagStrip = panel.querySelector('.gallery-tag-strip');
   const grid = panel.querySelector('.gallery-grid');
+  const panelBody = panel.querySelector('.panel__body--gallery');
   const prevButton = panel.querySelector('.gallery-prev');
   const nextButton = panel.querySelector('.gallery-next');
   const pageIndicator = panel.querySelector('.page-indicator');
@@ -353,6 +354,9 @@ function createGalleryController(panel, type, templates, templateNode){
     if(tagExplorer){
       tagExplorer.classList.toggle('is-expanded', state.tagsExpanded);
     }
+    if(panelBody){
+      panelBody.classList.toggle('tags-expanded', state.tagsExpanded);
+    }
     if(tagToggleButton){
       tagToggleButton.setAttribute('aria-expanded', state.tagsExpanded ? 'true' : 'false');
       const label = tagToggleButton.querySelector('.toggle-label');
@@ -361,10 +365,12 @@ function createGalleryController(panel, type, templates, templateNode){
       }
     }
     if(tagStrip){
+      tagStrip.setAttribute('aria-hidden', state.tagsExpanded ? 'false' : 'true');
       if(state.tagsExpanded){
-        tagStrip.removeAttribute('hidden');
-      }else{
-        tagStrip.setAttribute('hidden', '');
+        tagStrip.scrollTop = 0;
+        if(typeof tagStrip.scrollTo === 'function'){
+          tagStrip.scrollTo({ top: 0 });
+        }
       }
     }
   }
@@ -407,7 +413,7 @@ function createGalleryController(panel, type, templates, templateNode){
         button.classList.add('is-active');
         activeId = optionId;
       }
-      button.innerHTML = `<span>#${tag}</span><span class="pill">Add tag</span>`;
+      button.innerHTML = `<span>${tag}</span><span class="pill">Add tag</span>`;
       button.addEventListener('mousedown', (event) => {
         event.preventDefault();
         addTag(tag);
@@ -469,8 +475,11 @@ function createGalleryController(panel, type, templates, templateNode){
     if(clearTagsButton){
       clearTagsButton.disabled = state.selectedTags.size === 0;
     }
-    if(matchToggle){
-      matchToggle.checked = state.matchAny;
+    if(matchModeButton){
+      matchModeButton.dataset.mode = state.matchAny ? 'any' : 'all';
+      matchModeButton.textContent = state.matchAny ? 'Match Any' : 'Match All';
+      matchModeButton.classList.toggle('is-any', state.matchAny);
+      matchModeButton.setAttribute('aria-pressed', state.matchAny ? 'true' : 'false');
     }
   }
 
@@ -511,7 +520,7 @@ function createGalleryController(panel, type, templates, templateNode){
       button.type = 'button';
       button.className = 'tag-pill';
       button.dataset.tag = tag;
-      button.textContent = `#${tag}`;
+      button.textContent = tag;
       tagStrip.appendChild(button);
     });
     updateTagSelectionClasses();
@@ -534,7 +543,7 @@ function createGalleryController(panel, type, templates, templateNode){
       chip.className = 'active-tag';
       chip.dataset.tag = tag;
       chip.setAttribute('aria-label', `Remove tag ${tag}`);
-      chip.textContent = `#${tag}`;
+      chip.textContent = tag;
       activeTagsEl.appendChild(chip);
     });
     updateControls();
@@ -563,10 +572,45 @@ function createGalleryController(panel, type, templates, templateNode){
       const nameEl = clone.querySelector('.gallery-name');
       const tagEl = clone.querySelector('.gallery-tag-list');
       if(nameEl) nameEl.textContent = template.name;
-      if(tagEl) tagEl.textContent = template.tags.map(tag => `#${tag}`).join(' ');
+      if(tagEl){
+        tagEl.innerHTML = '';
+        if(Array.isArray(template.tags) && template.tags.length){
+          tagEl.setAttribute('role', 'list');
+          template.tags.forEach(tag => {
+            const wrapper = document.createElement('span');
+            wrapper.setAttribute('role', 'listitem');
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'gallery-tag-chip';
+            chip.dataset.tag = tag;
+            chip.textContent = tag;
+            chip.addEventListener('click', (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              addTag(tag);
+            });
+            chip.addEventListener('keydown', (event) => {
+              if(event.key === 'Enter' || event.key === ' '){
+                event.preventDefault();
+                addTag(tag);
+              }
+            });
+            wrapper.appendChild(chip);
+            tagEl.appendChild(wrapper);
+          });
+        }else{
+          tagEl.removeAttribute('role');
+        }
+      }
       const preview = clone.querySelector('.gallery-item-preview');
       template.renderPreview(preview);
       clone.addEventListener('click', () => selectTemplate(template, clone));
+      clone.addEventListener('keydown', (event) => {
+        if(event.key === 'Enter' || event.key === ' '){
+          event.preventDefault();
+          selectTemplate(template, clone);
+        }
+      });
       if(activeKey && template.key === activeKey){
         clone.classList.add('active');
         selectionFound = true;
@@ -588,6 +632,12 @@ function createGalleryController(panel, type, templates, templateNode){
     if(nextButton) nextButton.disabled = state.page >= pageCount;
     if(pageIndicator) pageIndicator.textContent = `Page ${state.page} of ${pageCount}`;
     renderGalleryList();
+    if(grid){
+      grid.scrollTop = 0;
+      if(typeof grid.scrollTo === 'function'){
+        grid.scrollTo({ top: 0, behavior: 'auto' });
+      }
+    }
   }
 
   function applyGalleryFilters(){
@@ -716,10 +766,11 @@ function createGalleryController(panel, type, templates, templateNode){
     });
   }
 
-  if(matchToggle){
-    matchToggle.addEventListener('change', () => {
-      state.matchAny = matchToggle.checked;
+  if(matchModeButton){
+    matchModeButton.addEventListener('click', () => {
+      state.matchAny = !state.matchAny;
       state.page = 1;
+      updateControls();
       applyGalleryFilters();
     });
   }
@@ -776,9 +827,9 @@ function createGalleryController(panel, type, templates, templateNode){
       setTagsExpanded(false);
       updateControls();
       if(searchInput){
-        const label = type === 'design' ? 'designs' : type === 'element' ? 'elements' : 'text';
         searchInput.value = '';
-        searchInput.placeholder = `Search ${label} by name or #tag`;
+        searchInput.placeholder = 'Search by name or #tag';
+        searchInput.setAttribute('aria-label', 'Search by name or #tag');
       }
       renderTags();
       renderActiveTags();
