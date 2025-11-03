@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <circle cx="120" cy="120" r="84" data-color-primary="true" fill="#ef6c9c" />
+  <g fill="#fde2e9">
+    <path d="M120 36 C136 60 152 80 180 88 C152 96 136 116 120 140 C104 116 88 96 60 88 C88 80 104 60 120 36 Z" />
+    <path d="M204 120 C180 136 160 152 152 180 C144 152 124 136 100 120 C124 104 144 88 152 60 C160 88 180 104 204 120 Z" />
+    <path d="M120 204 C104 180 88 160 60 152 C88 144 104 124 120 100 C136 124 152 144 180 152 C152 160 136 180 120 204 Z" />
+    <path d="M36 120 C60 104 80 88 88 60 C96 88 116 104 140 120 C116 136 96 152 88 180 C80 152 60 136 36 120 Z" />
+  </g>
+  <circle cx="120" cy="120" r="32" fill="#fff" opacity="0.85" />
+  <circle cx="120" cy="120" r="16" fill="#f9a8d4" />
+  <g fill="none" stroke="#fdf2f8" stroke-width="6" stroke-linecap="round" opacity="0.65">
+    <path d="M120 52 V36" />
+    <path d="M120 188 V204" />
+    <path d="M52 120 H36" />
+    <path d="M188 120 H204" />
+  </g>
+</svg>
