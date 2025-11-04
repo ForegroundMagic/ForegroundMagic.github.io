@@ -124,15 +124,121 @@
       </section>
       <section class="panel" data-panel="color" role="dialog" aria-modal="true" aria-label="Color panel">
         <div class="panel__bar"><div class="panel__title">Color</div><button class="panel__close" data-close-panel aria-label="Close Color">✕</button></div>
-        <div class="panel__body"><h2>Color Picker</h2><p>Adjust primary, secondary and accent colors. Add swatches, palettes, and brand presets here.</p></div>
+        <div class="panel__body panel__body--color">
+          <div class="color-panel" role="form">
+            <div class="color-panel__header">
+              <h3 class="color-panel__title" id="colorPanelTitle">Color Controls</h3>
+              <p class="color-panel__subtitle" id="colorPanelSubtitle">Select a layer to edit its color.</p>
+            </div>
+            <div class="color-panel__controls" aria-live="polite">
+              <label class="color-input" for="layerColorInput">
+                <span>Layer color</span>
+                <input type="color" id="layerColorInput" value="#ffffff" />
+              </label>
+              <div class="color-swatches" aria-label="Quick color swatches">
+                <button type="button" class="color-swatch" data-color="#ffffff" aria-label="White"></button>
+                <button type="button" class="color-swatch" data-color="#222831" aria-label="Charcoal"></button>
+                <button type="button" class="color-swatch" data-color="#f97316" aria-label="Orange"></button>
+                <button type="button" class="color-swatch" data-color="#22d3ee" aria-label="Cyan"></button>
+                <button type="button" class="color-swatch" data-color="#a855f7" aria-label="Purple"></button>
+                <button type="button" class="color-swatch" data-color="#22c55e" aria-label="Green"></button>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       <section class="panel" data-panel="properties" role="dialog" aria-modal="true" aria-label="Properties panel">
         <div class="panel__bar"><div class="panel__title">Properties</div><button class="panel__close" data-close-panel aria-label="Close Properties">✕</button></div>
-        <div class="panel__body"><h2>Object Properties</h2><p>Move, scale, rotate, align and more.</p></div>
+        <div class="panel__body panel__body--properties" role="form">
+          <div class="properties-section" aria-live="polite">
+            <label class="property-field">
+              <span>Name</span>
+              <input type="text" id="propName" autocomplete="off" />
+            </label>
+            <div class="properties-grid">
+              <div class="property-control" data-property="x">
+                <span id="propXLabel" class="property-control__label">X Position</span>
+                <div class="property-control__inputs">
+                  <input type="range" id="propXSlider" min="-1000" max="1000" step="1" value="0" aria-labelledby="propXLabel" />
+                  <input type="number" id="propX" min="-1000" max="1000" step="1" value="0" aria-labelledby="propXLabel" />
+                </div>
+              </div>
+              <div class="property-control" data-property="y">
+                <span id="propYLabel" class="property-control__label">Y Position</span>
+                <div class="property-control__inputs">
+                  <input type="range" id="propYSlider" min="-1000" max="1000" step="1" value="0" aria-labelledby="propYLabel" />
+                  <input type="number" id="propY" min="-1000" max="1000" step="1" value="0" aria-labelledby="propYLabel" />
+                </div>
+              </div>
+              <div class="property-control" data-property="scale">
+                <span id="propScaleLabel" class="property-control__label">Scale</span>
+                <div class="property-control__inputs">
+                  <input type="range" id="propScaleSlider" min="1" max="1000" step="1" value="100" aria-labelledby="propScaleLabel" />
+                  <input type="number" id="propScale" min="1" max="1000" step="1" value="100" aria-labelledby="propScaleLabel" />
+                </div>
+              </div>
+              <div class="property-control" data-property="rotation">
+                <span id="propRotationLabel" class="property-control__label">Angle</span>
+                <div class="property-control__inputs">
+                  <input type="range" id="propRotationSlider" min="0" max="360" step="1" value="0" aria-labelledby="propRotationLabel" />
+                  <input type="number" id="propRotation" min="0" max="360" step="1" value="0" aria-labelledby="propRotationLabel" />
+                </div>
+              </div>
+            </div>
+            <fieldset id="textProperties" class="text-properties" aria-live="polite" hidden>
+              <legend>Text Styling</legend>
+              <label>
+                <span>Content</span>
+                <textarea id="propText" rows="2"></textarea>
+              </label>
+              <label>
+                <span>Font Family</span>
+                <select id="propFont">
+                  <option value="'Montserrat', sans-serif">Montserrat</option>
+                  <option value="'Roboto', sans-serif">Roboto</option>
+                  <option value="'Poppins', sans-serif">Poppins</option>
+                  <option value="'Oswald', sans-serif">Oswald</option>
+                  <option value="'Pacifico', cursive">Pacifico</option>
+                  <option value="'Great Vibes', cursive">Great Vibes</option>
+                  <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
+                </select>
+              </label>
+              <label>
+                <span>Font Size</span>
+                <input type="number" id="propFontSize" min="8" max="160" step="1" />
+              </label>
+              <div class="text-toggle-row">
+                <label class="checkbox">
+                  <input type="checkbox" id="propBold" />
+                  <span>Bold</span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" id="propItalic" />
+                  <span>Italic</span>
+                </label>
+              </div>
+            </fieldset>
+            <p class="properties-empty" id="propertiesEmpty">Select a layer to adjust its properties.</p>
+          </div>
+        </div>
       </section>
       <section class="panel" data-panel="layers" role="dialog" aria-modal="true" aria-label="Layers panel">
-        <div class="panel__bar"><div class="panel__title">Layers</div><button class="panel__close" data-close-panel aria-label="Close Layers">✕</button></div>
-        <div class="panel__body"><h2>Layers Manager</h2><p>Reorder, lock, hide, or group layers. Provide thumbnails and status indicators here.</p></div>
+        <div class="panel__bar">
+          <div class="panel__title">
+            Layers <span class="layers-count" id="layerCount">(0/9 max)</span>
+          </div>
+          <div class="panel__bar-actions">
+            <button class="panel__toggle" id="layersExpandToggle" type="button" aria-expanded="false" aria-label="Expand layers panel">
+              <span class="panel__toggle-icon" aria-hidden="true"></span>
+            </button>
+            <button class="panel__close" data-close-panel aria-label="Close Layers">✕</button>
+          </div>
+        </div>
+        <div class="panel__body panel__body--layers">
+          <div class="layers-body">
+            <ul class="layer-list" id="layerList" role="list" aria-label="Layer stack"></ul>
+          </div>
+        </div>
       </section>
     </div>
 
@@ -533,18 +639,27 @@
           <article class="content-page is-active" data-page="editor" aria-label="Editor page">
             <div class="editor-card">
               <svg id="sceneSvg" class="scene-svg" viewBox="0 0 1155 1155" preserveAspectRatio="xMidYMid meet" aria-hidden="false">
+                <rect id="productColorOverlay" x="0" y="0" width="1155" height="1155" fill="#ffffff" />
                 <image id="raster"
                        href="assets/img/products/product-preview_front.png"
                        data-front-src="assets/img/products/product-preview_front.png"
                        data-back-src="assets/img/products/product-preview_back.png"
                        x="0" y="0" width="1155" height="1155" preserveAspectRatio="none" />
                 <g id="designOverlay" style="display:block;">
-                  <rect id="svg_canvas_area" x="361" y="180" width="440" height="583" fill="rgba(255,214,0,0.22)" stroke="none" stroke-width="2" vector-effect="non-scaling-stroke"  rx="0" ry="0"/>
+                  <g id="designLayers" aria-label="Design layers"></g>
                 </g>
                 <g id="frameOverlay" style="display:block;">
                   <rect id="frameRectDesign" x="361" y="180" width="440" height="583" />
                 </g>
               </svg>
+              <div id="selectionOverlay" class="selection-overlay" hidden>
+                <div class="selection-frame" id="selectionFrame"></div>
+                <div class="selection-handle handle-tl" data-handle="scale" aria-hidden="true"></div>
+                <div class="selection-handle handle-tr" data-handle="scale" aria-hidden="true"></div>
+                <div class="selection-handle handle-br" data-handle="scale" aria-hidden="true"></div>
+                <div class="selection-handle handle-bl" data-handle="scale" aria-hidden="true"></div>
+                <div class="selection-rotate" data-handle="rotate" aria-hidden="true"></div>
+              </div>
             </div>
           </article>
         </section>

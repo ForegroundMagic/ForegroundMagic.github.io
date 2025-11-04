@@ -40,7 +40,11 @@ function makeExclusiveWithin(container, groupName){
     buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
     updatePreviewLock();
     updateEditViewBox();
-    if(groupName === 'side'){ applyImageForSide(btn.getAttribute('data-value')); }
+    updateSelectionOverlay();
+    if(groupName === 'side'){
+      applyImageForSide(btn.getAttribute('data-value'));
+      updateSelectionOverlay();
+    }
   }));
 }
 function wireToggles(container){
@@ -137,6 +141,20 @@ function openPanel(name){
   if(controller){
     controller.open();
   }
+  if(name === 'properties'){
+    updatePropertiesPanel();
+  }
+  if(name === 'color'){
+    if(layerState.activeLayerId){
+      colorPanelTargetId = layerState.activeLayerId;
+    }
+    updateColorPanel();
+  }
+  if(name === 'layers'){
+    updateLayersPanelCollapsedHeight();
+    setLayersPanelExpanded(false);
+    refreshLayerList();
+  }
 }
 function closePanel(){
   document.documentElement.setAttribute('data-open-panel', '');
@@ -144,6 +162,7 @@ function closePanel(){
     const b = getCustomizeButtonByName(n);
     if(b) b.setAttribute('aria-pressed', 'false');
   });
+  setLayersPanelExpanded(false);
 }
 if(customizeToolbar){
   customizeToolbar.querySelectorAll('.tool[data-tool]').forEach(btn => {
@@ -167,6 +186,92 @@ document.querySelectorAll('[data-close-panel]').forEach(b => b.addEventListener(
    ============================================================ */
 const GALLERY_PAGE_SIZE = 10;
 const svgCache = new Map();
+const svgNS = 'http://www.w3.org/2000/svg';
+const DESIGN_BOUNDS = { x: 361, y: 180, width: 440, height: 583 };
+const DESIGN_CENTER = {
+  x: DESIGN_BOUNDS.x + DESIGN_BOUNDS.width / 2,
+  y: DESIGN_BOUNDS.y + DESIGN_BOUNDS.height / 2
+};
+const MIN_SCALE = 0.01;
+const MAX_SCALE = 10;
+const MAX_LAYER_SLOTS = 9;
+
+const dropdownPanelsEl = document.querySelector('.dropdown-panels');
+const designLayersGroup = document.getElementById('designLayers');
+const productColorOverlay = document.getElementById('productColorOverlay');
+const layerListEl = document.getElementById('layerList');
+const layerCountEl = document.getElementById('layerCount');
+const layersPanelEl = document.querySelector('.panel[data-panel="layers"]');
+const layersExpandToggle = document.getElementById('layersExpandToggle');
+const layerColorInput = document.getElementById('layerColorInput');
+const colorPanelSubtitle = document.getElementById('colorPanelSubtitle');
+const colorSwatches = Array.from(document.querySelectorAll('.color-swatch'));
+const selectionOverlay = document.getElementById('selectionOverlay');
+const selectionFrame = document.getElementById('selectionFrame');
+const selectionHandles = Array.from(document.querySelectorAll('.selection-handle'));
+const selectionRotateHandle = document.querySelector('.selection-rotate');
+const sceneSvg = document.getElementById('sceneSvg');
+const designAreaRect = document.getElementById('frameRectDesign');
+
+const propertyInputs = {
+  name: document.getElementById('propName'),
+  x: document.getElementById('propX'),
+  y: document.getElementById('propY'),
+  scale: document.getElementById('propScale'),
+  rotation: document.getElementById('propRotation'),
+  text: document.getElementById('propText'),
+  font: document.getElementById('propFont'),
+  fontSize: document.getElementById('propFontSize'),
+  bold: document.getElementById('propBold'),
+  italic: document.getElementById('propItalic')
+};
+
+const propertySliders = {
+  x: document.getElementById('propXSlider'),
+  y: document.getElementById('propYSlider'),
+  scale: document.getElementById('propScaleSlider'),
+  rotation: document.getElementById('propRotationSlider')
+};
+
+const PROPERTY_LIMITS = {
+  x: { min: -1000, max: 1000 },
+  y: { min: -1000, max: 1000 },
+  scale: { min: 1, max: 1000 },
+  rotation: { min: 0, max: 360 }
+};
+
+const PROPERTY_DEFAULTS = {
+  x: 0,
+  y: 0,
+  scale: 100,
+  rotation: 0
+};
+
+const textPropertiesFieldset = document.getElementById('textProperties');
+const propertiesEmptyEl = document.getElementById('propertiesEmpty');
+
+const layerState = {
+  layers: [],
+  activeLayerId: null,
+  counters: { Design: 0, Element: 0, Text: 0 },
+  baseLayerId: 'layer-0',
+  idCounter: 1,
+  pendingSlot: null
+};
+
+let colorPanelTargetId = null;
+let layersPanelExpanded = false;
+
+const interactionState = {
+  type: null,
+  pointerId: null,
+  startPointer: null,
+  startLayer: null
+};
+
+const colorCanvas = document.createElement('canvas');
+colorCanvas.width = colorCanvas.height = 1;
+const colorCtx = colorCanvas.getContext('2d');
 
 async function fetchSvg(assetPath){
   if(!assetPath) throw new Error('Asset path is required to load an SVG.');
@@ -231,6 +336,25 @@ function createSvgTemplate(type, config){
         fallback.textContent = 'Preview unavailable';
         container.appendChild(fallback);
       }
+    },
+    async createContent(container){
+      if(!container) return { colorElement: null };
+      const svg = await fetchSvg(assetPath);
+      const instance = svg.cloneNode(true);
+      instance.removeAttribute('id');
+      instance.setAttribute('width', width);
+      instance.setAttribute('height', height);
+      if(!instance.getAttribute('viewBox')){
+        instance.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      }
+      instance.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      container.appendChild(instance);
+      const colorTarget = instance.querySelector(`[${colorAttribute}]`) ||
+        instance.querySelector('path, rect, circle, ellipse, polygon, polyline, line');
+      if(colorTarget && (baseColor || accentColor)){
+        colorTarget.setAttribute(colorAttribute, baseColor || accentColor);
+      }
+      return { colorElement: colorTarget };
     }
   };
 }
@@ -490,11 +614,24 @@ function createGalleryController(panel, type, templates, templateNode){
   }
 
   function updateAddButton(){
-    const enabled = Boolean(state.activeTemplate);
+    const hasSelection = Boolean(state.activeTemplate);
+    const limitReached = !canAddMoreLayers();
+    const enabled = hasSelection && !limitReached;
     if(addButton){
       addButton.disabled = !enabled;
+      if(limitReached){
+        addButton.setAttribute('aria-disabled', 'true');
+        addButton.title = 'Layer limit reached (9 max)';
+      }else{
+        addButton.removeAttribute('aria-disabled');
+        addButton.removeAttribute('title');
+      }
     }
-    updateStatus(enabled ? `${state.activeTemplate.name} selected` : 'Select an item to enable');
+    if(limitReached){
+      updateStatus('Layer limit reached (9 max)');
+    }else{
+      updateStatus(hasSelection ? `${state.activeTemplate.name} selected` : 'Select an item to enable');
+    }
   }
 
   function updateTagSelectionClasses(){
@@ -808,11 +945,33 @@ function createGalleryController(panel, type, templates, templateNode){
   }
 
   if(addButton){
-    addButton.addEventListener('click', () => {
+    addButton.addEventListener('click', async () => {
       if(!state.activeTemplate) return;
-      updateStatus(`${state.activeTemplate.name} added to canvas (demo)`);
+      const previousLabel = addButton.textContent;
+      addButton.disabled = true;
+      addButton.textContent = 'Adding…';
+      try{
+        const layer = await addTemplateToCanvas(state.activeTemplate);
+        if(layer){
+          updateStatus(`${state.activeTemplate.name} added to canvas`);
+          closePanel();
+        }
+      }catch(error){
+        console.error('Failed to add template to canvas', error);
+        const message = typeof error?.message === 'string' && error.message.includes('Layer limit')
+          ? 'Layer limit reached (9 max)'
+          : 'Unable to add to canvas';
+        updateStatus(message);
+      }finally{
+        addButton.disabled = false;
+        addButton.textContent = previousLabel;
+      }
     });
   }
+
+  document.addEventListener('layers:count-changed', () => {
+    updateAddButton();
+  });
 
   return {
     open(){
@@ -837,6 +996,1085 @@ function createGalleryController(panel, type, templates, templateNode){
       updateAddButton();
     }
   };
+}
+
+/* ============================================================
+   LAYER STATE + MANAGEMENT
+   ============================================================ */
+
+function clamp(value, min, max){
+  return Math.min(Math.max(value, min), max);
+}
+
+function toHexColor(value){
+  if(!colorCtx) return value || '#ffffff';
+  try{
+    colorCtx.clearRect(0, 0, 1, 1);
+    colorCtx.fillStyle = value || '#ffffff';
+    return colorCtx.fillStyle || '#ffffff';
+  }catch(error){
+    console.warn('Color conversion failed', error);
+    return '#ffffff';
+  }
+}
+
+function getDesignLayers(){
+  return layerState.layers.filter(layer => !layer.isBase);
+}
+
+function getDesignLayerCount(){
+  return getDesignLayers().length;
+}
+
+function canAddMoreLayers(){
+  return getDesignLayerCount() < MAX_LAYER_SLOTS;
+}
+
+function updateLayerCountDisplay(){
+  if(!layerCountEl) return;
+  const used = getDesignLayerCount();
+  layerCountEl.textContent = `(${used}/${MAX_LAYER_SLOTS} max)`;
+  document.dispatchEvent(new CustomEvent('layers:count-changed', {
+    detail: { used, max: MAX_LAYER_SLOTS }
+  }));
+}
+
+function updateLayersPanelCollapsedHeight(){
+  if(!layersPanelEl) return;
+  let available = 320;
+  if(viewToolbarEl && dropdownPanelsEl){
+    const toolbarRect = viewToolbarEl.getBoundingClientRect();
+    const panelsRect = dropdownPanelsEl.getBoundingClientRect();
+    const delta = toolbarRect.bottom - panelsRect.top - 16;
+    if(Number.isFinite(delta)){
+      available = Math.max(260, delta);
+    }
+  }
+  layersPanelEl.style.setProperty('--layers-collapsed-max', `${Math.round(available)}px`);
+}
+
+function setLayersPanelExpanded(expanded){
+  if(!layersPanelEl) return;
+  layersPanelExpanded = !!expanded;
+  layersPanelEl.classList.toggle('is-expanded', layersPanelExpanded);
+  if(layersExpandToggle){
+    layersExpandToggle.setAttribute('aria-expanded', String(layersPanelExpanded));
+    layersExpandToggle.setAttribute('aria-label', layersPanelExpanded ? 'Collapse layers panel' : 'Expand layers panel');
+  }
+}
+
+function createLayerId(){
+  const id = `layer-${layerState.idCounter++}`;
+  return id;
+}
+
+function getLayerById(id){
+  if(!id) return null;
+  return layerState.layers.find(layer => layer.id === id) || null;
+}
+
+function generateLayerName(type){
+  layerState.counters[type] = (layerState.counters[type] || 0) + 1;
+  return `${type}-${layerState.counters[type]}`;
+}
+
+function ensureBaseLayer(){
+  if(layerState.layers.length) return;
+  const baseLayer = {
+    id: layerState.baseLayerId,
+    name: 'Product Base',
+    type: 'Product',
+    isBase: true,
+    colorAttribute: 'fill',
+    colorElement: productColorOverlay || null,
+    fill: productColorOverlay ? productColorOverlay.getAttribute('fill') || '#ffffff' : '#ffffff'
+  };
+  layerState.layers.push(baseLayer);
+  layerState.activeLayerId = baseLayer.id;
+}
+
+function syncLayerDomOrder(){
+  if(!designLayersGroup) return;
+  const fragment = document.createDocumentFragment();
+  layerState.layers.forEach(layer => {
+    if(layer.isBase || !layer.group) return;
+    fragment.appendChild(layer.group);
+  });
+  designLayersGroup.appendChild(fragment);
+}
+
+function updateLayerTransform(layer){
+  if(!layer || layer.isBase || !layer.group) return;
+  layer.group.setAttribute('transform', `translate(${layer.cx} ${layer.cy}) rotate(${layer.rotation}) scale(${layer.scale})`);
+}
+
+function getSvgPoint(clientX, clientY){
+  if(!sceneSvg || typeof sceneSvg.createSVGPoint !== 'function'){
+    return { x: DESIGN_CENTER.x, y: DESIGN_CENTER.y };
+  }
+  const point = sceneSvg.createSVGPoint();
+  point.x = clientX;
+  point.y = clientY;
+  const ctm = sceneSvg.getScreenCTM();
+  if(!ctm){
+    return { x: DESIGN_CENTER.x, y: DESIGN_CENTER.y };
+  }
+  const transformed = point.matrixTransform(ctm.inverse());
+  return { x: transformed.x, y: transformed.y };
+}
+
+function getDesignPointer(event){
+  const raw = getSvgPoint(event.clientX, event.clientY);
+  return {
+    x: raw.x,
+    y: raw.y
+  };
+}
+
+function updatePropertyInputsFromLayer(layer){
+  if(!layer || layer.isBase) return;
+  writePropertyValue('x', Math.round(layer.cx - DESIGN_CENTER.x));
+  writePropertyValue('y', Math.round(layer.cy - DESIGN_CENTER.y));
+  writePropertyValue('scale', Math.round(layer.scale * 100));
+  writePropertyValue('rotation', Math.round(layer.rotation));
+}
+
+function updateActiveLayerHighlight(){
+  const activeId = layerState.activeLayerId;
+  layerState.layers.forEach(layer => {
+    if(!layer || !layer.group) return;
+    const isActive = layer.id === activeId;
+    layer.group.classList.toggle('is-active', isActive);
+    layer.group.setAttribute('aria-selected', String(isActive));
+  });
+}
+
+function updateSelectionOverlay(){
+  if(!selectionOverlay || !sceneSvg || !designAreaRect){
+    return;
+  }
+  const activeSection = document.documentElement.getAttribute('data-active-section');
+  if(activeSection !== 'customize' || !isEditActive()){
+    selectionOverlay.hidden = true;
+    return;
+  }
+  const layer = getActiveLayer();
+  if(!layer || layer.isBase){
+    selectionOverlay.hidden = true;
+    return;
+  }
+
+  const areaRect = designAreaRect.getBoundingClientRect();
+  const containerRect = sceneSvg.getBoundingClientRect();
+  if(areaRect.width === 0 || areaRect.height === 0){
+    selectionOverlay.hidden = true;
+    return;
+  }
+  const scaleX = areaRect.width / DESIGN_BOUNDS.width;
+  const scaleY = areaRect.height / DESIGN_BOUNDS.height;
+  const widthPx = layer.width * layer.scale * scaleX;
+  const heightPx = layer.height * layer.scale * scaleY;
+  const centerX = areaRect.left + (layer.cx - DESIGN_BOUNDS.x) * scaleX;
+  const centerY = areaRect.top + (layer.cy - DESIGN_BOUNDS.y) * scaleY;
+
+  selectionOverlay.hidden = false;
+  selectionOverlay.style.width = `${widthPx}px`;
+  selectionOverlay.style.height = `${heightPx}px`;
+  selectionOverlay.style.left = `${centerX - containerRect.left - widthPx / 2}px`;
+  selectionOverlay.style.top = `${centerY - containerRect.top - heightPx / 2}px`;
+  selectionOverlay.style.transformOrigin = 'center center';
+  selectionOverlay.style.transform = `rotate(${layer.rotation}deg)`;
+
+  if(selectionFrame){
+    selectionFrame.style.borderRadius = layer.type === 'Text' ? '8px' : '12px';
+  }
+}
+
+function startLayerInteraction(type, event){
+  if(!isEditActive()) return;
+  if(document.documentElement.getAttribute('data-active-section') !== 'customize') return;
+  const layer = getActiveLayer();
+  if(!layer || layer.isBase) return;
+  event.preventDefault();
+  event.stopPropagation();
+  const pointer = getDesignPointer(event);
+  interactionState.type = type;
+  interactionState.pointerId = event.pointerId;
+  interactionState.startPointer = pointer;
+  interactionState.startLayer = { cx: layer.cx, cy: layer.cy, scale: layer.scale, rotation: layer.rotation };
+  if(sceneSvg && typeof sceneSvg.setPointerCapture === 'function'){
+    try{
+      sceneSvg.setPointerCapture(event.pointerId);
+    }catch(error){
+      console.warn('Pointer capture failed', error);
+    }
+  }
+}
+
+function endLayerInteraction(event){
+  if(!interactionState.type) return;
+  if(event && interactionState.pointerId !== null && event.pointerId !== interactionState.pointerId){
+    return;
+  }
+  if(sceneSvg && interactionState.pointerId !== null && typeof sceneSvg.releasePointerCapture === 'function'){
+    try{
+      sceneSvg.releasePointerCapture(interactionState.pointerId);
+    }catch(error){
+      // ignore release errors
+    }
+  }
+  interactionState.type = null;
+  interactionState.pointerId = null;
+  interactionState.startPointer = null;
+  interactionState.startLayer = null;
+  updateSelectionOverlay();
+  updatePropertiesPanel();
+}
+
+function updateLayerInteraction(event){
+  if(!interactionState.type) return;
+  if(interactionState.pointerId !== null && event.pointerId !== interactionState.pointerId) return;
+  const layer = getActiveLayer();
+  if(!layer || layer.isBase) return;
+  const pointer = getDesignPointer(event);
+  const startPointer = interactionState.startPointer;
+  const startLayer = interactionState.startLayer;
+  if(!startPointer || !startLayer) return;
+
+  if(interactionState.type === 'move'){
+    const dx = pointer.x - startPointer.x;
+    const dy = pointer.y - startPointer.y;
+    const xLimits = getAxisAbsoluteLimits('x');
+    const yLimits = getAxisAbsoluteLimits('y');
+    const nextCx = startLayer.cx + dx;
+    const nextCy = startLayer.cy + dy;
+    layer.cx = xLimits ? clamp(nextCx, xLimits.min, xLimits.max) : nextCx;
+    layer.cy = yLimits ? clamp(nextCy, yLimits.min, yLimits.max) : nextCy;
+  }else if(interactionState.type === 'scale'){
+    const center = { x: startLayer.cx, y: startLayer.cy };
+    const startDistance = Math.hypot(startPointer.x - center.x, startPointer.y - center.y) || 1;
+    const currentDistance = Math.hypot(pointer.x - center.x, pointer.y - center.y) || 1;
+    const ratio = currentDistance / startDistance;
+    layer.scale = clamp(startLayer.scale * ratio, MIN_SCALE, MAX_SCALE);
+  }else if(interactionState.type === 'rotate'){
+    const center = { x: startLayer.cx, y: startLayer.cy };
+    const startAngle = Math.atan2(startPointer.y - center.y, startPointer.x - center.x);
+    const currentAngle = Math.atan2(pointer.y - center.y, pointer.x - center.x);
+    const delta = (currentAngle - startAngle) * (180 / Math.PI);
+    const rotation = startLayer.rotation + delta;
+    layer.rotation = ((rotation % 360) + 360) % 360;
+  }
+
+  updateLayerTransform(layer);
+  updateSelectionOverlay();
+  updatePropertyInputsFromLayer(layer);
+  updateColorPanel();
+}
+function renameLayer(layer){
+  if(!layer || layer.isBase) return;
+  if(typeof window === 'undefined' || typeof window.prompt !== 'function') return;
+  const currentName = layer.name || '';
+  const result = window.prompt('Rename layer', currentName);
+  if(result === null) return;
+  const trimmed = result.trim();
+  if(!trimmed || trimmed === currentName) return;
+  layer.name = trimmed;
+  const active = getActiveLayer();
+  if(active && active.id === layer.id && propertyInputs.name){
+    propertyInputs.name.value = trimmed;
+  }
+  refreshLayerList();
+  updateColorPanel();
+}
+
+function refreshLayerList(){
+  if(!layerListEl) return;
+  layerListEl.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+
+  updateLayerCountDisplay();
+
+  const baseLayer = layerState.layers.find(layer => layer.isBase) || null;
+  const designLayers = getDesignLayers();
+  const visibleLayers = designLayers.slice(-MAX_LAYER_SLOTS).reverse();
+
+  function createIndexElement(label){
+    const badge = document.createElement('div');
+    badge.className = 'layer-index';
+    badge.textContent = label;
+    return badge;
+  }
+
+  function iconMarkup(name){
+    switch(name){
+      case 'properties':
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l3-1 12-12-2-2L4 18l-1 3z"/><path d="M14 4l2 2"/></svg>';
+      case 'color':
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18h2a2.5 2.5 0 0 0 0-5h-1a3 3 0 0 1-3-3v-1a9 9 0 0 1 2-9Z"/><circle cx="7.5" cy="10.5" r="1.2"/><circle cx="9.5" cy="6.8" r="1.2"/><circle cx="14.5" cy="6.8" r="1.2"/><circle cx="16.5" cy="10.5" r="1.2"/></svg>';
+      case 'up':
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l-5 5"/><path d="M12 5l5 5"/><path d="M12 5v14"/></svg>';
+      case 'down':
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-5-5"/><path d="M12 19l5-5"/><path d="M12 5v14"/></svg>';
+      case 'delete':
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12"/><path d="M6 18L18 6"/></svg>';
+      default:
+        return '';
+    }
+  }
+
+  function createContentShell(nameText, options = {}){
+    const { renameable = false } = options;
+    const content = document.createElement('div');
+    content.className = 'layer-content';
+    const header = document.createElement('div');
+    header.className = 'layer-header';
+    let nameElement;
+    if(renameable){
+      nameElement = document.createElement('button');
+      nameElement.type = 'button';
+      nameElement.className = 'layer-name-button';
+      nameElement.textContent = nameText;
+      nameElement.setAttribute('aria-label', `Rename ${nameText}`);
+    }else{
+      nameElement = document.createElement('div');
+      nameElement.className = 'layer-name-label';
+      nameElement.textContent = nameText;
+    }
+    header.appendChild(nameElement);
+    const actions = document.createElement('div');
+    actions.className = 'layer-actions';
+    content.append(header, actions);
+    return { content, actions, nameElement };
+  }
+
+  function createActionButton(className, iconName, ariaLabel){
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `layer-action ${className}`;
+    if(ariaLabel){
+      button.setAttribute('aria-label', ariaLabel);
+      button.title = ariaLabel;
+    }
+    const iconWrapper = document.createElement('span');
+    iconWrapper.className = 'layer-action-icon';
+    iconWrapper.innerHTML = iconMarkup(iconName);
+    button.appendChild(iconWrapper);
+    return button;
+  }
+
+  function appendPlaceholder(actions){
+    const placeholder = document.createElement('span');
+    placeholder.className = 'layer-action-placeholder';
+    placeholder.setAttribute('aria-hidden', 'true');
+    actions.appendChild(placeholder);
+  }
+
+  if(baseLayer){
+    const row = document.createElement('li');
+    row.className = 'layer-row';
+    row.dataset.layerId = baseLayer.id;
+    row.dataset.layerType = baseLayer.type;
+    row.dataset.layerSlot = 'base';
+    if(baseLayer.id === layerState.activeLayerId){
+      row.classList.add('is-active');
+    }
+    row.appendChild(createIndexElement('10'));
+    const { content, actions } = createContentShell(baseLayer.name);
+
+    appendPlaceholder(actions);
+
+    const colorBtn = createActionButton('layer-color', 'color', 'Edit base color');
+    colorBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setActiveLayer(baseLayer.id);
+      setColorTarget(baseLayer.id);
+      openPanel('color');
+    });
+    actions.appendChild(colorBtn);
+
+    appendPlaceholder(actions);
+    appendPlaceholder(actions);
+    appendPlaceholder(actions);
+
+    row.appendChild(content);
+    row.addEventListener('click', () => setActiveLayer(baseLayer.id));
+    fragment.appendChild(row);
+  }
+
+  for(let slot = 0; slot < MAX_LAYER_SLOTS; slot += 1){
+    const layer = visibleLayers[slot] || null;
+    const slotNumber = slot + 1;
+    const row = document.createElement('li');
+    row.className = 'layer-row';
+    row.dataset.layerSlot = String(slotNumber);
+    row.appendChild(createIndexElement(String(slotNumber)));
+
+    if(layer){
+      row.dataset.layerId = layer.id;
+      row.dataset.layerType = layer.type;
+      row.title = `${layer.name} (${layer.type})`;
+      if(layer.id === layerState.activeLayerId){
+        row.classList.add('is-active');
+      }
+
+      const { content, actions, nameElement } = createContentShell(layer.name, { renameable: true });
+      if(nameElement){
+        nameElement.textContent = layer.name;
+        nameElement.setAttribute('aria-label', `Rename ${layer.name}`);
+        nameElement.addEventListener('click', (event) => {
+          event.stopPropagation();
+          renameLayer(layer);
+        });
+      }
+
+      const propertiesBtn = createActionButton('layer-properties', 'properties', 'Edit properties');
+      propertiesBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        setActiveLayer(layer.id, { openProperties: true });
+      });
+      actions.appendChild(propertiesBtn);
+
+      const colorBtn = createActionButton('layer-color', 'color', 'Edit layer color');
+      colorBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        setActiveLayer(layer.id);
+        setColorTarget(layer.id);
+        openPanel('color');
+      });
+      actions.appendChild(colorBtn);
+
+      const moveUp = createActionButton('layer-move layer-move-up', 'up', 'Move layer forward');
+      moveUp.addEventListener('click', (event) => {
+        event.stopPropagation();
+        moveLayer(layer.id, 1);
+      });
+      const moveDown = createActionButton('layer-move layer-move-down', 'down', 'Move layer backward');
+      moveDown.addEventListener('click', (event) => {
+        event.stopPropagation();
+        moveLayer(layer.id, -1);
+      });
+      const designIndex = designLayers.indexOf(layer);
+      moveUp.disabled = designIndex === designLayers.length - 1;
+      moveDown.disabled = designIndex === 0;
+      actions.appendChild(moveUp);
+      actions.appendChild(moveDown);
+
+      const deleteBtn = createActionButton('layer-delete', 'delete', 'Remove layer');
+      deleteBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        deleteLayer(layer.id);
+      });
+      actions.appendChild(deleteBtn);
+
+      row.appendChild(content);
+      row.addEventListener('click', () => setActiveLayer(layer.id));
+    }else{
+      row.classList.add('is-empty');
+      row.dataset.layerType = 'Empty';
+      const { content, actions } = createContentShell('Empty slot');
+      actions.classList.add('is-empty');
+      const addGroup = document.createElement('div');
+      addGroup.className = 'layer-add-group';
+
+      function createAddButton(label, panelName){
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'layer-add';
+        btn.textContent = `+ ${label}`;
+        btn.setAttribute('aria-label', `Add ${label} to slot ${slotNumber}`);
+        if(!canAddMoreLayers()){
+          btn.disabled = true;
+          btn.setAttribute('aria-disabled', 'true');
+          btn.title = 'Layer limit reached (9 max)';
+        }
+        btn.addEventListener('click', (event) => {
+          event.stopPropagation();
+          layerState.pendingSlot = slotNumber;
+          openPanel(panelName);
+        });
+        return btn;
+      }
+
+      addGroup.append(
+        createAddButton('Design', 'designs'),
+        createAddButton('Element', 'elements'),
+        createAddButton('Text', 'text')
+      );
+
+      actions.appendChild(addGroup);
+      row.appendChild(content);
+      row.addEventListener('click', () => {
+        layerState.pendingSlot = slotNumber;
+      });
+    }
+
+    fragment.appendChild(row);
+  }
+
+  layerListEl.appendChild(fragment);
+  syncLayerDomOrder();
+  updateSelectionOverlay();
+  updateActiveLayerHighlight();
+}
+
+function getActiveLayer(){
+  return getLayerById(layerState.activeLayerId);
+}
+
+function setActiveLayer(id, options = {}){
+  const layer = getLayerById(id);
+  if(layer){
+    layerState.activeLayerId = layer.id;
+    colorPanelTargetId = layer.id;
+  }
+  refreshLayerList();
+  updatePropertiesPanel();
+  updateColorPanel();
+  if(layer && layer.group && typeof layer.group.focus === 'function'){
+    try{
+      layer.group.focus({ preventScroll: true });
+    }catch(error){
+      layer.group.focus();
+    }
+  }
+  if(options.openProperties){
+    openPanel('properties');
+  }
+}
+
+function setColorTarget(id){
+  if(!id) return;
+  const layer = getLayerById(id);
+  if(layer){
+    colorPanelTargetId = layer.id;
+  }
+}
+
+function clampPropertyValue(key, value){
+  const limits = PROPERTY_LIMITS[key];
+  if(!limits) return value;
+  return clamp(value, limits.min, limits.max);
+}
+
+function getAxisAbsoluteLimits(axis){
+  const limits = PROPERTY_LIMITS[axis];
+  if(!limits) return null;
+  const center = axis === 'x' ? DESIGN_CENTER.x : DESIGN_CENTER.y;
+  return {
+    min: center + limits.min,
+    max: center + limits.max
+  };
+}
+
+function writePropertyValue(key, value, options = {}){
+  if(typeof value === 'undefined' || value === null) return;
+  let numeric = Number(value);
+  if(Number.isNaN(numeric)) return;
+  if(!options.skipClamp){
+    numeric = clampPropertyValue(key, numeric);
+  }
+  numeric = Math.round(numeric);
+  const slider = propertySliders[key];
+  if(slider && !options.fromSlider){
+    slider.value = String(numeric);
+  }
+  const input = propertyInputs[key];
+  if(input && !options.fromInput){
+    input.value = String(numeric);
+  }
+}
+
+function resetPropertyControls(){
+  Object.entries(PROPERTY_DEFAULTS).forEach(([key, defaultValue]) => {
+    writePropertyValue(key, defaultValue, { skipClamp: true });
+  });
+}
+
+function updatePropertiesPanel(){
+  if(!propertyInputs.name) return;
+  const layer = getActiveLayer();
+  const hasLayer = !!layer && !layer.isBase;
+
+  Object.entries(propertyInputs).forEach(([key, input]) => {
+    if(!input) return;
+    if(key === 'name'){
+      input.disabled = !layer || !!(layer && layer.isBase);
+    }else{
+      input.disabled = !hasLayer;
+    }
+  });
+
+  Object.values(propertySliders).forEach(slider => {
+    if(!slider) return;
+    slider.disabled = !hasLayer;
+  });
+
+  if(propertiesEmptyEl){
+    if(!layer){
+      propertiesEmptyEl.hidden = false;
+      propertiesEmptyEl.textContent = 'Select a layer to adjust its properties.';
+    }else if(layer.isBase){
+      propertiesEmptyEl.hidden = false;
+      propertiesEmptyEl.textContent = 'Product Base cannot be transformed. Use the Color panel to adjust its color.';
+    }else{
+      propertiesEmptyEl.hidden = true;
+    }
+  }
+
+  if(!layer){
+    if(textPropertiesFieldset){
+      textPropertiesFieldset.hidden = true;
+      textPropertiesFieldset.querySelectorAll('input, textarea, select').forEach(el => {
+        el.disabled = true;
+      });
+    }
+    if(propertyInputs.name) propertyInputs.name.value = '';
+    if(propertyInputs.text) propertyInputs.text.value = '';
+    resetPropertyControls();
+    return;
+  }
+
+  if(propertyInputs.name) propertyInputs.name.value = layer.name;
+
+  const isTextLayer = layer.type === 'Text';
+  if(textPropertiesFieldset){
+    const showTextControls = !layer.isBase && isTextLayer;
+    textPropertiesFieldset.hidden = !showTextControls;
+    textPropertiesFieldset.querySelectorAll('input, textarea, select').forEach(el => {
+      el.disabled = !showTextControls;
+    });
+  }
+
+  if(layer.isBase){
+    resetPropertyControls();
+    if(propertyInputs.text) propertyInputs.text.value = '';
+    return;
+  }
+
+  const offsetX = Math.round(layer.cx - DESIGN_CENTER.x);
+  const offsetY = Math.round(layer.cy - DESIGN_CENTER.y);
+  writePropertyValue('x', offsetX);
+  writePropertyValue('y', offsetY);
+  writePropertyValue('scale', Math.round(layer.scale * 100));
+  writePropertyValue('rotation', Math.round(layer.rotation));
+
+  if(isTextLayer){
+    if(propertyInputs.text) propertyInputs.text.value = layer.text || '';
+    if(propertyInputs.font) propertyInputs.font.value = layer.fontFamily || propertyInputs.font.value;
+    if(propertyInputs.fontSize) propertyInputs.fontSize.value = Math.round(layer.fontSize || 48);
+    if(propertyInputs.bold) propertyInputs.bold.checked = (layer.fontWeight || 400) >= 600;
+    if(propertyInputs.italic) propertyInputs.italic.checked = (layer.fontStyle || 'normal') === 'italic';
+  }else{
+    if(propertyInputs.text) propertyInputs.text.value = '';
+  }
+}
+
+function getColorTargetLayer(){
+  const activeTarget = getLayerById(colorPanelTargetId);
+  if(activeTarget) return activeTarget;
+  return getActiveLayer();
+}
+
+function updateColorPanel(){
+  if(!layerColorInput) return;
+  const layer = getColorTargetLayer();
+  const hasLayer = !!layer;
+  layerColorInput.disabled = !hasLayer;
+  if(!hasLayer){
+    if(colorPanelSubtitle) colorPanelSubtitle.textContent = 'Select a layer to edit its color.';
+    return;
+  }
+  if(colorPanelSubtitle) colorPanelSubtitle.textContent = `Editing ${layer.name}`;
+  const current = toHexColor(layer.fill || '#ffffff');
+  layerColorInput.value = current;
+}
+
+function applyLayerColor(layer, color){
+  if(!layer) return;
+  const normalized = toHexColor(color);
+  layer.fill = normalized;
+  if(layer.isBase){
+    if(productColorOverlay){
+      productColorOverlay.setAttribute('fill', normalized);
+    }
+    return;
+  }
+
+  if(layer.type === 'Text' && layer.textElement){
+    layer.textElement.setAttribute('fill', normalized);
+    return;
+  }
+
+  const target = layer.colorElement || (layer.inner ? layer.inner.querySelector('*') : null);
+  if(target){
+    target.setAttribute(layer.colorAttribute || 'fill', normalized);
+    layer.colorElement = target;
+  }
+}
+
+async function createLayerFromTemplate(template){
+  if(!template || !designLayersGroup) return null;
+  if(!canAddMoreLayers()){
+    layerState.pendingSlot = null;
+    throw new Error('Layer limit reached');
+  }
+  const id = createLayerId();
+  const outer = document.createElementNS(svgNS, 'g');
+  outer.classList.add('layer');
+  outer.dataset.layerId = id;
+  outer.dataset.layerType = template.type;
+  outer.setAttribute('tabindex', '0');
+
+  const inner = document.createElementNS(svgNS, 'g');
+  inner.classList.add('layer-inner');
+  inner.setAttribute('transform', `translate(${-template.width / 2} ${-template.height / 2})`);
+  outer.appendChild(inner);
+
+  let colorElement = null;
+
+  if(template.type === 'Text'){
+    const textEl = document.createElementNS(svgNS, 'text');
+    textEl.setAttribute('x', template.width / 2);
+    textEl.setAttribute('y', template.height / 2);
+    textEl.setAttribute('text-anchor', 'middle');
+    textEl.setAttribute('dominant-baseline', 'middle');
+    textEl.setAttribute('font-family', template.fontFamily || "'Montserrat', sans-serif");
+    textEl.setAttribute('font-size', template.fontSize || 48);
+    textEl.setAttribute('font-weight', template.fontWeight || 600);
+    textEl.setAttribute('font-style', template.fontStyle || 'normal');
+    textEl.setAttribute('fill', template.fill || '#ffffff');
+    textEl.textContent = template.text || 'Text';
+    inner.appendChild(textEl);
+    colorElement = textEl;
+  }else{
+    try{
+      const result = await template.createContent(inner);
+      colorElement = result?.colorElement || null;
+    }catch(error){
+      console.error('Failed to create SVG content', error);
+      return null;
+    }
+  }
+
+  designLayersGroup.appendChild(outer);
+
+  const layer = {
+    id,
+    name: generateLayerName(template.type),
+    type: template.type,
+    group: outer,
+    inner,
+    width: template.width,
+    height: template.height,
+    cx: DESIGN_CENTER.x,
+    cy: DESIGN_CENTER.y,
+    scale: 1,
+    rotation: 0,
+    colorAttribute: template.colorAttribute || 'fill',
+    colorElement,
+    fill: template.fill || template.baseColor || '#ffffff'
+  };
+
+  if(template.type === 'Text'){
+    layer.text = template.text || '';
+    layer.fontFamily = template.fontFamily || "'Montserrat', sans-serif";
+    layer.fontSize = template.fontSize || 48;
+    layer.fontWeight = template.fontWeight || 600;
+    layer.fontStyle = template.fontStyle || 'normal';
+    layer.textElement = colorElement;
+  }
+
+  if(colorElement && !template.baseColor && !template.fill && !template.accentColor){
+    const attr = layer.colorAttribute || 'fill';
+    const attrValue = colorElement.getAttribute(attr) || '#ffffff';
+    layer.fill = toHexColor(attrValue);
+  }
+
+  if(colorElement){
+    colorElement.setAttribute(layer.colorAttribute || 'fill', layer.fill);
+  }
+
+  const designLayers = getDesignLayers();
+  let insertIndex = layerState.layers.length;
+  if(typeof layerState.pendingSlot === 'number'){
+    const slotPosition = Math.max(0, Math.min(MAX_LAYER_SLOTS - 1, layerState.pendingSlot - 1));
+    const currentLength = designLayers.length;
+    const indexFromBottom = clamp(currentLength - slotPosition, 0, currentLength);
+    insertIndex = 1 + indexFromBottom;
+  }
+  layerState.pendingSlot = null;
+  layerState.layers.splice(insertIndex, 0, layer);
+  layerState.activeLayerId = layer.id;
+  updateLayerTransform(layer);
+  refreshLayerList();
+  return layer;
+}
+
+function moveLayer(id, direction){
+  const index = layerState.layers.findIndex(layer => layer.id === id);
+  if(index <= 0) return; // base layer is index 0
+  const targetIndex = index + direction;
+  if(targetIndex <= 0 || targetIndex >= layerState.layers.length) return;
+  const [layer] = layerState.layers.splice(index, 1);
+  layerState.layers.splice(targetIndex, 0, layer);
+  refreshLayerList();
+  updateSelectionOverlay();
+}
+
+function deleteLayer(id){
+  const layer = getLayerById(id);
+  if(!layer || layer.isBase) return;
+  if(layer.group && layer.group.parentNode){
+    layer.group.parentNode.removeChild(layer.group);
+  }
+  const index = layerState.layers.findIndex(l => l.id === id);
+  if(index >= 0){
+    layerState.layers.splice(index, 1);
+  }
+  if(layerState.activeLayerId === id){
+    const fallback = layerState.layers[layerState.layers.length - 1] || null;
+    layerState.activeLayerId = fallback ? fallback.id : null;
+  }
+  if(colorPanelTargetId === id){
+    colorPanelTargetId = layerState.activeLayerId;
+  }
+  refreshLayerList();
+  updatePropertiesPanel();
+  updateColorPanel();
+  updateSelectionOverlay();
+}
+
+async function addTemplateToCanvas(template){
+  if(!canAddMoreLayers()){
+    throw new Error('Layer limit reached');
+  }
+  const layer = await createLayerFromTemplate(template);
+  if(layer){
+    setActiveLayer(layer.id);
+    setColorTarget(layer.id);
+  }
+  return layer;
+}
+
+function handleNameChange(){
+  const layer = getActiveLayer();
+  if(!layer || layer.isBase || !propertyInputs.name) return;
+  const next = propertyInputs.name.value.trim();
+  if(!next) return;
+  layer.name = next;
+  refreshLayerList();
+  updateColorPanel();
+}
+
+function applyOffset(axis, rawValue){
+  const layer = getActiveLayer();
+  if(!layer || layer.isBase) return;
+  const value = Number(rawValue);
+  if(Number.isNaN(value)) return;
+  const limits = PROPERTY_LIMITS[axis] || null;
+  const clampedOffset = limits ? clamp(value, limits.min, limits.max) : value;
+  if(axis === 'x'){
+    layer.cx = DESIGN_CENTER.x + clampedOffset;
+  }else{
+    layer.cy = DESIGN_CENTER.y + clampedOffset;
+  }
+  updateLayerTransform(layer);
+  updateSelectionOverlay();
+  updatePropertyInputsFromLayer(layer);
+}
+
+function applyScale(rawValue){
+  const layer = getActiveLayer();
+  if(!layer || layer.isBase) return;
+  const value = Number(rawValue);
+  if(Number.isNaN(value)) return;
+  const limits = PROPERTY_LIMITS.scale;
+  const clamped = limits ? clamp(value, limits.min, limits.max) : value;
+  layer.scale = clamp(clamped / 100, MIN_SCALE, MAX_SCALE);
+  updateLayerTransform(layer);
+  updateSelectionOverlay();
+  updatePropertyInputsFromLayer(layer);
+}
+
+function applyRotation(rawValue){
+  const layer = getActiveLayer();
+  if(!layer || layer.isBase) return;
+  const value = Number(rawValue);
+  if(Number.isNaN(value)) return;
+  const normalized = ((value % 360) + 360) % 360;
+  const limits = PROPERTY_LIMITS.rotation;
+  const clamped = limits ? clamp(normalized, limits.min, limits.max) : normalized;
+  layer.rotation = clamped;
+  updateLayerTransform(layer);
+  updateSelectionOverlay();
+  updatePropertyInputsFromLayer(layer);
+}
+
+function applyTextProperties(updates){
+  const layer = getActiveLayer();
+  if(!layer || layer.type !== 'Text' || !layer.textElement) return;
+  if(typeof updates.text === 'string'){
+    layer.text = updates.text;
+    layer.textElement.textContent = updates.text;
+  }
+  if(typeof updates.fontFamily === 'string'){
+    layer.fontFamily = updates.fontFamily;
+    layer.textElement.setAttribute('font-family', updates.fontFamily);
+  }
+  if(typeof updates.fontSize === 'number' && !Number.isNaN(updates.fontSize)){
+    layer.fontSize = updates.fontSize;
+    layer.textElement.setAttribute('font-size', updates.fontSize);
+  }
+  if(typeof updates.fontWeight !== 'undefined'){
+    layer.fontWeight = updates.fontWeight;
+    layer.textElement.setAttribute('font-weight', updates.fontWeight);
+  }
+  if(typeof updates.fontStyle === 'string'){
+    layer.fontStyle = updates.fontStyle;
+    layer.textElement.setAttribute('font-style', updates.fontStyle);
+  }
+}
+
+if(propertyInputs.name){
+  propertyInputs.name.addEventListener('change', handleNameChange);
+}
+
+if(propertyInputs.x){
+  propertyInputs.x.addEventListener('change', () => applyOffset('x', propertyInputs.x.value));
+}
+
+if(propertySliders.x){
+  propertySliders.x.addEventListener('input', () => applyOffset('x', propertySliders.x.value));
+}
+
+if(propertyInputs.y){
+  propertyInputs.y.addEventListener('change', () => applyOffset('y', propertyInputs.y.value));
+}
+
+if(propertySliders.y){
+  propertySliders.y.addEventListener('input', () => applyOffset('y', propertySliders.y.value));
+}
+
+if(propertyInputs.scale){
+  propertyInputs.scale.addEventListener('change', () => applyScale(propertyInputs.scale.value));
+}
+
+if(propertySliders.scale){
+  propertySliders.scale.addEventListener('input', () => applyScale(propertySliders.scale.value));
+}
+
+if(propertyInputs.rotation){
+  propertyInputs.rotation.addEventListener('change', () => applyRotation(propertyInputs.rotation.value));
+}
+
+if(propertySliders.rotation){
+  propertySliders.rotation.addEventListener('input', () => applyRotation(propertySliders.rotation.value));
+}
+
+if(propertyInputs.text){
+  propertyInputs.text.addEventListener('input', () => applyTextProperties({ text: propertyInputs.text.value }));
+}
+
+if(propertyInputs.font){
+  propertyInputs.font.addEventListener('change', () => applyTextProperties({ fontFamily: propertyInputs.font.value }));
+}
+
+if(propertyInputs.fontSize){
+  propertyInputs.fontSize.addEventListener('change', () => applyTextProperties({ fontSize: Number(propertyInputs.fontSize.value) }));
+}
+
+if(propertyInputs.bold){
+  propertyInputs.bold.addEventListener('change', () => applyTextProperties({ fontWeight: propertyInputs.bold.checked ? 700 : 400 }));
+}
+
+if(propertyInputs.italic){
+  propertyInputs.italic.addEventListener('change', () => applyTextProperties({ fontStyle: propertyInputs.italic.checked ? 'italic' : 'normal' }));
+}
+
+if(layerColorInput){
+  layerColorInput.addEventListener('input', () => {
+    const layer = getColorTargetLayer();
+    if(!layer) return;
+    applyLayerColor(layer, layerColorInput.value);
+  });
+}
+
+colorSwatches.forEach(btn => {
+  const color = btn.getAttribute('data-color');
+  if(color){
+    btn.style.setProperty('--swatch-color', color);
+    btn.addEventListener('click', () => {
+      const layer = getColorTargetLayer();
+      if(!layer) return;
+      applyLayerColor(layer, color);
+      if(layerColorInput){
+        layerColorInput.value = toHexColor(color);
+      }
+      updateColorPanel();
+    });
+  }
+});
+
+if(selectionFrame){
+  selectionFrame.addEventListener('pointerdown', (event) => {
+    if(!isEditActive()) return;
+    startLayerInteraction('move', event);
+  });
+}
+
+selectionHandles.forEach(handle => {
+  handle.addEventListener('pointerdown', (event) => {
+    if(!isEditActive()) return;
+    startLayerInteraction('scale', event);
+  });
+});
+
+if(selectionRotateHandle){
+  selectionRotateHandle.addEventListener('pointerdown', (event) => {
+    if(!isEditActive()) return;
+    startLayerInteraction('rotate', event);
+  });
+}
+
+if(layersExpandToggle){
+  layersExpandToggle.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setLayersPanelExpanded(!layersPanelExpanded);
+  });
+}
+
+if(sceneSvg){
+  sceneSvg.addEventListener('pointermove', updateLayerInteraction);
+  sceneSvg.addEventListener('pointerup', endLayerInteraction);
+  sceneSvg.addEventListener('pointercancel', endLayerInteraction);
+  sceneSvg.addEventListener('pointerleave', (event) => {
+    if(interactionState.type === 'move'){
+      endLayerInteraction(event);
+    }
+  });
+}
+
+window.addEventListener('resize', () => {
+  updateSelectionOverlay();
+  updateLayersPanelCollapsedHeight();
+});
+
+updateLayersPanelCollapsedHeight();
+setLayersPanelExpanded(false);
+
+if(designLayersGroup){
+  designLayersGroup.addEventListener('pointerdown', (event) => {
+    const group = event.target.closest('.layer');
+    if(!group) return;
+    const { layerId } = group.dataset;
+    if(layerId){
+      setActiveLayer(layerId);
+      if(isEditActive()){
+        startLayerInteraction('move', event);
+      }
+    }
+  });
 }
 
 const designTemplates = [
@@ -1544,12 +2782,18 @@ const sectionObserver = new MutationObserver(() => {
   updateEditViewBox();
   updateDesignOverlay();
   updateFrameOverlay();
+  updateSelectionOverlay();
 });
 sectionObserver.observe(document.documentElement, { attributes:true, attributeFilter:['data-active-section'] });
 
 // INITIAL STATE
+ensureBaseLayer();
+refreshLayerList();
+updatePropertiesPanel();
+updateColorPanel();
 setActive('explore'); // app loads on Explore, empty content until a tool is chosen
 updatePreviewLock();
 updateEditViewBox();
 updateDesignOverlay();
 updateFrameOverlay();
+updateSelectionOverlay();
