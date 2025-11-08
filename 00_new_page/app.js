@@ -575,7 +575,8 @@ function updateSideButtons(){
     }
   }
 
-  function updateCanvasOverlay(){
+  
+function updateCanvasOverlay(){
     if (!overlaySvg || !previewImg || !previewImg.naturalWidth) return;
     const areas = getAreasForCurrent();
     overlaySvg.innerHTML = '';
@@ -591,25 +592,65 @@ function updateSideButtons(){
     overlaySvg.setAttribute('viewBox', '0 0 ' + previewImg.naturalWidth + ' ' + previewImg.naturalHeight);
 
     const ns = 'http://www.w3.org/2000/svg';
-    const rect = document.createElementNS(ns, 'rect');
-    rect.setAttribute('x', area.x);
-    rect.setAttribute('y', area.y);
-    rect.setAttribute('width', area.width);
-    rect.setAttribute('height', area.height);
-    rect.setAttribute('rx', '8');
-    rect.setAttribute('ry', '8');
-    rect.setAttribute('fill', '#3bff9c');
-    rect.setAttribute('fill-opacity', '0.18');
-    rect.setAttribute('stroke', '#3bff9c');
-    rect.setAttribute('stroke-width', '2');
+
+    // For Custom, draw a dashed white outline of the max area
+    // and a solid green rectangle for the current custom size.
     if (area.areaType === 'custom_max') {
-      rect.setAttribute('stroke-dasharray', '6 4');
+      const bounds = getCustomBoundsForCurrent();
+      const state = getCustomStateForCurrent();
+
+      if (bounds) {
+        const maxRect = document.createElementNS(ns, 'rect');
+        maxRect.setAttribute('x', bounds.minX);
+        maxRect.setAttribute('y', bounds.minY);
+        maxRect.setAttribute('width', bounds.maxX - bounds.minX);
+        maxRect.setAttribute('height', bounds.maxY - bounds.minY);
+        maxRect.setAttribute('rx', '8');
+        maxRect.setAttribute('ry', '8');
+        maxRect.setAttribute('fill', 'none');
+        maxRect.setAttribute('stroke', '#ffffff');
+        maxRect.setAttribute('stroke-width', '2');
+        maxRect.setAttribute('stroke-dasharray', '6 4');
+        overlaySvg.appendChild(maxRect);
+      }
+
+      const src = state || {
+        x: area.x,
+        y: area.y,
+        width: area.width,
+        height: area.height
+      };
+
+      const currentRect = document.createElementNS(ns, 'rect');
+      currentRect.setAttribute('x', src.x);
+      currentRect.setAttribute('y', src.y);
+      currentRect.setAttribute('width', src.width);
+      currentRect.setAttribute('height', src.height);
+      currentRect.setAttribute('rx', '8');
+      currentRect.setAttribute('ry', '8');
+      currentRect.setAttribute('fill', '#3bff9c');
+      currentRect.setAttribute('fill-opacity', '0.18');
+      currentRect.setAttribute('stroke', '#3bff9c');
+      currentRect.setAttribute('stroke-width', '2');
+      overlaySvg.appendChild(currentRect);
+    } else {
+      const rect = document.createElementNS(ns, 'rect');
+      rect.setAttribute('x', area.x);
+      rect.setAttribute('y', area.y);
+      rect.setAttribute('width', area.width);
+      rect.setAttribute('height', area.height);
+      rect.setAttribute('rx', '8');
+      rect.setAttribute('ry', '8');
+      rect.setAttribute('fill', '#3bff9c');
+      rect.setAttribute('fill-opacity', '0.18');
+      rect.setAttribute('stroke', '#3bff9c');
+      rect.setAttribute('stroke-width', '2');
+      overlaySvg.appendChild(rect);
     }
-    overlaySvg.appendChild(rect);
+
     updateAreaSizeLabels();
   }
-
-  function refreshAreaOptions(){
+function refreshAreaOptions(){
     if (!areaSelect) return;
     const areas = getAreasForCurrent();
     areaSelect.innerHTML = '';

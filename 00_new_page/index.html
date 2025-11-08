@@ -48,88 +48,90 @@
             </button>
           </header>
           <div class="tp-body tp-body--custom">
-            <div class="custom-panel-main">
+            
+<div class="custom-panel-main">
               <div class="custom-row custom-row--meta">
                 <span id="customSideLabel" class="custom-pill custom-pill--side">Front</span>
                 <span id="customAreaLabel" class="custom-pill custom-pill--area">Area: Custom</span>
+                <div class="custom-meta-spacer"></div>
+                <span class="custom-size-label">Size</span>
+                <span id="customSizeInches" class="custom-size-value">—</span>
+                <button type="button" id="customResetBtn" class="custom-reset-btn custom-reset-btn--inline">
+                  <span class="material-symbols-rounded">restart_alt</span>
+                  <span>Reset</span>
+                </button>
               </div>
 
               <div class="custom-grid">
                 <div class="custom-field">
                   <label for="customX" class="custom-label">X (px)</label>
-                  <div class="custom-spin">
-                    <button type="button" class="custom-step" data-field="x" data-custom-step data-step="-1">
-                      <span class="material-symbols-rounded">remove</span>
-                    </button>
-                    <input id="customX" class="custom-input" type="number" step="1" inputmode="numeric" />
-                    <button type="button" class="custom-step" data-field="x" data-custom-step data-step="1">
-                      <span class="material-symbols-rounded">add</span>
-                    </button>
+                  <div class="custom-inline">
+                    <div class="custom-spin">
+                      <button type="button" class="custom-step" data-field="x" data-custom-step data-step="-1">
+                        <span class="material-symbols-rounded">remove</span>
+                      </button>
+                      <input id="customX" class="custom-input" type="number" step="1" inputmode="numeric" />
+                      <button type="button" class="custom-step" data-field="x" data-custom-step data-step="1">
+                        <span class="material-symbols-rounded">add</span>
+                      </button>
+                    </div>
+                    <button type="button" id="customCenterHBtn" class="custom-center-btn">Center</button>
                   </div>
                   <input id="customXRange" class="custom-slider" type="range" min="0" max="1000" step="1" />
                 </div>
 
                 <div class="custom-field">
-                  <label for="customY" class="custom-label">Y (px)</label>
-                  <div class="custom-spin">
-                    <button type="button" class="custom-step" data-field="y" data-custom-step data-step="-1">
-                      <span class="material-symbols-rounded">remove</span>
-                    </button>
-                    <input id="customY" class="custom-input" type="number" step="1" inputmode="numeric" />
-                    <button type="button" class="custom-step" data-field="y" data-custom-step data-step="1">
-                      <span class="material-symbols-rounded">add</span>
-                    </button>
-                  </div>
-                  <input id="customYRange" class="custom-slider" type="range" min="0" max="1000" step="1" />
-                </div>
-
-                <div class="custom-field">
                   <label for="customW" class="custom-label">Width (px)</label>
-                  <div class="custom-spin">
-                    <button type="button" class="custom-step" data-field="width" data-custom-step data-step="-1">
-                      <span class="material-symbols-rounded">remove</span>
-                    </button>
-                    <input id="customW" class="custom-input" type="number" step="1" inputmode="numeric" />
-                    <button type="button" class="custom-step" data-field="width" data-custom-step data-step="1">
-                      <span class="material-symbols-rounded">add</span>
-                    </button>
+                  <div class="custom-inline">
+                    <div class="custom-spin">
+                      <button type="button" class="custom-step" data-field="width" data-custom-step data-step="-1">
+                        <span class="material-symbols-rounded">remove</span>
+                      </button>
+                      <input id="customW" class="custom-input" type="number" step="1" inputmode="numeric" />
+                      <button type="button" class="custom-step" data-field="width" data-custom-step data-step="1">
+                        <span class="material-symbols-rounded">add</span>
+                      </button>
+                    </div>
                   </div>
                   <input id="customWRange" class="custom-slider" type="range" min="1" max="1000" step="1" />
                 </div>
 
                 <div class="custom-field">
+                  <label for="customY" class="custom-label">Y (px)</label>
+                  <div class="custom-inline">
+                    <div class="custom-spin">
+                      <button type="button" class="custom-step" data-field="y" data-custom-step data-step="-1">
+                        <span class="material-symbols-rounded">remove</span>
+                      </button>
+                      <input id="customY" class="custom-input" type="number" step="1" inputmode="numeric" />
+                      <button type="button" class="custom-step" data-field="y" data-custom-step data-step="1">
+                        <span class="material-symbols-rounded">add</span>
+                      </button>
+                    </div>
+                    <button type="button" id="customCenterVBtn" class="custom-center-btn">Center</button>
+                  </div>
+                  <input id="customYRange" class="custom-slider" type="range" min="0" max="1000" step="1" />
+                </div>
+
+                <div class="custom-field">
                   <label for="customH" class="custom-label">Height (px)</label>
-                  <div class="custom-spin">
-                    <button type="button" class="custom-step" data-field="height" data-custom-step data-step="-1">
-                      <span class="material-symbols-rounded">remove</span>
-                    </button>
-                    <input id="customH" class="custom-input" type="number" step="1" inputmode="numeric" />
-                    <button type="button" class="custom-step" data-field="height" data-custom-step data-step="1">
-                      <span class="material-symbols-rounded">add</span>
-                    </button>
+                  <div class="custom-inline">
+                    <div class="custom-spin">
+                      <button type="button" class="custom-step" data-field="height" data-custom-step data-step="-1">
+                        <span class="material-symbols-rounded">remove</span>
+                      </button>
+                      <input id="customH" class="custom-input" type="number" step="1" inputmode="numeric" />
+                      <button type="button" class="custom-step" data-field="height" data-custom-step data-step="1">
+                        <span class="material-symbols-rounded">add</span>
+                      </button>
+                    </div>
                   </div>
                   <input id="customHRange" class="custom-slider" type="range" min="1" max="1000" step="1" />
                 </div>
-              </div>
-
-              <div class="custom-row custom-row--size">
-                <span class="custom-size-label">Approx size:</span>
-                <span id="customSizeInches" class="custom-size-value">—</span>
-              </div>
-
-              <div class="custom-row custom-row--actions">
-                <button type="button" id="customResetBtn" class="custom-reset-btn">
-                  <span class="material-symbols-rounded">restart_alt</span>
-                  <span>Reset to max area</span>
-                </button>
+              </div><div class="custom-row custom-row--presets">
                 <div id="customPresetsContainer" class="custom-presets"></div>
-                <div class="custom-actions-secondary">
-                  <button type="button" id="customCenterHBtn" class="custom-ghost-btn">Center H</button>
-                  <button type="button" id="customCenterVBtn" class="custom-ghost-btn">Center V</button>
-                </div>
               </div>
-            </div></div>
-          </div>
+            </div>   </div>
         </section>
 
         <!-- 2) Top-aligned with footer expand/collapse -->
