@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dark UI — Panels + Toolbar Overlays + Preview</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Material Symbols (Rounded) -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
+</head>
+<body>
+  <div class="app">
+    <main id="appArea" class="app-area" role="main" aria-label="Main app area">
+      <!-- Base layout (floating panels) -->
+      <section id="panelTop" class="panel" aria-label="Top panel"></section>
+      <section id="panelBottom" class="panel" aria-label="Bottom panel"></section>
+
+      <!-- Overlay tool panels (hidden by default) -->
+      <div class="overlays" aria-live="polite" aria-atomic="true">
+        <!-- 1) Top-aligned tool panel -->
+        <section id="tpTop" class="toolpanel tp--top" aria-label="Toolbar: Top Panel">
+          <header class="tp-header">
+            <h2 class="tp-title">Top Panel</h2>
+            <button class="tp-close" aria-label="Close">
+              <span class="material-symbols-rounded">close</span>
+            </button>
+          </header>
+        </section>
+
+        <!-- Customization panel: top-aligned, opens when "Custom" area is selected -->
+        <section id="tpCustom" class="toolpanel tp--top" aria-label="Canvas Customization Panel">
+          <header class="tp-header">
+            <h2 class="tp-title">Canvas Customization</h2>
+            <button class="tp-close" aria-label="Close">
+              <span class="material-symbols-rounded">close</span>
+            </button>
+          </header>
+          <div class="tp-body tp-body--custom">
+            <div class="custom-panel-main">
+              <div class="custom-row custom-row--meta">
+                <span id="customSideLabel" class="custom-pill custom-pill--side">Front</span>
+                <span id="customAreaLabel" class="custom-pill custom-pill--area">Area: Custom</span>
+              </div>
+
+              <div class="custom-grid">
+                <div class="custom-field">
+                  <label for="customX" class="custom-label">X (px)</label>
+                  <div class="custom-spin">
+                    <button type="button" class="custom-step" data-field="x" data-custom-step data-step="-1">
+                      <span class="material-symbols-rounded">remove</span>
+                    </button>
+                    <input id="customX" class="custom-input" type="number" step="1" inputmode="numeric" />
+                    <button type="button" class="custom-step" data-field="x" data-custom-step data-step="1">
+                      <span class="material-symbols-rounded">add</span>
+                    </button>
+                  </div>
+                  <input id="customXRange" class="custom-slider" type="range" min="0" max="1000" step="1" />
+                </div>
+
+                <div class="custom-field">
+                  <label for="customY" class="custom-label">Y (px)</label>
+                  <div class="custom-spin">
+                    <button type="button" class="custom-step" data-field="y" data-custom-step data-step="-1">
+                      <span class="material-symbols-rounded">remove</span>
+                    </button>
+                    <input id="customY" class="custom-input" type="number" step="1" inputmode="numeric" />
+                    <button type="button" class="custom-step" data-field="y" data-custom-step data-step="1">
+                      <span class="material-symbols-rounded">add</span>
+                    </button>
+                  </div>
+                  <input id="customYRange" class="custom-slider" type="range" min="0" max="1000" step="1" />
+                </div>
+
+                <div class="custom-field">
+                  <label for="customW" class="custom-label">Width (px)</label>
+                  <div class="custom-spin">
+                    <button type="button" class="custom-step" data-field="width" data-custom-step data-step="-1">
+                      <span class="material-symbols-rounded">remove</span>
+                    </button>
+                    <input id="customW" class="custom-input" type="number" step="1" inputmode="numeric" />
+                    <button type="button" class="custom-step" data-field="width" data-custom-step data-step="1">
+                      <span class="material-symbols-rounded">add</span>
+                    </button>
+                  </div>
+                  <input id="customWRange" class="custom-slider" type="range" min="1" max="1000" step="1" />
+                </div>
+
+                <div class="custom-field">
+                  <label for="customH" class="custom-label">Height (px)</label>
+                  <div class="custom-spin">
+                    <button type="button" class="custom-step" data-field="height" data-custom-step data-step="-1">
+                      <span class="material-symbols-rounded">remove</span>
+                    </button>
+                    <input id="customH" class="custom-input" type="number" step="1" inputmode="numeric" />
+                    <button type="button" class="custom-step" data-field="height" data-custom-step data-step="1">
+                      <span class="material-symbols-rounded">add</span>
+                    </button>
+                  </div>
+                  <input id="customHRange" class="custom-slider" type="range" min="1" max="1000" step="1" />
+                </div>
+              </div>
+
+              <div class="custom-row custom-row--size">
+                <span class="custom-size-label">Approx size:</span>
+                <span id="customSizeInches" class="custom-size-value">—</span>
+              </div>
+
+              <div class="custom-row custom-row--actions">
+                <button type="button" id="customResetBtn" class="custom-reset-btn">
+                  <span class="material-symbols-rounded">restart_alt</span>
+                  <span>Reset to max area</span>
+                </button>
+                <div id="customPresetsContainer" class="custom-presets"></div>
+                <div class="custom-actions-secondary">
+                  <button type="button" id="customCenterHBtn" class="custom-ghost-btn">Center H</button>
+                  <button type="button" id="customCenterVBtn" class="custom-ghost-btn">Center V</button>
+                </div>
+              </div>
+            </div></div>
+          </div>
+        </section>
+
+        <!-- 2) Top-aligned with footer expand/collapse -->
+        <section id="tpTopExpandable" class="toolpanel tp--topX" aria-label="Toolbar: Top Panel Expandable" data-expanded="false">
+          <header class="tp-header">
+            <h2 class="tp-title">Top Panel (Expandable)</h2>
+            <button class="tp-close" aria-label="Close">
+              <span class="material-symbols-rounded">close</span>
+            </button>
+          </header>
+          <footer class="tp-footer">
+            <button class="tp-toggle" aria-label="Expand or collapse">
+              <span class="material-symbols-rounded" id="tpToggleIcon">open_in_full</span>
+            </button>
+          </footer>
+        </section>
+
+        <!-- 3) Full app-area tool panel -->
+        <section id="tpFull" class="toolpanel tp--full" aria-label="Toolbar: Full App Area">
+          <header class="tp-header">
+            <h2 class="tp-title">Full App Area</h2>
+            <button class="tp-close" aria-label="Close">
+              <span class="material-symbols-rounded">close</span>
+            </button>
+          </header>
+        </section>
+
+        <!-- 4) Bottom-only product preview panel -->
+        <section id="tpPreview" class="toolpanel tp--bottom" aria-label="Product Preview Panel">
+          <header class="tp-header tp-header--preview">
+            <div class="tp-header-main">
+              <h2 class="tp-title">Product Preview</h2>
+              <div class="tp-side-toggle" role="radiogroup" aria-label="Preview side">
+                <button class="tp-side-btn is-active" data-side="front" aria-pressed="true">
+                  Front
+                </button>
+                <button class="tp-side-btn" data-side="back" aria-pressed="false">
+                  Back
+                </button>
+              </div>
+              <label class="tp-area-select" aria-label="Print area">
+                <span class="tp-area-label">Area</span>
+                <select id="previewAreaSelect" class="tp-area-select-control"></select>
+              </label>
+              <div class="tp-area-size" aria-live="polite">
+                <span class="tp-area-size-label">Size</span>
+                <span id="previewAreaSize" class="tp-area-size-value">—</span>
+              </div>
+            </div>
+            <button class="tp-close" aria-label="Close">
+              <span class="material-symbols-rounded">close</span>
+            </button>
+          </header>
+          <div class="tp-body tp-body--preview">
+            <div class="preview-stage">
+              <img id="productPreviewImage" class="preview-image" alt="Product preview" />
+              <svg id="previewCanvasOverlay" class="preview-overlay" xmlns="http://www.w3.org/2000/svg"></svg>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
