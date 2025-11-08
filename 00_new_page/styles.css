@@ -329,14 +329,26 @@ body{
   justify-content: flex-start;
 }
 
-.custom-panel-main{
+.custom-panel-main {
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  max-width: 520px;
+  max-width: 100%;
+  flex: 1 1 auto;
 }
 
+/* Allow the customization panel to use full width on small screens */
+@media (max-width: 768px){
+  .custom-panel-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 auto;
+}
+}
 .custom-row{
   display: flex;
   align-items: center;
@@ -364,61 +376,13 @@ body{
   color: var(--text);
 }
 
-
-.custom-meta-spacer{
-  flex: 1 1 auto;
-}
-
-.custom-reset-btn--inline{
-  margin-top: 0;
-  align-self: auto;
-}
-
-.custom-row--presets{
-  justify-content: flex-start;
-}
-
-.custom-inline{
-  display: flex;
-  align-items: stretch;
-  gap: 6px;
-}
-
-.custom-center-btn{
-  all: unset;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 8px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(0,0,0,0.35);
-  font-size: 11px;
-  color: var(--muted);
-  min-width: 72px;
-}
-
-.custom-center-btn:hover{
-  background: rgba(255,255,255,0.10);
-  color: var(--text);
-}
-
-.custom-center-btn:focus-visible{
-  outline: 2px solid rgba(255,255,255,0.8);
-  outline-offset: 2px;
-}
 .custom-grid{
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+  width: 100%;
 }
 
-@media (max-width: 700px){
-  .custom-grid{
-    grid-template-columns: 1fr;
-  }
-}
 
 .custom-field{
   display: flex;
@@ -432,6 +396,21 @@ body{
   letter-spacing: 0.02em;
 }
 
+
+.custom-spin-row{
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.custom-center-btn{
+  white-space: nowrap;
+  padding-inline: 10px;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 .custom-spin{
   display: flex;
   align-items: stretch;

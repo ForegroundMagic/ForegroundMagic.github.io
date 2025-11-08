@@ -575,8 +575,7 @@ function updateSideButtons(){
     }
   }
 
-  
-function updateCanvasOverlay(){
+  function updateCanvasOverlay(){
     if (!overlaySvg || !previewImg || !previewImg.naturalWidth) return;
     const areas = getAreasForCurrent();
     overlaySvg.innerHTML = '';
@@ -650,7 +649,8 @@ function updateCanvasOverlay(){
 
     updateAreaSizeLabels();
   }
-function refreshAreaOptions(){
+
+  function refreshAreaOptions(){
     if (!areaSelect) return;
     const areas = getAreasForCurrent();
     areaSelect.innerHTML = '';
