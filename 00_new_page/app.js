@@ -243,9 +243,7 @@ function getCustomBoundsForCurrent(){
 
   // Customization panel elements
   const previewAreaSizeEl = byId('previewAreaSize');
-  const customSideLabelEl = byId('customSideLabel');
-  const customAreaLabelEl = byId('customAreaLabel');
-  const customSizeInchesEl = byId('customSizeInches');
+  const customHeaderTitleEl = byId('customHeaderTitle');
   const customInputs = {
     x: byId('customX'),
     y: byId('customY'),
@@ -259,12 +257,15 @@ function getCustomBoundsForCurrent(){
     height: byId('customHRange')
   };
   const customResetBtn = byId('customResetBtn');
+  const customFrameToggleBtn = byId('customFrameToggleBtn');
   const customCenterHBtn = byId('customCenterHBtn');
   const customCenterVBtn = byId('customCenterVBtn');
 
   let currentProductCode = '3001C_BC_UJSST';
   let currentSide = 'front'; // 'front' | 'back'
   let currentAreaName = null;
+
+  let isCustomFrameEnabled = true;
 
   // Temporary top-panel product loader: populate dropdown from DefaultProductMedia
   if (productSelect) {
@@ -400,14 +401,18 @@ function getCustomBoundsForCurrent(){
       previewAreaSizeEl.textContent = inches ? inches.label : '—';
     }
 
+    // Update Custom Canvas header with side + size
     const customState = getCustomStateForCurrent();
-    if (customSizeInchesEl) {
-      let source = activeArea;
-      if (currentAreaName === 'Custom' && customState) {
-        source = { width: customState.width, height: customState.height };
-      }
-      const customInches = source ? describeAreaInches(source) : null;
-      customSizeInchesEl.textContent = customInches ? customInches.label : '—';
+    let source = activeArea;
+    if (currentAreaName === 'Custom' && customState) {
+      source = { width: customState.width, height: customState.height };
+    }
+    const customInches = source ? describeAreaInches(source) : null;
+
+    if (customHeaderTitleEl) {
+      const sideLabel = currentSide === 'back' ? 'Back' : 'Front';
+      const sizeLabel = customInches ? customInches.label : '—';
+      customHeaderTitleEl.textContent = 'Custom Canvas - ' + sideLabel + ' - ' + sizeLabel;
     }
   }
 
@@ -458,12 +463,6 @@ function getCustomBoundsForCurrent(){
       customRanges.height.value = Math.round(relH);
     }
 
-    if (customSideLabelEl) {
-      customSideLabelEl.textContent = currentSide === 'back' ? 'Back' : 'Front';
-    }
-    if (customAreaLabelEl) {
-      customAreaLabelEl.textContent = 'Area: ' + (currentAreaName || 'Custom');
-    }
   }
 
   function setCustomStateForCurrent(partial){
@@ -598,7 +597,7 @@ function updateSideButtons(){
       const bounds = getCustomBoundsForCurrent();
       const state = getCustomStateForCurrent();
 
-      if (bounds) {
+      if (bounds && isCustomFrameEnabled) {
         const maxRect = document.createElementNS(ns, 'rect');
         maxRect.setAttribute('x', bounds.minX);
         maxRect.setAttribute('y', bounds.minY);
@@ -832,6 +831,16 @@ function updateSideButtons(){
       const relH = state.height;
       const targetRelY = (maxHeight - relH) / 2;
       setCustomFromRelative('y', targetRelY);
+    });
+  }
+
+
+  if (customFrameToggleBtn){
+    customFrameToggleBtn.setAttribute('aria-pressed', 'true');
+    customFrameToggleBtn.addEventListener('click', () => {
+      isCustomFrameEnabled = !isCustomFrameEnabled;
+      customFrameToggleBtn.setAttribute('aria-pressed', isCustomFrameEnabled ? 'true' : 'false');
+      updateCanvasOverlay();
     });
   }
 

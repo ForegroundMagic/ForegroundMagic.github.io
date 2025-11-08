@@ -42,27 +42,16 @@
         <!-- Customization panel: top-aligned, opens when "Custom" area is selected -->
         <section id="tpCustom" class="toolpanel tp--top" aria-label="Canvas Customization Panel">
           <header class="tp-header">
-            <h2 class="tp-title">Canvas Customization</h2>
+            <h2 class="tp-title" id="customHeaderTitle">Canvas Customization</h2>
             <button class="tp-close" aria-label="Close">
               <span class="material-symbols-rounded">close</span>
             </button>
           </header>
           <div class="tp-body tp-body--custom">
             <div class="custom-panel-main">
-              <div class="custom-row custom-row--meta">
-                <span id="customSideLabel" class="custom-pill custom-pill--side">Front</span>
-                <span id="customAreaLabel" class="custom-pill custom-pill--area">Area: Custom</span>
-                <span class="tp-area-size custom-meta-size">
-                  <span class="tp-area-label">Size</span>
-                  <span id="customSizeInches" class="tp-area-size-value">—</span>
-                </span>
-                <button type="button" id="customResetBtn" class="custom-pill custom-pill--reset">
-                  <span class="material-symbols-rounded">restart_alt</span>
-                  <span>Reset</span>
-                </button>
-              </div>
-
               <div class="custom-grid">
+                <div class="custom-grid-header">Adjusting Position</div>
+                <div class="custom-grid-header">Adjusting Size of Canvas</div>
                 <div class="custom-field">
                   <label for="customX" class="custom-label">X (px)</label>
                   <div class="custom-spin-row">
@@ -126,10 +115,21 @@
                 </div>
               </div>
 
+              <div class="custom-row custom-row--reset">
+                <button type="button" id="customResetBtn" class="custom-reset-btn">
+                  <span class="material-symbols-rounded">restart_alt</span>
+                  <span>Reset All</span>
+                </button>
+                <button type="button" id="customFrameToggleBtn" class="custom-ghost-btn custom-toggle-btn" aria-pressed="true">
+                  <span class="material-symbols-rounded">crop_free</span>
+                  <span>Max Area Frame</span>
+                </button>
+              </div>
+
               <div class="custom-row custom-row--actions">
                 <div id="customPresetsContainer" class="custom-presets"></div>
               </div>
-            </div></div>
+            </div></div></div>
           </div>
         </section>
 
