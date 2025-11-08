@@ -12,7 +12,19 @@
   <div class="app">
     <main id="appArea" class="app-area" role="main" aria-label="Main app area">
       <!-- Base layout (floating panels) -->
-      <section id="panelTop" class="panel" aria-label="Top panel"></section>
+      <section id="panelTop" class="panel" aria-label="Top panel">
+      <div class="product-loader">
+        <div class="product-loader-main">
+          <div class="product-loader-field">
+            <span class="product-loader-label">Product</span>
+            <select id="productSelect" class="product-loader-select"></select>
+          </div>
+          <div class="product-loader-hint">
+            <span>Choose a product to load its preview and customization areas.</span>
+          </div>
+        </div>
+      </div>
+      </section>
       <section id="panelBottom" class="panel" aria-label="Bottom panel"></section>
 
       <!-- Overlay tool panels (hidden by default) -->

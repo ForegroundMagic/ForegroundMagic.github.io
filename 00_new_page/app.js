@@ -152,7 +152,13 @@
       }
     ]
   }
+
 };
+  // Share the same media areas for demo products as 3001C_BC_UJSST for now.
+  ProductMediaAreas["Product_Demo_01"] = ProductMediaAreas["3001C_BC_UJSST"];
+  ProductMediaAreas["Product_Demo_02"] = ProductMediaAreas["3001C_BC_UJSST"];
+  ProductMediaAreas["Product_Demo_03"] = ProductMediaAreas["3001C_BC_UJSST"];
+
   // Physical size config per product/side based on ppi_used from DB.
 // We assume a uniform PPI for each side of a product and compute inch sizes as pixels / ppi.
   const ProductPpiConfig = {
@@ -161,6 +167,14 @@
       back:   38.56
     },
     "Product_Demo_01": {
+      front:  38.56,
+      back:   38.56
+    },
+    "Product_Demo_02": {
+      front:  38.56,
+      back:   38.56
+    },
+    "Product_Demo_03": {
       front:  38.56,
       back:   38.56
     }
@@ -207,6 +221,12 @@
     return customCurrentByKey[key] || null;
   }
 
+function getCustomBoundsForCurrent(){
+    ensureCustomStateForCurrent();
+    const key = customKey();
+    return customBoundsByKey[key] || null;
+  }
+
 
   const tpTop = byId('tpTop');
   const tpTopX = byId('tpTopExpandable');
@@ -219,6 +239,7 @@
   const areaSelect = byId('previewAreaSelect');
   const sideButtons = document.querySelectorAll('#tpPreview .tp-side-btn');
   const toggleIcon = document.getElementById('tpToggleIcon');
+  const productSelect = byId('productSelect');
 
   // Customization panel elements
   const previewAreaSizeEl = byId('previewAreaSize');
@@ -231,20 +252,55 @@
     width: byId('customW'),
     height: byId('customH')
   };
-  const customResetBtn = byId('customResetBtn');
-
   const customRanges = {
     x: byId('customXRange'),
     y: byId('customYRange'),
     width: byId('customWRange'),
     height: byId('customHRange')
   };
+  const customResetBtn = byId('customResetBtn');
   const customCenterHBtn = byId('customCenterHBtn');
   const customCenterVBtn = byId('customCenterVBtn');
 
   let currentProductCode = '3001C_BC_UJSST';
   let currentSide = 'front'; // 'front' | 'back'
   let currentAreaName = null;
+
+  // Temporary top-panel product loader: populate dropdown from DefaultProductMedia
+  if (productSelect) {
+    const productCodes = Object.keys(DefaultProductMedia);
+    productCodes.forEach(code => {
+      const meta = DefaultProductMedia[code];
+      const opt = document.createElement('option');
+      opt.value = code;
+      opt.textContent = code + (meta && meta.colorName ? ' — ' + meta.colorName : '');
+      productSelect.appendChild(opt);
+    });
+
+    // Ensure currentProductCode matches an available entry
+    if (currentProductCode && productCodes.includes(currentProductCode)) {
+      productSelect.value = currentProductCode;
+    } else if (productCodes.length) {
+      currentProductCode = productCodes[0];
+      productSelect.value = currentProductCode;
+    }
+
+    productSelect.addEventListener('change', () => {
+      const code = productSelect.value;
+      if (!code || !DefaultProductMedia[code]) return;
+      if (currentProductCode === code) return;
+      currentProductCode = code;
+      // Reset area selection so new product can pick its preferred default
+      currentAreaName = null;
+      // Update preview + area options for the new product
+      updatePreview();
+      refreshAreaOptions();
+      // Make sure the preview panel is visible when a product is chosen
+      if (tpPreview) {
+        openPanel(tpPreview);
+      }
+    });
+  }
 
   // ---- Helpers ----
   function closePanel(panel){
@@ -355,52 +411,50 @@
     }
   }
 
-  
-  function getCustomBoundsForCurrent(){
-    ensureCustomStateForCurrent();
-    const key = customKey();
-    return customBoundsByKey[key] || null;
-  }
-
   function syncCustomInputsFromState(){
     const customState = getCustomStateForCurrent();
+    if (!customState) return;
+
     const bounds = getCustomBoundsForCurrent();
-    if (!customState || !bounds) return;
+    let relX = customState.x;
+    let relY = customState.y;
+    let relW = customState.width;
+    let relH = customState.height;
+    let maxWidth = null;
+    let maxHeight = null;
 
-    const maxWidth = bounds.maxX - bounds.minX;
-    const maxHeight = bounds.maxY - bounds.minY;
+    if (bounds) {
+      maxWidth = bounds.maxX - bounds.minX;
+      maxHeight = bounds.maxY - bounds.minY;
+      relX = customState.x - bounds.minX;
+      relY = customState.y - bounds.minY;
+    }
 
-    // Convert absolute canvas coords to values relative to the custom max area
-    const relX = customState.x - bounds.minX;
-    const relY = customState.y - bounds.minY;
-    const relW = customState.width;
-    const relH = customState.height;
-
-    // Inputs (relative values so user sees 0..max)
+    // Update input fields with RELATIVE values (within the custom_max area)
     if (customInputs.x) customInputs.x.value = Math.round(relX);
     if (customInputs.y) customInputs.y.value = Math.round(relY);
     if (customInputs.width) customInputs.width.value = Math.round(relW);
     if (customInputs.height) customInputs.height.value = Math.round(relH);
 
-    // Sliders mirror the same values and respect max custom area
-    if (customRanges.x) {
+    // Update sliders to match and to reflect allowed ranges
+    if (bounds && customRanges.x) {
       customRanges.x.min = 0;
-      customRanges.x.max = Math.round(maxWidth);
+      customRanges.x.max = maxWidth;
       customRanges.x.value = Math.round(relX);
     }
-    if (customRanges.y) {
+    if (bounds && customRanges.y) {
       customRanges.y.min = 0;
-      customRanges.y.max = Math.round(maxHeight);
+      customRanges.y.max = maxHeight;
       customRanges.y.value = Math.round(relY);
     }
-    if (customRanges.width) {
+    if (bounds && customRanges.width) {
       customRanges.width.min = 1;
-      customRanges.width.max = Math.round(maxWidth);
+      customRanges.width.max = maxWidth;
       customRanges.width.value = Math.round(relW);
     }
-    if (customRanges.height) {
+    if (bounds && customRanges.height) {
       customRanges.height.min = 1;
-      customRanges.height.max = Math.round(maxHeight);
+      customRanges.height.max = maxHeight;
       customRanges.height.value = Math.round(relH);
     }
 
@@ -412,72 +466,7 @@
     }
   }
 
-  // Apply a change coming from the UI (inputs, sliders, +/-) using values
-  // relative to the custom_max area (0..maxWidth / 0..maxHeight).
-  function setCustomFromRelative(field, value){
-    const bounds = getCustomBoundsForCurrent();
-    const state = getCustomStateForCurrent();
-    if (!bounds || !state || typeof field !== 'string') return;
-
-    let v = Number(value);
-    if (!isFinite(v)) return;
-
-    const maxWidth = bounds.maxX - bounds.minX;
-    const maxHeight = bounds.maxY - bounds.minY;
-
-    // Current relative values
-    let relX = state.x - bounds.minX;
-    let relY = state.y - bounds.minY;
-    let relW = state.width;
-    let relH = state.height;
-
-    // Apply the change
-    switch (field) {
-      case 'x':
-        relX = v;
-        break;
-      case 'y':
-        relY = v;
-        break;
-      case 'width':
-        relW = v;
-        break;
-      case 'height':
-        relH = v;
-        break;
-      default:
-        return;
-    }
-
-    // Minimum size of 1px
-    if (relW < 1) relW = 1;
-    if (relH < 1) relH = 1;
-
-    // Clamp position into 0..max range
-    if (relX < 0) relX = 0;
-    if (relY < 0) relY = 0;
-    if (relX > maxWidth) relX = maxWidth;
-    if (relY > maxHeight) relY = maxHeight;
-
-    // Ensure the rectangle stays fully inside the custom_max area:
-    // if position + size would overflow, shrink the size to "remaining safe" space.
-    if (relX + relW > maxWidth) relW = maxWidth - relX;
-    if (relY + relH > maxHeight) relH = maxHeight - relY;
-
-    // Guard again in case maxWidth/maxHeight are very small
-    if (relW < 1) relW = 1;
-    if (relH < 1) relH = 1;
-
-    const absState = {
-      x: bounds.minX + relX,
-      y: bounds.minY + relY,
-      width: relW,
-      height: relH
-    };
-
-    setCustomStateForCurrent(absState);
-  }
-function setCustomStateForCurrent(partial){
+  function setCustomStateForCurrent(partial){
     const existing = getCustomStateForCurrent();
     if (!existing) return;
     const key = customKey();
@@ -511,7 +500,60 @@ function setCustomStateForCurrent(partial){
     updateAreaSizeLabels();
   }
 
-  function updateSideButtons(){
+    function setCustomFromRelative(field, value){
+    const bounds = getCustomBoundsForCurrent();
+    const state = getCustomStateForCurrent();
+    if (!bounds || !state || !field) return;
+
+    const maxWidth = bounds.maxX - bounds.minX;
+    const maxHeight = bounds.maxY - bounds.minY;
+
+    let relX = state.x - bounds.minX;
+    let relY = state.y - bounds.minY;
+    let relW = state.width;
+    let relH = state.height;
+
+    if (!isFinite(relX)) relX = 0;
+    if (!isFinite(relY)) relY = 0;
+    if (!isFinite(relW) || relW < 1) relW = 1;
+    if (!isFinite(relH) || relH < 1) relH = 1;
+
+    let v = Number(value);
+    if (!isFinite(v)) v = 0;
+
+    if (field === 'x') {
+      relX = v;
+    } else if (field === 'y') {
+      relY = v;
+    } else if (field === 'width') {
+      relW = v;
+    } else if (field === 'height') {
+      relH = v;
+    }
+
+    // Clamp width/height
+    if (relW < 1) relW = 1;
+    if (relH < 1) relH = 1;
+    if (maxWidth && relW > maxWidth) relW = maxWidth;
+    if (maxHeight && relH > maxHeight) relH = maxHeight;
+
+    // Clamp position so rectangle stays within bounds
+    if (relX < 0) relX = 0;
+    if (relY < 0) relY = 0;
+    if (maxWidth && relX + relW > maxWidth) relX = maxWidth - relW;
+    if (maxHeight && relY + relH > maxHeight) relY = maxHeight - relH;
+
+    const absNext = {
+      x: bounds.minX + relX,
+      y: bounds.minY + relY,
+      width: relW,
+      height: relH
+    };
+
+    setCustomStateForCurrent(absNext);
+  }
+
+function updateSideButtons(){
     sideButtons.forEach(btn => {
       const isActive = btn.dataset.side === currentSide;
       btn.classList.toggle('is-active', isActive);
@@ -628,138 +670,111 @@ function setCustomStateForCurrent(partial){
     });
   });
 
-  // Cust  // Customization: input fields, sliders and +/- steppers
+  // Customization: input fields, sliders and +/- steppers
   if (customInputs.x || customInputs.y || customInputs.width || customInputs.height) {
     ['x','y','width','height'].forEach(key => {
       const input = customInputs[key];
-      if (!input) return;
-      input.addEventListener('input', () => {
-        const val = parseFloat(input.value);
-        if (!isFinite(val)) return;
-        // Keep the paired slider visually in sync immediately
-        const slider = customRanges[key];
-        if (slider) {
-          slider.value = String(val);
-        }
-        // Inputs use values relative to the custom max area.
-        setCustomFromRelative(key, val);
-      });
-    });
-  }
-
-  // Range sliders mirror the same relative values and stay in sync with inputs
-  if (customRanges.x || customRanges.y || customRanges.width || customRanges.height) {
-    ['x','y','width','height'].forEach(key => {
       const slider = customRanges[key];
-      if (!slider) return;
-      slider.addEventListener('input', () => {
-        const val = parseFloat(slider.value);
-        if (!isFinite(val)) return;
-        // Keep the paired input visually in sync immediately
-        const input = customInputs[key];
-        if (input) {
-          input.value = String(val);
-        }
-        // Values are relative to the custom max area.
-        setCustomFromRelative(key, val);
-      });
+
+      if (input) {
+        input.addEventListener('input', () => {
+          const raw = parseFloat(input.value);
+          if (!isFinite(raw)) return;
+
+          const bounds = getCustomBoundsForCurrent();
+          const maxWidth = bounds ? bounds.maxX - bounds.minX : 0;
+          const maxHeight = bounds ? bounds.maxY - bounds.minY : 0;
+
+          let v = raw;
+          if (key === 'width' && maxWidth) v = Math.min(Math.max(1, v), maxWidth);
+          else if (key === 'height' && maxHeight) v = Math.min(Math.max(1, v), maxHeight);
+          else if (key === 'x' && maxWidth) v = Math.min(Math.max(0, v), maxWidth);
+          else if (key === 'y' && maxHeight) v = Math.min(Math.max(0, v), maxHeight);
+
+          v = Math.round(v);
+          input.value = String(v);
+          if (slider) slider.value = String(v);
+
+          setCustomFromRelative(key, v);
+        });
+      }
+
+      if (slider) {
+        slider.addEventListener('input', () => {
+          const val = parseFloat(slider.value);
+          if (!isFinite(val)) return;
+
+          const v = Math.round(val);
+          slider.value = String(v);
+          if (input) input.value = String(v);
+
+          setCustomFromRelative(key, v);
+        });
+      }
     });
   }
 
-  // +/- steppers: increment by 1 and support press-and-hold
-  if (typeof window !== 'undefined') {
-    const stepButtons = document.querySelectorAll('[data-custom-step]');
-    stepButtons.forEach(btn => {
-      const field = btn.getAttribute('data-field');
-      let step = parseFloat(btn.getAttribute('data-step'));
-      if (!isFinite(step) || step === 0) step = 1;
+  // +/- steppers with press-and-hold
+  document.querySelectorAll('[data-custom-step]').forEach(btn => {
+    const field = btn.getAttribute('data-field');
+    let step = parseFloat(btn.getAttribute('data-step'));
+    if (!isFinite(step) || step === 0) step = 1;
 
-      let holdInterval = null;
+    let holdTimer = null;
 
-      const applyStep = () => {
-        const bounds = getCustomBoundsForCurrent();
-        const state = getCustomStateForCurrent();
-        if (!bounds || !state || !field) return;
+    const applyStep = () => {
+      const bounds = getCustomBoundsForCurrent();
+      const state = getCustomStateForCurrent();
+      if (!bounds || !state || !field) return;
 
-        const maxWidth = bounds.maxX - bounds.minX;
-        const maxHeight = bounds.maxY - bounds.minY;
+      const maxWidth = bounds.maxX - bounds.minX;
+      const maxHeight = bounds.maxY - bounds.minY;
 
-        let relX = state.x - bounds.minX;
-        let relY = state.y - bounds.minY;
-        let relW = state.width;
-        let relH = state.height;
+      let current;
+      if (field === 'x') current = state.x - bounds.minX;
+      else if (field === 'y') current = state.y - bounds.minY;
+      else if (field === 'width') current = state.width;
+      else if (field === 'height') current = state.height;
+      else return;
 
-        let current;
-        switch (field) {
-          case 'x': current = relX; break;
-          case 'y': current = relY; break;
-          case 'width': current = relW; break;
-          case 'height': current = relH; break;
-          default: return;
-        }
+      const nextVal = current + step;
+      setCustomFromRelative(field, nextVal);
+    };
 
-        const nextVal = current + step;
-        setCustomFromRelative(field, nextVal);
-      };
+    const startHold = (ev) => {
+      ev.preventDefault();
+      applyStep();
+      if (holdTimer) clearInterval(holdTimer);
+      holdTimer = setInterval(applyStep, 120);
+    };
 
-      const startHold = (ev) => {
+    const stopHold = () => {
+      if (holdTimer) {
+        clearInterval(holdTimer);
+        holdTimer = null;
+      }
+    };
+
+    btn.addEventListener('mousedown', startHold);
+    btn.addEventListener('touchstart', startHold, { passive: false });
+    ['mouseup','mouseleave','touchend','touchcancel'].forEach(evt => {
+      btn.addEventListener(evt, stopHold);
+    });
+
+    btn.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' || ev.key === ' ') {
         ev.preventDefault();
         applyStep();
-        if (holdInterval) clearInterval(holdInterval);
-        holdInterval = setInterval(applyStep, 120);
-      };
-
-      const stopHold = () => {
-        if (holdInterval) {
-          clearInterval(holdInterval);
-          holdInterval = null;
-        }
-      };
-
-      // Mouse / touch for continuous stepping
-      btn.addEventListener('mousedown', startHold);
-      btn.addEventListener('touchstart', startHold, { passive: false });
-
-      ['mouseup','mouseleave','touchend','touchcancel'].forEach(evtName => {
-        btn.addEventListener(evtName, stopHold);
-      });
-
-      // Keyboard accessibility: single step on Enter/Space
-      btn.addEventListener('keydown', (ev) => {
-        if (ev.key === 'Enter' || ev.key === ' ') {
-          ev.preventDefault();
-          applyStep();
-        }
-      });
+      }
     });
-  }
+  });
 
-  // Reset to original max custom area for this product/side
-  if (customResetBtn){
-    customResetBtn.addEventListener('click', () => {
-      const key = customKey();
-      const bounds = getCustomBoundsForCurrent();
-      if (!bounds) return;
-      const width = bounds.maxX - bounds.minX;
-      const height = bounds.maxY - bounds.minY;
-
-      // Set absolute state back to full custom_max area
-      setCustomStateForCurrent({
-        x: bounds.minX,
-        y: bounds.minY,
-        width,
-        height
-      });
-    });
-  }
-
-  // Center horizontally within the custom_max area
-  if (customCenterHBtn){
+  // Center helpers
+  if (customCenterHBtn) {
     customCenterHBtn.addEventListener('click', () => {
       const bounds = getCustomBoundsForCurrent();
       const state = getCustomStateForCurrent();
       if (!bounds || !state) return;
-
       const maxWidth = bounds.maxX - bounds.minX;
       const relW = state.width;
       const targetRelX = (maxWidth - relW) / 2;
@@ -767,19 +782,46 @@ function setCustomStateForCurrent(partial){
     });
   }
 
-  // Center vertically within the custom_max area
-  if (customCenterVBtn){
+  if (customCenterVBtn) {
     customCenterVBtn.addEventListener('click', () => {
       const bounds = getCustomBoundsForCurrent();
       const state = getCustomStateForCurrent();
       if (!bounds || !state) return;
-
       const maxHeight = bounds.maxY - bounds.minY;
       const relH = state.height;
       const targetRelY = (maxHeight - relH) / 2;
       setCustomFromRelative('y', targetRelY);
     });
   }
+
+if (customResetBtn){
+    customResetBtn.addEventListener('click', () => {
+      // Reset to original max custom area for this product/side
+      const key = customKey();
+      if (customBoundsByKey[key]) {
+        const bounds = customBoundsByKey[key];
+        const width = bounds.maxX - bounds.minX;
+        const height = bounds.maxY - bounds.minY;
+        customCurrentByKey[key] = {
+          x: bounds.minX,
+          y: bounds.minY,
+          width,
+          height
+        };
+        syncCustomInputsFromState();
+        updateCanvasOverlay();
+        updateAreaSizeLabels();
+      }
+    });
+  }
+
+
+  // Initial load: show default product preview and areas
+  if (tpPreview) {
+    openPanel(tpPreview);
+  }
+  updatePreview();
+
 
   previewImg.addEventListener('load', () => {
     // Ensure overlay uses up-to-date natural dimensions
