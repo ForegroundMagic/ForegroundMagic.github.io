@@ -50,10 +50,8 @@
           <div class="tp-body tp-body--custom">
             <div class="custom-panel-main">
               <div class="custom-grid">
-                <div class="custom-grid-header">Adjusting Position</div>
-                <div class="custom-grid-header">Adjusting Size of Canvas</div>
                 <div class="custom-field">
-                  <label for="customX" class="custom-label">X (px)</label>
+                  <label for="customX" class="custom-label">X Position</label>
                   <div class="custom-spin-row">
                     <div class="custom-spin">
                       <button type="button" class="custom-step" data-field="x" data-custom-step data-step="-1">
@@ -70,7 +68,7 @@
                 </div>
 
                 <div class="custom-field">
-                  <label for="customW" class="custom-label">Width (px)</label>
+                  <label for="customW" class="custom-label">Canvas Width</label>
                   <div class="custom-spin">
                     <button type="button" class="custom-step" data-field="width" data-custom-step data-step="-1">
                       <span class="material-symbols-rounded">remove</span>
@@ -84,7 +82,7 @@
                 </div>
 
                 <div class="custom-field">
-                  <label for="customY" class="custom-label">Y (px)</label>
+                  <label for="customY" class="custom-label">Y Position</label>
                   <div class="custom-spin-row">
                     <div class="custom-spin">
                       <button type="button" class="custom-step" data-field="y" data-custom-step data-step="-1">
@@ -101,7 +99,7 @@
                 </div>
 
                 <div class="custom-field">
-                  <label for="customH" class="custom-label">Height (px)</label>
+                  <label for="customH" class="custom-label">Canvas Height</label>
                   <div class="custom-spin">
                     <button type="button" class="custom-step" data-field="height" data-custom-step data-step="-1">
                       <span class="material-symbols-rounded">remove</span>
@@ -116,13 +114,13 @@
               </div>
 
               <div class="custom-row custom-row--reset">
-                <button type="button" id="customResetBtn" class="custom-reset-btn">
+                <button type="button" id="customFrameToggleBtn" class="custom-reset-btn custom-toggle-btn" aria-pressed="true">
+                  <span class="material-symbols-rounded">crop_free</span>
+                  <span>Show Available Area</span>
+                </button>
+                <button type="button" id="customResetBtn" class="custom-reset-btn custom-reset-btn--right">
                   <span class="material-symbols-rounded">restart_alt</span>
                   <span>Reset All</span>
-                </button>
-                <button type="button" id="customFrameToggleBtn" class="custom-ghost-btn custom-toggle-btn" aria-pressed="true">
-                  <span class="material-symbols-rounded">crop_free</span>
-                  <span>Max Area Frame</span>
                 </button>
               </div>
 

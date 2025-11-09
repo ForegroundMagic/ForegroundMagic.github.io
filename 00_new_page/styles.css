@@ -29,8 +29,7 @@ html, body { height: 100%; }
   --area-accent: #3bff9c;    /* neon green for canvas area */
 
   /* Layout */
-  /*--top: 30%;*/
-  --top: 40%;
+  --top: 32%;
   --header-h: 42px;
   --footer-h: 40px;
 }
@@ -507,6 +506,11 @@ body{
   color: var(--muted);
 }
 
+.custom-reset-btn--right{
+  margin-left: auto;
+}
+
+
 .custom-reset-btn .material-symbols-rounded{
   font-size: 16px;
 }
@@ -638,9 +642,9 @@ body{
 }
 
 .custom-toggle-btn[aria-pressed="true"]{
-  background: rgba(255,255,255,0.10);
+  background: rgba(168, 192, 255, 0.22);
   color: var(--text);
-  border-color: rgba(255,255,255,0.35);
+  border-color: rgba(168, 192, 255, 0.8);
 }
 
 .custom-ghost-btn:hover{
