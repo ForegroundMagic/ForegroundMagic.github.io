@@ -1,0 +1,11 @@
+[data-panel-kind="catalog"] .floating-panel__blank {
+  border-style: dashed;
+  border-color: rgba(124, 157, 251, 0.4);
+  background: radial-gradient(circle at top, rgba(124, 157, 251, 0.08), rgba(8, 12, 23, 0.2));
+}
+
+[data-panel-kind="catalog"] .floating-panel__blank-label::before {
+  content: "Mode · ";
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+}
