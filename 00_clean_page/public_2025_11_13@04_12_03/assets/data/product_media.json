@@ -1,0 +1,1278 @@
+{
+  "products": [
+    {
+      "productId": 1,
+      "productCode": "3001C_BC_UJSST",
+      "productName": "3001C Bella + Canvas Unisex Jersey Short-Sleeve T-Shirt",
+      "description": "Brand: Bella + Canvas\r\n\r\nDescription:\r\n\r\n4.2 oz., 100% Airlume combed and ring spun cotton, 32 singles\r\nRetail fit, unisex sizing\r\nShoulder taping, side-seamed\r\nPre-shrunk\r\nPrint Method: DIGISOFT\u00ae",
+      "productTypeId": 1,
+      "defaultColorAssetId": 33,
+      "colors": [
+        {
+          "colorAssetId": 1,
+          "colorCode": "maroon",
+          "colorName": "Maroon",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/01_maroon_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/01_maroon_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/01_maroon_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/01_maroon_300x80.png"
+          },
+          "sortOrder": 1,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 2,
+          "colorCode": "athletic_heather",
+          "colorName": "Athletic Heather",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/02_athletic_heather_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/02_athletic_heather_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/02_athletic_heather_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/02_athletic_heather_300x80.png"
+          },
+          "sortOrder": 2,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 3,
+          "colorCode": "heather_military_green",
+          "colorName": "Heather Military Green",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/03_heather_military_green_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/03_heather_military_green_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/03_heather_military_green_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/03_heather_military_green_300x80.png"
+          },
+          "sortOrder": 3,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 4,
+          "colorCode": "heather_sand_dune",
+          "colorName": "Heather Sand Dune",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/04_heather_sand_dune_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/04_heather_sand_dune_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/04_heather_sand_dune_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/04_heather_sand_dune_300x80.png"
+          },
+          "sortOrder": 4,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 5,
+          "colorCode": "heather_mauve",
+          "colorName": "Heather Mauve",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/05_heather_mauve_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/05_heather_mauve_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/05_heather_mauve_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/05_heather_mauve_300x80.png"
+          },
+          "sortOrder": 5,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 6,
+          "colorCode": "heather_team_purple",
+          "colorName": "Heather Team Purple",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/06_heather_team_purple_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/06_heather_team_purple_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/06_heather_team_purple_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/06_heather_team_purple_300x80.png"
+          },
+          "sortOrder": 6,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 7,
+          "colorCode": "heather_mint",
+          "colorName": "Heather Mint",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/07_heather_mint_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/07_heather_mint_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/07_heather_mint_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/07_heather_mint_300x80.png"
+          },
+          "sortOrder": 7,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 8,
+          "colorCode": "natural",
+          "colorName": "Natural",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/08_natural_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/08_natural_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/08_natural_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/08_natural_300x80.png"
+          },
+          "sortOrder": 8,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 9,
+          "colorCode": "heather_orange",
+          "colorName": "Heather Orange",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/09_heather_orange_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/09_heather_orange_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/09_heather_orange_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/09_heather_orange_300x80.png"
+          },
+          "sortOrder": 9,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 10,
+          "colorCode": "heather_peach",
+          "colorName": "Heather Peach",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/10_heather_peach_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/10_heather_peach_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/10_heather_peach_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/10_heather_peach_300x80.png"
+          },
+          "sortOrder": 10,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 11,
+          "colorCode": "heather_raspberry",
+          "colorName": "Heather Raspberry",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/11_heather_raspberry_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/11_heather_raspberry_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/11_heather_raspberry_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/11_heather_raspberry_300x80.png"
+          },
+          "sortOrder": 11,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 12,
+          "colorCode": "heather_red",
+          "colorName": "Heather Red",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/12_heather_red_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/12_heather_red_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/12_heather_red_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/12_heather_red_300x80.png"
+          },
+          "sortOrder": 12,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 13,
+          "colorCode": "vintage_black",
+          "colorName": "Vintage Black",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/13_vintage_black_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/13_vintage_black_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/13_vintage_black_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/13_vintage_black_300x80.png"
+          },
+          "sortOrder": 13,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 14,
+          "colorCode": "vintage_white",
+          "colorName": "Vintage White",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/14_vintage_white_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/14_vintage_white_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/14_vintage_white_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/14_vintage_white_300x80.png"
+          },
+          "sortOrder": 14,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 15,
+          "colorCode": "pink",
+          "colorName": "Pink",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/15_pink_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/15_pink_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/15_pink_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/15_pink_300x80.png"
+          },
+          "sortOrder": 15,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 16,
+          "colorCode": "forest",
+          "colorName": "Forest",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/16_forest_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/16_forest_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/16_forest_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/16_forest_300x80.png"
+          },
+          "sortOrder": 16,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 17,
+          "colorCode": "white",
+          "colorName": "White",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/17_white_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/17_white_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/17_white_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/17_white_300x80.png"
+          },
+          "sortOrder": 17,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 18,
+          "colorCode": "yellow",
+          "colorName": "Yellow",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/18_yellow_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/18_yellow_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/18_yellow_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/18_yellow_300x80.png"
+          },
+          "sortOrder": 18,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 19,
+          "colorCode": "asphalt",
+          "colorName": "Asphalt",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/19_asphalt_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/19_asphalt_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/19_asphalt_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/19_asphalt_300x80.png"
+          },
+          "sortOrder": 19,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 20,
+          "colorCode": "deep_teal",
+          "colorName": "Deep Teal",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/20_deep_teal_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/20_deep_teal_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/20_deep_teal_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/20_deep_teal_300x80.png"
+          },
+          "sortOrder": 20,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 21,
+          "colorCode": "heather_royal",
+          "colorName": "Heather Royal",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/21_heather_royal_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/21_heather_royal_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/21_heather_royal_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/21_heather_royal_300x80.png"
+          },
+          "sortOrder": 21,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 22,
+          "colorCode": "kelly",
+          "colorName": "Kelly",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/22_kelly_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/22_kelly_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/22_kelly_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/22_kelly_300x80.png"
+          },
+          "sortOrder": 22,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 23,
+          "colorCode": "red",
+          "colorName": "Red",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/23_red_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/23_red_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/23_red_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/23_red_300x80.png"
+          },
+          "sortOrder": 23,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 24,
+          "colorCode": "leaf",
+          "colorName": "Leaf",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/24_leaf_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/24_leaf_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/24_leaf_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/24_leaf_300x80.png"
+          },
+          "sortOrder": 24,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 25,
+          "colorCode": "team_purple",
+          "colorName": "Team Purple",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/25_team_purple_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/25_team_purple_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/25_team_purple_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/25_team_purple_300x80.png"
+          },
+          "sortOrder": 25,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 26,
+          "colorCode": "true_royal",
+          "colorName": "True Royal",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/26_true_royal_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/26_true_royal_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/26_true_royal_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/26_true_royal_300x80.png"
+          },
+          "sortOrder": 26,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 27,
+          "colorCode": "navy",
+          "colorName": "Navy",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/27_navy_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/27_navy_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/27_navy_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/27_navy_300x80.png"
+          },
+          "sortOrder": 27,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 28,
+          "colorCode": "orange",
+          "colorName": "Orange",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/28_orange_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/28_orange_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/28_orange_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/28_orange_300x80.png"
+          },
+          "sortOrder": 28,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 29,
+          "colorCode": "soft_pink",
+          "colorName": "Soft Pink",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/29_soft_pink_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/29_soft_pink_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/29_soft_pink_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/29_soft_pink_300x80.png"
+          },
+          "sortOrder": 29,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 30,
+          "colorCode": "teal",
+          "colorName": "Teal",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/30_teal_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/30_teal_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/30_teal_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/30_teal_300x80.png"
+          },
+          "sortOrder": 30,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 31,
+          "colorCode": "turquoise",
+          "colorName": "Turquoise",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/31_turquoise_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/31_turquoise_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/31_turquoise_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/31_turquoise_300x80.png"
+          },
+          "sortOrder": 31,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 32,
+          "colorCode": "black",
+          "colorName": "Black",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/32_black_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/32_black_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/32_black_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/32_black_300x80.png"
+          },
+          "sortOrder": 32,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 33,
+          "colorCode": "canvas_red",
+          "colorName": "Canvas Red",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/33_canvas_red_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/33_canvas_red_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/33_canvas_red_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/33_canvas_red_300x80.png"
+          },
+          "sortOrder": 33,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 34,
+          "colorCode": "cardinal",
+          "colorName": "Cardinal",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/34_cardinal_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/34_cardinal_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/34_cardinal_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/34_cardinal_300x80.png"
+          },
+          "sortOrder": 34,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 35,
+          "colorCode": "dark_grey_heather",
+          "colorName": "Dark Grey Heather",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/35_dark_grey_heather_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/35_dark_grey_heather_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/35_dark_grey_heather_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/35_dark_grey_heather_300x80.png"
+          },
+          "sortOrder": 35,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 36,
+          "colorCode": "gold",
+          "colorName": "Gold",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/36_gold_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/36_gold_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/36_gold_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/36_gold_300x80.png"
+          },
+          "sortOrder": 36,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 37,
+          "colorCode": "light_blue",
+          "colorName": "Light Blue",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/37_light_blue_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/37_light_blue_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/37_light_blue_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/37_light_blue_300x80.png"
+          },
+          "sortOrder": 37,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 38,
+          "colorCode": "maize_yellow",
+          "colorName": "Maize Yellow",
+          "preview": {
+            "front": "assets/img/products/3001C_BC_UJSST/preview/38_maize_yellow_front.png",
+            "back": "assets/img/products/3001C_BC_UJSST/preview/38_maize_yellow_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/3001C_BC_UJSST/buttons/96x96px/38_maize_yellow_96x96.png",
+            "button300x80": "assets/img/products/3001C_BC_UJSST/buttons/300x80px/38_maize_yellow_300x80.png"
+          },
+          "sortOrder": 38,
+          "isActive": true
+        }
+      ],
+      "mediaAreas": {
+        "Back": [
+          {
+            "mediaAreaId": 7,
+            "areaName": "Full",
+            "areaType": "standard",
+            "x": 360.5,
+            "y": 178.5,
+            "width": 440.0,
+            "height": 583.0,
+            "ppiUsed": 38.56,
+            "widthInches": 11.41,
+            "heightInches": 15.11,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 3423,
+              "height": 4533
+            },
+            "isFullArea": true
+          },
+          {
+            "mediaAreaId": 8,
+            "areaName": "Default Preset",
+            "areaType": "standard",
+            "x": 400.5,
+            "y": 226.0,
+            "width": 360.0,
+            "height": 477.0,
+            "ppiUsed": 38.56,
+            "widthInches": 9.33,
+            "heightInches": 12.37,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 2799,
+              "height": 3711
+            },
+            "isFullArea": false
+          },
+          {
+            "mediaAreaId": 9,
+            "areaName": "Yoke",
+            "areaType": "standard",
+            "x": 531.0,
+            "y": 104.5,
+            "width": 100.0,
+            "height": 132.0,
+            "ppiUsed": 38.56,
+            "widthInches": 2.59,
+            "heightInches": 3.42,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 777,
+              "height": 1026
+            },
+            "isFullArea": false
+          },
+          {
+            "mediaAreaId": 11,
+            "areaName": "Custom",
+            "areaType": "custom_max",
+            "x": 360.5,
+            "y": 178.5,
+            "width": 440.0,
+            "height": 583.0,
+            "ppiUsed": 38.56,
+            "widthInches": 11.41,
+            "heightInches": 15.11,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 3423,
+              "height": 4533
+            },
+            "isFullArea": true
+          }
+        ],
+        "Front": [
+          {
+            "mediaAreaId": 1,
+            "areaName": "Full",
+            "areaType": "standard",
+            "x": 360.5,
+            "y": 178.5,
+            "width": 440.0,
+            "height": 583.0,
+            "ppiUsed": 38.56,
+            "widthInches": 11.41,
+            "heightInches": 15.11,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 3423,
+              "height": 4533
+            },
+            "isFullArea": true
+          },
+          {
+            "mediaAreaId": 2,
+            "areaName": "Default Preset",
+            "areaType": "standard",
+            "x": 400.5,
+            "y": 226.0,
+            "width": 360.0,
+            "height": 477.0,
+            "ppiUsed": 38.56,
+            "widthInches": 9.33,
+            "heightInches": 12.37,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 2799,
+              "height": 3711
+            },
+            "isFullArea": false
+          },
+          {
+            "mediaAreaId": 3,
+            "areaName": "Left Chest Tall",
+            "areaType": "standard",
+            "x": 677.0,
+            "y": 180.0,
+            "width": 110.0,
+            "height": 145.0,
+            "ppiUsed": 38.56,
+            "widthInches": 2.85,
+            "heightInches": 3.76,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 855,
+              "height": 1128
+            },
+            "isFullArea": false
+          },
+          {
+            "mediaAreaId": 4,
+            "areaName": "Left Chest",
+            "areaType": "standard",
+            "x": 684.5,
+            "y": 190.0,
+            "width": 95.0,
+            "height": 125.0,
+            "ppiUsed": 38.56,
+            "widthInches": 2.46,
+            "heightInches": 3.24,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 738,
+              "height": 972
+            },
+            "isFullArea": false
+          },
+          {
+            "mediaAreaId": 5,
+            "areaName": "Right Chest Tall",
+            "areaType": "standard",
+            "x": 374.0,
+            "y": 180.0,
+            "width": 110.0,
+            "height": 145.0,
+            "ppiUsed": 38.56,
+            "widthInches": 2.85,
+            "heightInches": 3.76,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 855,
+              "height": 1128
+            },
+            "isFullArea": false
+          },
+          {
+            "mediaAreaId": 6,
+            "areaName": "Right Chest",
+            "areaType": "standard",
+            "x": 381.5,
+            "y": 190.0,
+            "width": 95.0,
+            "height": 125.0,
+            "ppiUsed": 38.56,
+            "widthInches": 2.46,
+            "heightInches": 3.24,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 738,
+              "height": 972
+            },
+            "isFullArea": false
+          },
+          {
+            "mediaAreaId": 10,
+            "areaName": "Custom",
+            "areaType": "custom_max",
+            "x": 360.5,
+            "y": 178.5,
+            "width": 440.0,
+            "height": 583.0,
+            "ppiUsed": 38.56,
+            "widthInches": 11.41,
+            "heightInches": 15.11,
+            "ppiExport": 300.0,
+            "exportSizePx": {
+              "width": 3423,
+              "height": 4533
+            },
+            "isFullArea": true
+          }
+        ]
+      },
+      "ppi": {
+        "Back": 38.56,
+        "Front": 38.56
+      }
+    },
+    {
+      "productId": 2,
+      "productCode": "Product_Demo_01",
+      "productName": "Product_Demo_01",
+      "description": "Demo Description.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dapibus turpis sed ullamcorper sodales. Suspendisse eget sagittis enim, eget ultricies. ",
+      "productTypeId": 1,
+      "defaultColorAssetId": 44,
+      "colors": [
+        {
+          "colorAssetId": 39,
+          "colorCode": "maroon",
+          "colorName": "Maroon",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/01_maroon_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/01_maroon_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/01_maroon_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/01_maroon_300x80.png"
+          },
+          "sortOrder": 1,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 40,
+          "colorCode": "athletic_heather",
+          "colorName": "Athletic Heather",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/02_athletic_heather_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/02_athletic_heather_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/02_athletic_heather_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/02_athletic_heather_300x80.png"
+          },
+          "sortOrder": 2,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 41,
+          "colorCode": "heather_military_green",
+          "colorName": "Heather Military Green",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/03_heather_military_green_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/03_heather_military_green_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/03_heather_military_green_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/03_heather_military_green_300x80.png"
+          },
+          "sortOrder": 3,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 42,
+          "colorCode": "heather_sand_dune",
+          "colorName": "Heather Sand Dune",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/04_heather_sand_dune_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/04_heather_sand_dune_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/04_heather_sand_dune_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/04_heather_sand_dune_300x80.png"
+          },
+          "sortOrder": 4,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 43,
+          "colorCode": "heather_mauve",
+          "colorName": "Heather Mauve",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/05_heather_mauve_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/05_heather_mauve_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/05_heather_mauve_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/05_heather_mauve_300x80.png"
+          },
+          "sortOrder": 5,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 44,
+          "colorCode": "heather_team_purple",
+          "colorName": "Heather Team Purple",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/06_heather_team_purple_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/06_heather_team_purple_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/06_heather_team_purple_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/06_heather_team_purple_300x80.png"
+          },
+          "sortOrder": 6,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 45,
+          "colorCode": "heather_mint",
+          "colorName": "Heather Mint",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/07_heather_mint_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/07_heather_mint_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/07_heather_mint_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/07_heather_mint_300x80.png"
+          },
+          "sortOrder": 7,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 46,
+          "colorCode": "natural",
+          "colorName": "Natural",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/08_natural_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/08_natural_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/08_natural_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/08_natural_300x80.png"
+          },
+          "sortOrder": 8,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 47,
+          "colorCode": "heather_orange",
+          "colorName": "Heather Orange",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/09_heather_orange_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/09_heather_orange_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/09_heather_orange_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/09_heather_orange_300x80.png"
+          },
+          "sortOrder": 9,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 48,
+          "colorCode": "heather_peach",
+          "colorName": "Heather Peach",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_01/preview/10_heather_peach_front.png",
+            "back": "assets/img/products/Product_Demo_01/preview/10_heather_peach_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_01/buttons/96x96px/10_heather_peach_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_01/buttons/300x80px/10_heather_peach_300x80.png"
+          },
+          "sortOrder": 10,
+          "isActive": true
+        }
+      ],
+      "mediaAreas": {},
+      "ppi": {}
+    },
+    {
+      "productId": 3,
+      "productCode": "Product_Demo_02",
+      "productName": "Product_Demo_02",
+      "description": "Demo Description.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dapibus turpis sed ullamcorper sodales. Suspendisse eget sagittis enim, eget ultricies. ",
+      "productTypeId": 1,
+      "defaultColorAssetId": 58,
+      "colors": [
+        {
+          "colorAssetId": 49,
+          "colorCode": "heather_raspberry",
+          "colorName": "Heather Raspberry",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/11_heather_raspberry_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/11_heather_raspberry_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/11_heather_raspberry_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/11_heather_raspberry_300x80.png"
+          },
+          "sortOrder": 1,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 50,
+          "colorCode": "heather_red",
+          "colorName": "Heather Red",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/12_heather_red_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/12_heather_red_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/12_heather_red_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/12_heather_red_300x80.png"
+          },
+          "sortOrder": 2,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 51,
+          "colorCode": "vintage_black",
+          "colorName": "Vintage Black",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/13_vintage_black_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/13_vintage_black_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/13_vintage_black_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/13_vintage_black_300x80.png"
+          },
+          "sortOrder": 3,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 52,
+          "colorCode": "vintage_white",
+          "colorName": "Vintage White",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/14_vintage_white_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/14_vintage_white_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/14_vintage_white_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/14_vintage_white_300x80.png"
+          },
+          "sortOrder": 4,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 53,
+          "colorCode": "pink",
+          "colorName": "Pink",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/15_pink_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/15_pink_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/15_pink_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/15_pink_300x80.png"
+          },
+          "sortOrder": 5,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 54,
+          "colorCode": "forest",
+          "colorName": "Forest",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/16_forest_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/16_forest_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/16_forest_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/16_forest_300x80.png"
+          },
+          "sortOrder": 6,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 55,
+          "colorCode": "white",
+          "colorName": "White",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/17_white_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/17_white_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/17_white_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/17_white_300x80.png"
+          },
+          "sortOrder": 7,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 56,
+          "colorCode": "yellow",
+          "colorName": "Yellow",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/18_yellow_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/18_yellow_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/18_yellow_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/18_yellow_300x80.png"
+          },
+          "sortOrder": 8,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 57,
+          "colorCode": "asphalt",
+          "colorName": "Asphalt",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/19_asphalt_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/19_asphalt_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/19_asphalt_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/19_asphalt_300x80.png"
+          },
+          "sortOrder": 9,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 58,
+          "colorCode": "deep_teal",
+          "colorName": "Deep Teal",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_02/preview/20_deep_teal_front.png",
+            "back": "assets/img/products/Product_Demo_02/preview/20_deep_teal_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_02/buttons/96x96px/20_deep_teal_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_02/buttons/300x80px/20_deep_teal_300x80.png"
+          },
+          "sortOrder": 10,
+          "isActive": true
+        }
+      ],
+      "mediaAreas": {},
+      "ppi": {}
+    },
+    {
+      "productId": 4,
+      "productCode": "Product_Demo_03",
+      "productName": "Product_Demo_03",
+      "description": "Demo Description.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dapibus turpis sed ullamcorper sodales. Suspendisse eget sagittis enim, eget ultricies. ",
+      "productTypeId": 1,
+      "defaultColorAssetId": 64,
+      "colors": [
+        {
+          "colorAssetId": 59,
+          "colorCode": "heather_royal",
+          "colorName": "Heather Royal",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/21_heather_royal_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/21_heather_royal_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/21_heather_royal_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/21_heather_royal_300x80.png"
+          },
+          "sortOrder": 1,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 60,
+          "colorCode": "kelly",
+          "colorName": "Kelly",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/22_kelly_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/22_kelly_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/22_kelly_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/22_kelly_300x80.png"
+          },
+          "sortOrder": 2,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 61,
+          "colorCode": "red",
+          "colorName": "Red",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/23_red_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/23_red_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/23_red_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/23_red_300x80.png"
+          },
+          "sortOrder": 3,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 62,
+          "colorCode": "leaf",
+          "colorName": "Leaf",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/24_leaf_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/24_leaf_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/24_leaf_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/24_leaf_300x80.png"
+          },
+          "sortOrder": 4,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 63,
+          "colorCode": "team_purple",
+          "colorName": "Team Purple",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/25_team_purple_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/25_team_purple_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/25_team_purple_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/25_team_purple_300x80.png"
+          },
+          "sortOrder": 5,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 64,
+          "colorCode": "true_royal",
+          "colorName": "True Royal",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/26_true_royal_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/26_true_royal_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/26_true_royal_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/26_true_royal_300x80.png"
+          },
+          "sortOrder": 6,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 65,
+          "colorCode": "navy",
+          "colorName": "Navy",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/27_navy_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/27_navy_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/27_navy_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/27_navy_300x80.png"
+          },
+          "sortOrder": 7,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 66,
+          "colorCode": "orange",
+          "colorName": "Orange",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/28_orange_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/28_orange_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/28_orange_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/28_orange_300x80.png"
+          },
+          "sortOrder": 8,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 67,
+          "colorCode": "soft_pink",
+          "colorName": "Soft Pink",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/29_soft_pink_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/29_soft_pink_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/29_soft_pink_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/29_soft_pink_300x80.png"
+          },
+          "sortOrder": 9,
+          "isActive": true
+        },
+        {
+          "colorAssetId": 68,
+          "colorCode": "teal",
+          "colorName": "Teal",
+          "preview": {
+            "front": "assets/img/products/Product_Demo_03/preview/30_teal_front.png",
+            "back": "assets/img/products/Product_Demo_03/preview/30_teal_back.png"
+          },
+          "buttons": {
+            "button96": "assets/img/products/Product_Demo_03/buttons/96x96px/30_teal_96x96.png",
+            "button300x80": "assets/img/products/Product_Demo_03/buttons/300x80px/30_teal_300x80.png"
+          },
+          "sortOrder": 10,
+          "isActive": true
+        }
+      ],
+      "mediaAreas": {},
+      "ppi": {}
+    }
+  ]
+}

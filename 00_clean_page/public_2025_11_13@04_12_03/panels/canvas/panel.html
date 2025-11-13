@@ -1,0 +1,470 @@
+<section class="floating-panel floating-panel--canvas" data-panel-shell data-panel-kind="canvas">
+  <header class="floating-panel__header">
+    <div>
+      <p class="floating-panel__eyebrow">Canvas Workspace</p>
+      <h2 class="floating-panel__title" data-panel-title>Canvas</h2>
+    </div>
+    <button class="floating-panel__close" type="button" aria-label="Close panel" data-panel-close>
+      <svg viewBox="0 0 20 20" role="presentation" focusable="false">
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m6 6 8 8m0-8-8 8"></path>
+      </svg>
+    </button>
+  </header>
+  <div class="floating-panel__body canvas-panel__body" data-canvas-surface>
+    <div class="canvas-status" data-canvas-status>
+      <p class="canvas-status__text" data-status-text>Loading product data…</p>
+    </div>
+    <div class="canvas-workspace" data-canvas-workspace hidden>
+      <section class="canvas-stack canvas-stack--top">
+        <div class="canvas-product-loader">
+          <div class="product-loader-field">
+            <span class="product-loader-label">Product</span>
+            <select id="productSelect" class="product-loader-select"></select>
+          </div>
+          <div class="product-loader-hint">
+            Choose a product to load its preview and customization areas.
+          </div>
+        </div>
+        <div class="canvas-custom-panel" data-custom-panel>
+          <header class="canvas-custom-header">
+            <div>
+              <h3 id="customHeaderTitle">Canvas Customization</h3>
+              <p class="canvas-custom-subtitle">Fine-tune the printable canvas for the selected side.</p>
+            </div>
+            <div class="canvas-custom-meta">
+              <span class="custom-pill custom-pill--side" data-meta-side>Front</span>
+              <span class="custom-pill custom-pill--area" data-meta-area>—</span>
+              <span class="custom-pill custom-pill--size">
+                <span class="custom-size-label">Size</span>
+                <span class="custom-size-value" id="previewAreaSize">—</span>
+              </span>
+            </div>
+          </header>
+          <div class="custom-panel-main">
+            <div class="custom-primary-controls" data-primary-controls>
+              <div class="custom-grid">
+              <div class="custom-field">
+                <label for="customX" class="custom-label">X Position</label>
+                <div class="custom-spin-row">
+                  <div class="custom-spin">
+                    <button type="button" class="custom-step" data-field="x" data-custom-step data-step="-1">
+                      <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                    </button>
+                    <input id="customX" class="custom-input" type="number" step="1" inputmode="numeric" />
+                    <button type="button" class="custom-step" data-field="x" data-custom-step data-step="1">
+                      <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                    </button>
+                  </div>
+                  <button type="button" id="customCenterHBtn" class="custom-ghost-btn custom-center-btn">Center</button>
+                </div>
+                <input id="customXRange" class="custom-slider" type="range" min="0" max="1000" step="1" />
+              </div>
+
+              <div class="custom-field">
+                <label for="customW" class="custom-label">Canvas Width</label>
+                <div class="custom-spin">
+                  <button type="button" class="custom-step" data-field="width" data-custom-step data-step="-1">
+                    <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                  </button>
+                  <input id="customW" class="custom-input" type="number" step="1" inputmode="numeric" />
+                  <button type="button" class="custom-step" data-field="width" data-custom-step data-step="1">
+                    <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                  </button>
+                </div>
+                <input id="customWRange" class="custom-slider" type="range" min="1" max="1000" step="1" />
+              </div>
+
+              <div class="custom-field">
+                <label for="customY" class="custom-label">Y Position</label>
+                <div class="custom-spin-row">
+                  <div class="custom-spin">
+                    <button type="button" class="custom-step" data-field="y" data-custom-step data-step="-1">
+                      <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                    </button>
+                    <input id="customY" class="custom-input" type="number" step="1" inputmode="numeric" />
+                    <button type="button" class="custom-step" data-field="y" data-custom-step data-step="1">
+                      <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                    </button>
+                  </div>
+                  <button type="button" id="customCenterVBtn" class="custom-ghost-btn custom-center-btn">Center</button>
+                </div>
+                <input id="customYRange" class="custom-slider" type="range" min="0" max="1000" step="1" />
+              </div>
+
+              <div class="custom-field">
+                <label for="customH" class="custom-label">Canvas Height</label>
+                <div class="custom-spin">
+                  <button type="button" class="custom-step" data-field="height" data-custom-step data-step="-1">
+                    <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                  </button>
+                  <input id="customH" class="custom-input" type="number" step="1" inputmode="numeric" />
+                  <button type="button" class="custom-step" data-field="height" data-custom-step data-step="1">
+                    <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                  </button>
+                </div>
+                <input id="customHRange" class="custom-slider" type="range" min="1" max="1000" step="1" />
+              </div>
+            </div>
+
+              <div class="custom-row custom-row--reset">
+              <button type="button" id="customFrameToggleBtn" class="custom-reset-btn custom-toggle-btn" aria-pressed="true">
+                <span class="material-symbols-rounded" aria-hidden="true">▢</span>
+                <span>Show Available Area</span>
+              </button>
+              <button type="button" id="customResetBtn" class="custom-reset-btn custom-reset-btn--right">
+                <span class="material-symbols-rounded" aria-hidden="true">↺</span>
+                <span>Reset All</span>
+              </button>
+            </div>
+
+              <div class="custom-row custom-row--actions">
+              <div id="customPresetsContainer" class="custom-presets"></div>
+              <div class="custom-actions-secondary">
+                <span class="custom-pill custom-pill--hint">Presets coming soon</span>
+              </div>
+            </div>
+
+            </div>
+
+            <div class="canvas-advanced">
+              <div class="canvas-advanced__header">
+                <button type="button" class="canvas-advanced__toggle" data-advanced-toggle aria-expanded="false">
+                  Advanced
+                </button>
+                <p class="canvas-advanced__summary" data-advanced-summary>
+                  Manage up to four modular canvases.
+                </p>
+              </div>
+              <div class="canvas-advanced__panel" data-advanced-panel hidden>
+                <div class="canvas-advanced__notice" data-advanced-disabled hidden>
+                  Advanced pages are available when the Custom area is selected.
+                </div>
+                <div class="canvas-advanced__notice canvas-advanced__notice--warn" data-advanced-warning hidden></div>
+                <div class="canvas-advanced__cards">
+                  <article class="advanced-page-card" data-adv-page="page1">
+                    <header class="advanced-page-card__header">
+                      <label class="advanced-page-card__toggle">
+                        <input type="checkbox" data-adv-toggle checked />
+                        <span>Page 1 — Top Left</span>
+                      </label>
+                      <span class="advanced-page-card__size" data-adv-size>—</span>
+                    </header>
+                    <div class="advanced-page-card__body">
+                      <div class="custom-grid">
+                        <div class="custom-field">
+                          <label class="custom-label">X Position</label>
+                          <div class="custom-spin-row">
+                            <div class="custom-spin">
+                              <button type="button" class="custom-step" data-adv-step data-field="x" data-step="-1">
+                                <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                              </button>
+                              <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="x" />
+                              <button type="button" class="custom-step" data-adv-step data-field="x" data-step="1">
+                                <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                              </button>
+                            </div>
+                            <button type="button" class="custom-ghost-btn custom-center-btn" data-adv-center="x">Center</button>
+                          </div>
+                          <input class="custom-slider" type="range" min="0" max="1000" step="1" data-adv-range="x" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Canvas Width</label>
+                          <div class="custom-spin">
+                            <button type="button" class="custom-step" data-adv-step data-field="width" data-step="-1">
+                              <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                            </button>
+                            <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="width" />
+                            <button type="button" class="custom-step" data-adv-step data-field="width" data-step="1">
+                              <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                            </button>
+                          </div>
+                          <input class="custom-slider" type="range" min="1" max="1000" step="1" data-adv-range="width" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Y Position</label>
+                          <div class="custom-spin-row">
+                            <div class="custom-spin">
+                              <button type="button" class="custom-step" data-adv-step data-field="y" data-step="-1">
+                                <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                              </button>
+                              <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="y" />
+                              <button type="button" class="custom-step" data-adv-step data-field="y" data-step="1">
+                                <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                              </button>
+                            </div>
+                            <button type="button" class="custom-ghost-btn custom-center-btn" data-adv-center="y">Center</button>
+                          </div>
+                          <input class="custom-slider" type="range" min="0" max="1000" step="1" data-adv-range="y" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Canvas Height</label>
+                          <div class="custom-spin">
+                            <button type="button" class="custom-step" data-adv-step data-field="height" data-step="-1">
+                              <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                            </button>
+                            <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="height" />
+                            <button type="button" class="custom-step" data-adv-step data-field="height" data-step="1">
+                              <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                            </button>
+                          </div>
+                          <input class="custom-slider" type="range" min="1" max="1000" step="1" data-adv-range="height" />
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="advanced-page-card" data-adv-page="page2">
+                    <header class="advanced-page-card__header">
+                      <label class="advanced-page-card__toggle">
+                        <input type="checkbox" data-adv-toggle checked />
+                        <span>Page 2 — Top Right</span>
+                      </label>
+                      <span class="advanced-page-card__size" data-adv-size>—</span>
+                    </header>
+                    <div class="advanced-page-card__body">
+                      <div class="custom-grid">
+                        <div class="custom-field">
+                          <label class="custom-label">X Position</label>
+                          <div class="custom-spin-row">
+                            <div class="custom-spin">
+                              <button type="button" class="custom-step" data-adv-step data-field="x" data-step="-1">
+                                <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                              </button>
+                              <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="x" />
+                              <button type="button" class="custom-step" data-adv-step data-field="x" data-step="1">
+                                <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                              </button>
+                            </div>
+                            <button type="button" class="custom-ghost-btn custom-center-btn" data-adv-center="x">Center</button>
+                          </div>
+                          <input class="custom-slider" type="range" min="0" max="1000" step="1" data-adv-range="x" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Canvas Width</label>
+                          <div class="custom-spin">
+                            <button type="button" class="custom-step" data-adv-step data-field="width" data-step="-1">
+                              <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                            </button>
+                            <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="width" />
+                            <button type="button" class="custom-step" data-adv-step data-field="width" data-step="1">
+                              <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                            </button>
+                          </div>
+                          <input class="custom-slider" type="range" min="1" max="1000" step="1" data-adv-range="width" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Y Position</label>
+                          <div class="custom-spin-row">
+                            <div class="custom-spin">
+                              <button type="button" class="custom-step" data-adv-step data-field="y" data-step="-1">
+                                <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                              </button>
+                              <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="y" />
+                              <button type="button" class="custom-step" data-adv-step data-field="y" data-step="1">
+                                <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                              </button>
+                            </div>
+                            <button type="button" class="custom-ghost-btn custom-center-btn" data-adv-center="y">Center</button>
+                          </div>
+                          <input class="custom-slider" type="range" min="0" max="1000" step="1" data-adv-range="y" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Canvas Height</label>
+                          <div class="custom-spin">
+                            <button type="button" class="custom-step" data-adv-step data-field="height" data-step="-1">
+                              <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                            </button>
+                            <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="height" />
+                            <button type="button" class="custom-step" data-adv-step data-field="height" data-step="1">
+                              <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                            </button>
+                          </div>
+                          <input class="custom-slider" type="range" min="1" max="1000" step="1" data-adv-range="height" />
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="advanced-page-card" data-adv-page="page3">
+                    <header class="advanced-page-card__header">
+                      <label class="advanced-page-card__toggle">
+                        <input type="checkbox" data-adv-toggle checked />
+                        <span>Page 3 — Bottom Left</span>
+                      </label>
+                      <span class="advanced-page-card__size" data-adv-size>—</span>
+                    </header>
+                    <div class="advanced-page-card__body">
+                      <div class="custom-grid">
+                        <div class="custom-field">
+                          <label class="custom-label">X Position</label>
+                          <div class="custom-spin-row">
+                            <div class="custom-spin">
+                              <button type="button" class="custom-step" data-adv-step data-field="x" data-step="-1">
+                                <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                              </button>
+                              <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="x" />
+                              <button type="button" class="custom-step" data-adv-step data-field="x" data-step="1">
+                                <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                              </button>
+                            </div>
+                            <button type="button" class="custom-ghost-btn custom-center-btn" data-adv-center="x">Center</button>
+                          </div>
+                          <input class="custom-slider" type="range" min="0" max="1000" step="1" data-adv-range="x" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Canvas Width</label>
+                          <div class="custom-spin">
+                            <button type="button" class="custom-step" data-adv-step data-field="width" data-step="-1">
+                              <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                            </button>
+                            <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="width" />
+                            <button type="button" class="custom-step" data-adv-step data-field="width" data-step="1">
+                              <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                            </button>
+                          </div>
+                          <input class="custom-slider" type="range" min="1" max="1000" step="1" data-adv-range="width" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Y Position</label>
+                          <div class="custom-spin-row">
+                            <div class="custom-spin">
+                              <button type="button" class="custom-step" data-adv-step data-field="y" data-step="-1">
+                                <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                              </button>
+                              <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="y" />
+                              <button type="button" class="custom-step" data-adv-step data-field="y" data-step="1">
+                                <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                              </button>
+                            </div>
+                            <button type="button" class="custom-ghost-btn custom-center-btn" data-adv-center="y">Center</button>
+                          </div>
+                          <input class="custom-slider" type="range" min="0" max="1000" step="1" data-adv-range="y" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Canvas Height</label>
+                          <div class="custom-spin">
+                            <button type="button" class="custom-step" data-adv-step data-field="height" data-step="-1">
+                              <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                            </button>
+                            <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="height" />
+                            <button type="button" class="custom-step" data-adv-step data-field="height" data-step="1">
+                              <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                            </button>
+                          </div>
+                          <input class="custom-slider" type="range" min="1" max="1000" step="1" data-adv-range="height" />
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="advanced-page-card" data-adv-page="page4">
+                    <header class="advanced-page-card__header">
+                      <label class="advanced-page-card__toggle">
+                        <input type="checkbox" data-adv-toggle checked />
+                        <span>Page 4 — Bottom Right</span>
+                      </label>
+                      <span class="advanced-page-card__size" data-adv-size>—</span>
+                    </header>
+                    <div class="advanced-page-card__body">
+                      <div class="custom-grid">
+                        <div class="custom-field">
+                          <label class="custom-label">X Position</label>
+                          <div class="custom-spin-row">
+                            <div class="custom-spin">
+                              <button type="button" class="custom-step" data-adv-step data-field="x" data-step="-1">
+                                <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                              </button>
+                              <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="x" />
+                              <button type="button" class="custom-step" data-adv-step data-field="x" data-step="1">
+                                <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                              </button>
+                            </div>
+                            <button type="button" class="custom-ghost-btn custom-center-btn" data-adv-center="x">Center</button>
+                          </div>
+                          <input class="custom-slider" type="range" min="0" max="1000" step="1" data-adv-range="x" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Canvas Width</label>
+                          <div class="custom-spin">
+                            <button type="button" class="custom-step" data-adv-step data-field="width" data-step="-1">
+                              <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                            </button>
+                            <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="width" />
+                            <button type="button" class="custom-step" data-adv-step data-field="width" data-step="1">
+                              <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                            </button>
+                          </div>
+                          <input class="custom-slider" type="range" min="1" max="1000" step="1" data-adv-range="width" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Y Position</label>
+                          <div class="custom-spin-row">
+                            <div class="custom-spin">
+                              <button type="button" class="custom-step" data-adv-step data-field="y" data-step="-1">
+                                <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                              </button>
+                              <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="y" />
+                              <button type="button" class="custom-step" data-adv-step data-field="y" data-step="1">
+                                <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                              </button>
+                            </div>
+                            <button type="button" class="custom-ghost-btn custom-center-btn" data-adv-center="y">Center</button>
+                          </div>
+                          <input class="custom-slider" type="range" min="0" max="1000" step="1" data-adv-range="y" />
+                        </div>
+                        <div class="custom-field">
+                          <label class="custom-label">Canvas Height</label>
+                          <div class="custom-spin">
+                            <button type="button" class="custom-step" data-adv-step data-field="height" data-step="-1">
+                              <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                            </button>
+                            <input class="custom-input" type="number" step="1" inputmode="numeric" data-adv-input="height" />
+                            <button type="button" class="custom-step" data-adv-step data-field="height" data-step="1">
+                              <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                            </button>
+                          </div>
+                          <input class="custom-slider" type="range" min="1" max="1000" step="1" data-adv-range="height" />
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+                <p class="canvas-advanced__hint">
+                  Toggle pages on or off and adjust their positions. Pages cannot overlap each other or exceed the available canvas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="canvas-stack canvas-stack--bottom" aria-label="Product Preview">
+        <header class="canvas-preview-header">
+          <div class="canvas-preview-header__meta">
+            <h3>Product Preview</h3>
+            <div class="tp-side-toggle" role="radiogroup" aria-label="Preview side">
+              <button class="tp-side-btn is-active" data-side="front" aria-pressed="true">
+                Front
+              </button>
+              <button class="tp-side-btn" data-side="back" aria-pressed="false">
+                Back
+              </button>
+            </div>
+            <label class="tp-area-select" aria-label="Print area">
+              <span class="tp-area-label">Area</span>
+              <select id="previewAreaSelect" class="tp-area-select-control"></select>
+            </label>
+          </div>
+          <div class="tp-area-size" aria-live="polite">
+            <span class="tp-area-size-label">Size</span>
+            <span id="previewAreaSizeDisplay" class="tp-area-size-value">—</span>
+          </div>
+        </header>
+        <div class="canvas-preview-stage">
+          <img id="productPreviewImage" class="preview-image" alt="Product preview" />
+          <svg id="previewCanvasOverlay" class="preview-overlay" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
