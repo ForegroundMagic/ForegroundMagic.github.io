@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" data-active-section="explore">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dark UI Panels</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="panels/panel-shell.css" />
+</head>
+<body>
+  <div class="app-container">
+    <div class="panel panel-top">
+      <header class="top-toolbar" role="banner" aria-label="Main toolbar">
+        <!-- Row 1: Brand + main tabs -->
+        <div class="header-row-top">
+          <div class="brand">
+            <div class="brand__logo" aria-hidden="true"></div>
+            <div class="brand__name">My App</div>
+          </div>
+          <nav class="header-tools" aria-label="Section selector">
+            <button class="tool is-active" type="button" data-section="explore">
+              <span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                  <path fill="currentColor" d="M7 5.5 9.5 4h5L17 5.5l3 2.2-2 3-1.5-1v9.3H7.5V9.7l-1.5 1-2-3z"></path>
+                  <path fill="currentColor" d="M10 9.5 8.5 11v7h7v-7L14 9.5z"></path>
+                </svg>
+              </span>
+              <span class="tool__label">Browse</span>
+            </button>
+            <button class="tool" type="button" data-section="customize">
+              <span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                  <path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 4a8 8 0 0 0 0 16h1.4a2.6 2.6 0 0 0 0-5H13a1.8 1.8 0 0 1 0-3h1.5a3.5 3.5 0 0 0 0-7z"></path>
+                  <circle cx="9" cy="9" r="1" fill="currentColor"></circle>
+                  <circle cx="7" cy="13" r="1" fill="currentColor"></circle>
+                  <circle cx="12" cy="7" r="1" fill="currentColor"></circle>
+                  <circle cx="15" cy="11" r="1" fill="currentColor"></circle>
+                </svg>
+              </span>
+              <span class="tool__label">Design</span>
+            </button>
+            <button class="tool" type="button" data-section="order">
+              <span class="tool__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                  <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M5 13.5h4.2l2 1H16a2.5 2.5 0 0 1 0 5h-6a4 4 0 0 1-2.5-.9L5 16.5z"></path>
+                  <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M8.2 14.5c0-1.5 1.2-2.7 2.7-2.7H14a2 2 0 0 1 2 2v2.4"></path>
+                  <rect x="9.5" y="4.5" width="5" height="4.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+                  <path fill="currentColor" d="M11 6.5h2v1h-2z"></path>
+                </svg>
+              </span>
+              <span class="tool__label">Get</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Row 2: Section group headers -->
+        <div class="header-row-headers" role="region" aria-label="Toolbar section headers">
+          <div class="headers-deck">
+            <div class="headers-block" data-section="explore">
+              <button class="tool" type="button" disabled style="grid-column: 1 / span 2;">
+                <span class="tool__label">Start</span>
+              </button>
+              <button class="tool" type="button" disabled style="grid-column: 3 / span 4;">
+                <span class="tool__label">Discover</span>
+              </button>
+            </div>
+
+            <div class="headers-block" data-section="customize">
+              <button class="tool" type="button" disabled style="grid-column: 1 / span 2;">
+                <span class="tool__label">Add</span>
+              </button>
+              <button class="tool" type="button" disabled style="grid-column: 3 / span 4;">
+                <span class="tool__label">Adjust</span>
+              </button>
+            </div>
+
+            <div class="headers-block" data-section="order">
+              <button class="tool" type="button" disabled style="grid-column: 1 / span 3;">
+                <span class="tool__label">Best Deals</span>
+              </button>
+              <button class="tool" type="button" disabled style="grid-column: 4 / span 3;">
+                <span class="tool__label">External Stores</span>
+              </button></div>
+          </div>
+        </div>
+
+        <!-- Row 3: Action buttons -->
+        <div class="header-row-toolbar" role="region" aria-label="Section tools">
+          <div class="toolbar-deck">
+            <section class="toolbar-block" data-section="explore" aria-label="Browse tools">
+              <nav class="toolbar">
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="m4.5 11 7.5-6 7.5 6V20H5z"></path>
+                      <path fill="currentColor" d="M10 14h4v4h-4z"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Home</span>
+                </button>
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <rect x="4" y="5.5" width="16" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+                      <path fill="currentColor" d="M11 11.5 15 13l-4 1.5z"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M7 19h10"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Guides</span>
+                </button>
+                <button class="tool" type="button" data-panel-id="catalog" data-panel-variant="all-wares" data-panel-title="All Wares">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="m7.5 7 2-2h5l2 2 2.5 2.5-1.5 2V17a3 3 0 0 1-3 3h-7a3 3 0 0 1-3-3v-5.5L5 9.5z"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M9 7.5 12 10l3-2.5"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">All Wares</span>
+                </button>
+                <button class="tool" type="button" data-panel-id="catalog" data-panel-variant="hot" data-panel-title="Hot">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9.5 14.5c-.7-1-.7-2.6.2-4.2.8-1.5 2.2-3 3.4-4.2.2 1 .4 2.8 1.3 3.6.7-.6 1.2-1.7 1.2-3 1.7 1.7 2.7 3.6 2.7 5.6 0 3-2.4 5.6-5.4 6.4-.3-1.1-.4-2.3 0-3.5-.8.7-2.3 1.5-3.4-.7z"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Hot</span>
+                </button>
+                <button class="tool" type="button" data-panel-id="templates" data-panel-variant="templates" data-panel-title="Templates">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <rect x="6" y="6" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+                      <path fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" d="M10 9h4l2 2v4h-6l-2-2z"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" d="m8 15 3 3"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Templates</span>
+                </button>
+                <button class="tool" type="button" data-panel-id="catalog" data-panel-variant="new" data-panel-title="New">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M9 6.5 10 9l2-1 1 2 1.5-1 .9 2.4"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="m6 12 2 .5-.5 2L9 15l.8 2"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="m14 15 1 1 2-.5-.5 2 1.5 1"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">New</span>
+                </button>
+              </nav>
+            </section>
+
+            <section class="toolbar-block" data-section="customize" aria-label="Design tools">
+              <nav class="toolbar">
+                <button class="tool" type="button" data-panel-id="editor" data-panel-variant="graphics" data-panel-title="Graphics">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <rect x="3.5" y="5" width="17" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+                      <circle cx="9" cy="11" r="1.5" fill="currentColor"></circle>
+                      <path fill="currentColor" d="M6 17l4-5 3 4 2.5-2L18 17z"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Graphics</span>
+                </button>
+                <button class="tool" type="button" data-panel-id="editor" data-panel-variant="text" data-panel-title="Text">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="currentColor" d="M5 6h14v3h-4v9h-4v-9H5z"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Text</span>
+                </button>
+                <button class="tool" type="button" data-panel-id="canvas-main-preview-panel" data-panel-variant="default" data-panel-title="Canvas Preview">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M8 5v10h10"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M6 9h8v10"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Canvas</span>
+                </button>
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="currentColor" d="M12 3c-3.2 4.1-6 7.2-6 10.5A6 6 0 0 0 12 20a6 6 0 0 0 6-6.5C18 10.2 15.2 7.1 12 3z"></path>
+                      <circle cx="9" cy="12" r="1.2" fill="none" stroke="currentColor" stroke-width="1.3"></circle>
+                      <circle cx="12.5" cy="10" r="1" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+                      <circle cx="14.5" cy="13.5" r="1.1" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Color</span>
+                </button>
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M6 8h12M6 12h12M6 16h12"></path>
+                      <circle cx="9" cy="8" r="1.8" fill="currentColor"></circle>
+                      <circle cx="15" cy="12" r="1.8" fill="currentColor"></circle>
+                      <circle cx="11" cy="16" r="1.8" fill="currentColor"></circle>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Properties</span>
+                </button>
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M12 5 20 9l-8 4-8-4z"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="m4 13 8 4 8-4"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="m4 17 8 4 8-4"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Layers</span>
+                </button>
+              </nav>
+            </section>
+
+            <section class="toolbar-block" data-section="order" aria-label="Get tools">
+              <nav class="toolbar">
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <circle cx="6.5" cy="7.5" r="1" fill="currentColor"></circle>
+                      <circle cx="6.5" cy="12" r="1" fill="currentColor"></circle>
+                      <circle cx="6.5" cy="16.5" r="1" fill="currentColor"></circle>
+                      <path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M9.5 7.5h8m-8 4.5h6m-6 4.5h4"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Steps</span>
+                </button>
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <rect x="5" y="5" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2.2 2.2L15 10.5"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Review</span>
+                </button>
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M7 15h10v3H7z"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M12 6v7m0 0 3-3m-3 3-3-3"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Export</span>
+                </button>
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M7 6h10v3H7z"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M12 18V11m0 0 3 3m-3-3-3 3"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Load</span>
+                </button>
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M7 7.5h10l1 9.5H6z"></path>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M9 7.5V6a3 3 0 0 1 6 0v1.5"></path>
+                      <path fill="currentColor" d="M10 12h4v3h-4z"></path>
+                    </svg>
+                  </span>
+                  <span class="tool__label">Shops</span>
+                </button>
+                <button class="tool" type="button">
+                  <span class="tool__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                      <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+                      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M12 9.5a1.5 1.5 0 0 1 1.5 1.5c0 .9-.4 1.3-1.1 1.9-.5.4-.9.8-.9 1.6"></path>
+                      <circle cx="12" cy="17" r=".9" fill="currentColor"></circle>
+                    </svg>
+                  </span>
+                  <span class="tool__label">FAQ</span>
+                </button>
+              </nav>
+            </section>
+          </div>
+        </div>
+      </header>
+    </div>
+    <div class="panel panel-bottom">
+      <!-- Bottom panel content goes here -->
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

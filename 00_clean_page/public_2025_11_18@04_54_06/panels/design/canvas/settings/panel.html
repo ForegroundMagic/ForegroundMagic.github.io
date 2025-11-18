@@ -1,0 +1,141 @@
+<section class="floating-panel floating-panel--canvas-settings" data-panel-shell data-panel-kind="canvas-settings-panel">
+  <header class="floating-panel__header">
+    <div>
+      <p class="floating-panel__eyebrow">Canvas Controls</p>
+      <h2 class="floating-panel__title" data-panel-title>Canvas Settings</h2>
+    </div>
+    <button class="floating-panel__close" type="button" aria-label="Close panel" data-panel-close>
+      <svg viewBox="0 0 20 20" role="presentation" focusable="false">
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m6 6 8 8m0-8-8 8"></path>
+      </svg>
+    </button>
+  </header>
+  <div class="floating-panel__body floating-panel__body--canvas-settings">
+    <div class="canvas-settings">
+      <div class="canvas-settings-region canvas-settings-region-top">
+        <div class="canvas-settings-tabs" data-canvas-tabs>
+          <div class="canvas-settings-tabs__list" role="tablist" aria-label="Canvas mode">
+            <button class="canvas-settings-tabs__tab is-active" type="button" role="tab" aria-selected="true" data-tab="single">
+              Single Canvas
+            </button>
+            <button class="canvas-settings-tabs__tab" type="button" role="tab" aria-selected="false" data-tab="multi">
+              Multi Canvas
+            </button>
+          </div>
+          <div class="canvas-settings-tabs__views">
+            <div class="canvas-settings-tabs__view is-active" role="tabpanel" data-tab-view="single" aria-label="Single Canvas">
+              <div class="canvas-settings-single-main custom-panel-main">
+                <div class="custom-primary-controls" data-primary-controls>
+                  <div class="custom-grid">
+                    <div class="custom-field">
+                      <label for="customX" class="custom-label">X Position</label>
+                      <div class="custom-spin-row">
+                        <div class="custom-spin">
+                          <button type="button" class="custom-step" data-field="x" data-custom-step data-step="-1">
+                            <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                          </button>
+                          <input id="customX" class="custom-input" type="number" step="1" inputmode="numeric" />
+                          <button type="button" class="custom-step" data-field="x" data-custom-step data-step="1">
+                            <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                          </button>
+                        </div>
+                        <button type="button" id="customCenterHBtn" class="custom-ghost-btn custom-center-btn">Center</button>
+                      </div>
+                      <input id="customXRange" class="custom-slider" type="range" min="0" max="1000" step="1" />
+                    </div>
+
+                    <div class="custom-field">
+                      <label for="customW" class="custom-label">Canvas Width</label>
+                      <div class="custom-spin">
+                        <button type="button" class="custom-step" data-field="width" data-custom-step data-step="-1">
+                          <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                        </button>
+                        <input id="customW" class="custom-input" type="number" step="1" inputmode="numeric" />
+                        <button type="button" class="custom-step" data-field="width" data-custom-step data-step="1">
+                          <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                        </button>
+                      </div>
+                      <input id="customWRange" class="custom-slider" type="range" min="1" max="1000" step="1" />
+                    </div>
+
+                    <div class="custom-field">
+                      <label for="customY" class="custom-label">Y Position</label>
+                      <div class="custom-spin-row">
+                        <div class="custom-spin">
+                          <button type="button" class="custom-step" data-field="y" data-custom-step data-step="-1">
+                            <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                          </button>
+                          <input id="customY" class="custom-input" type="number" step="1" inputmode="numeric" />
+                          <button type="button" class="custom-step" data-field="y" data-custom-step data-step="1">
+                            <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                          </button>
+                        </div>
+                        <button type="button" id="customCenterVBtn" class="custom-ghost-btn custom-center-btn">Center</button>
+                      </div>
+                      <input id="customYRange" class="custom-slider" type="range" min="0" max="1000" step="1" />
+                    </div>
+
+                    <div class="custom-field">
+                      <label for="customH" class="custom-label">Canvas Height</label>
+                      <div class="custom-spin">
+                        <button type="button" class="custom-step" data-field="height" data-custom-step data-step="-1">
+                          <span class="material-symbols-rounded" aria-hidden="true">−</span>
+                        </button>
+                        <input id="customH" class="custom-input" type="number" step="1" inputmode="numeric" />
+                        <button type="button" class="custom-step" data-field="height" data-custom-step data-step="1">
+                          <span class="material-symbols-rounded" aria-hidden="true">+</span>
+                        </button>
+                      </div>
+                      <input id="customHRange" class="custom-slider" type="range" min="1" max="1000" step="1" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="custom-row custom-row--reset">
+                  <button type="button" id="customFrameToggleBtn" class="custom-reset-btn custom-toggle-btn" aria-pressed="true">
+                    <span class="material-symbols-rounded" aria-hidden="true">▢</span>
+                    <span>Show Available Area</span>
+                  </button>
+                  <button type="button" id="customResetBtn" class="custom-reset-btn custom-reset-btn--right">
+                    <span class="material-symbols-rounded" aria-hidden="true">↺</span>
+                    <span>Reset All</span>
+                  </button>
+                </div>
+
+                <div class="custom-row custom-row--actions">
+                  <div id="customPresetsContainer" class="custom-presets"></div>
+                  <div class="custom-actions-secondary">
+                    <span class="custom-pill custom-pill--hint">Presets coming soon</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="canvas-settings-tabs__view" role="tabpanel" data-tab-view="multi" aria-label="Multi Canvas">
+              <p class="canvas-settings__placeholder">Multi Canvas view is active.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="canvas-settings-region canvas-settings-region-bottom">
+        <div class="canvas-settings__group">
+          <p class="canvas-settings__label">Export</p>
+          <div class="canvas-settings__row">
+            <label class="canvas-settings__toggle">
+              <input type="checkbox" />
+              <span>Remove background</span>
+            </label>
+            <label class="canvas-settings__toggle">
+              <input type="checkbox" checked />
+              <span>Embed color profile</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="canvas-settings__note">
+          Adjust these toggles to preview how your canvas behaves in the main view.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
