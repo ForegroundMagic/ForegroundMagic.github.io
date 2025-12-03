@@ -1,0 +1,43 @@
+<section class="floating-panel floating-panel--design-preview" data-panel-shell data-panel-kind="design-product-preview">
+  <header class="floating-panel__header">
+    <div>
+      <p class="floating-panel__eyebrow">Preview</p>
+      <h2 class="floating-panel__title" data-panel-title>Product Design Preview</h2>
+    </div>
+  </header>
+  <div class="floating-panel__body floating-panel__body--design-preview">
+    <div class="design-preview">
+      <div class="design-preview__controls">
+        <div class="design-preview__controls-main">
+          <div class="canvas-side-tabs" data-preview-tabs role="tablist" aria-label="Product sides"></div>
+          <div class="design-preview__view-toggle" role="group" aria-label="Preview mode">
+            <button type="button" class="view-toggle__btn is-active" data-view-mode="full" aria-pressed="true">
+              Full View
+            </button>
+            <button type="button" class="view-toggle__btn" data-view-mode="edit" aria-pressed="false">
+              Edit View
+            </button>
+          </div>
+        </div>
+        <div class="design-preview__toggles">
+          <label class="design-preview__toggle">
+            <input type="checkbox" data-frame-toggle checked />
+            <span>Show frame outline</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="design-preview-shell">
+        <div class="design-preview-stage">
+          <img class="preview-image" data-preview-img alt="Product preview" />
+          <svg class="canvas-area-overlay" xmlns="http://www.w3.org/2000/svg">
+            <rect class="canvas-area-rect" x="0" y="0" width="0" height="0"></rect>
+          </svg>
+          <div class="design-overlay" data-design-overlay>
+            <svg data-design-svg aria-label="Design layers"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,197 @@
+.floating-panel__body--design-preview {
+  height: 100%;
+}
+
+.design-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+}
+
+.design-preview__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.design-preview__controls-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.design-preview__view-toggle {
+  display: inline-flex;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.view-toggle__btn {
+  all: unset;
+  cursor: pointer;
+  padding: 8px 12px;
+  color: rgba(229, 233, 243, 0.8);
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.view-toggle__btn + .view-toggle__btn {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.view-toggle__btn.is-active {
+  background: linear-gradient(145deg, rgba(124, 157, 251, 0.25), rgba(124, 157, 251, 0.12));
+  color: #fff;
+}
+
+.canvas-side-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.canvas-side-tab {
+  all: unset;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(229, 233, 243, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 120ms ease;
+}
+
+.canvas-side-tab:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.canvas-side-tab.is-active {
+  background: linear-gradient(145deg, rgba(124, 157, 251, 0.28), rgba(124, 157, 251, 0.14));
+  color: #fff;
+  border-color: rgba(124, 157, 251, 0.55);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.canvas-side-tab.is-inactive {
+  opacity: 0.5;
+  border-style: dashed;
+}
+
+.design-preview__toggles {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.design-preview__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.design-preview__toggle:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.design-preview__toggle input {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: #7c9dfb;
+}
+
+.design-preview-shell {
+  flex: 1 1 auto;
+  min-height: 260px;
+  display: flex;
+}
+
+.design-preview-stage {
+  position: relative;
+  flex: 1;
+  min-height: 260px;
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  border-radius: 14px;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), transparent 60%),
+    rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.design-preview-stage .preview-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+.design-preview-stage.is-edit-mode .preview-image {
+  position: absolute;
+  max-height: none;
+  object-fit: contain;
+}
+
+.design-preview-stage .canvas-area-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas-area-rect {
+  fill: rgba(136, 192, 255, 0.14);
+  stroke: rgba(136, 192, 255, 0.9);
+  stroke-width: 2;
+}
+
+.canvas-area-rect.is-outline-only {
+  fill: transparent;
+}
+
+.design-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.design-overlay svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+.design-overlay text {
+  font-family: Arial, sans-serif;
+  fill: #ffffff;
+}
+
+.design-overlay .layer-placeholder {
+  fill: rgba(255, 255, 255, 0.15);
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 1.4;
+  stroke-dasharray: 4 3;
+}
