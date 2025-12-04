@@ -17,9 +17,10 @@
 }
 
 .product-preview__controls {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 12px;
   background: rgba(7, 16, 34, 0.42);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px 12px 0 0;
@@ -35,6 +36,8 @@
   gap: 6px;
   min-width: 0;
   padding: 0 4px;
+  flex: 1 1 0;
+  align-items: center;
 }
 
 .product-preview__group-label {
