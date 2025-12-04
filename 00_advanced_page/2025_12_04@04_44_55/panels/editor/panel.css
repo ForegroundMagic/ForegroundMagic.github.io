@@ -1,0 +1,8 @@
+[data-panel-kind="editor"] .floating-panel__blank {
+  border-color: rgba(103, 232, 249, 0.35);
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0.08), rgba(12, 20, 30, 0.15));
+}
+
+[data-panel-kind="editor"] .floating-panel__blank-label {
+  letter-spacing: 0.08em;
+}
