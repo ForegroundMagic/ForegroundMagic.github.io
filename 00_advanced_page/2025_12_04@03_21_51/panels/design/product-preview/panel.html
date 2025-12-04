@@ -1,0 +1,78 @@
+<section
+  class="floating-panel floating-panel--product-designer-preview"
+  data-panel-shell
+  data-panel-kind="design-product-preview"
+>
+  <div class="floating-panel__body floating-panel__body--product-designer-preview">
+    <div class="product-preview-panel" data-product-designer-preview>
+      <div class="product-preview__controls">
+        <div class="product-preview__control-group product-preview__control-group--sides">
+          <p class="product-preview__group-label">Sides</p>
+          <div class="product-preview__button-set" data-preview-tabs role="tablist" aria-label="Product sides"></div>
+        </div>
+
+        <div class="product-preview__control-group product-preview__control-group--view">
+          <p class="product-preview__group-label">View Modes</p>
+          <div class="product-preview__button-set" role="group" aria-label="Preview mode">
+            <button
+              type="button"
+              class="product-preview__btn is-active"
+              data-view-mode="full"
+              data-view-toggle-btn
+              aria-pressed="true"
+            >
+              <span class="product-preview__icon product-preview__icon--full" aria-hidden="true"></span>
+              <span class="product-preview__label">Full</span>
+            </button>
+            <button
+              type="button"
+              class="product-preview__btn"
+              data-view-mode="edit"
+              data-view-toggle-btn
+              aria-pressed="false"
+            >
+              <span class="product-preview__icon product-preview__icon--edit" aria-hidden="true"></span>
+              <span class="product-preview__label">Edit</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="product-preview__control-group product-preview__control-group--visibility">
+          <p class="product-preview__group-label">Visibility</p>
+          <div class="product-preview__button-set" role="group" aria-label="Visibility toggles">
+            <button
+              type="button"
+              class="product-preview__btn is-active"
+              data-frame-toggle-btn
+              aria-pressed="true"
+            >
+              <span class="product-preview__icon product-preview__icon--frame" aria-hidden="true"></span>
+              <span class="product-preview__label">Frame</span>
+            </button>
+            <button
+              type="button"
+              class="product-preview__btn is-active"
+              data-design-toggle-btn
+              aria-pressed="true"
+            >
+              <span class="product-preview__icon product-preview__icon--design" aria-hidden="true"></span>
+              <span class="product-preview__label">Design</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-preview__stage-shell">
+        <div class="product-preview__stage">
+          <img class="product-preview__image" data-preview-img alt="Product preview" />
+          <svg class="product-preview__canvas-overlay" xmlns="http://www.w3.org/2000/svg">
+            <rect class="product-preview__canvas-rect" x="0" y="0" width="0" height="0"></rect>
+          </svg>
+          <div class="product-preview__design-overlay" data-design-overlay>
+            <svg data-design-svg aria-label="Design layers"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

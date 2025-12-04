@@ -1,0 +1,276 @@
+.floating-panel__body--product-designer-preview {
+  height: 100%;
+  padding: 0;
+  display: flex;
+}
+
+.floating-panel--product-designer-preview {
+  padding: 0;
+}
+
+.product-preview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.product-preview__controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0;
+  background: rgba(7, 16, 34, 0.42);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px 12px 0 0;
+  padding: 8px 10px 6px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.product-preview__control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 0 4px;
+}
+
+.product-preview__group-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(229, 233, 243, 0.75);
+  text-align: center;
+}
+
+.product-preview__button-set {
+  display: inline-flex;
+  align-items: stretch;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(150deg, rgba(20, 27, 49, 0.8), rgba(19, 25, 46, 0.5));
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+.product-preview__btn,
+.product-preview__button-set .canvas-side-tab {
+  all: unset;
+  cursor: pointer;
+  padding: 10px 12px;
+  min-width: 110px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: rgba(229, 233, 243, 0.82);
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.product-preview__btn:focus-visible,
+.product-preview__button-set .canvas-side-tab:focus-visible {
+  outline: 2px solid rgba(124, 157, 251, 0.6);
+  outline-offset: -2px;
+}
+
+.product-preview__btn + .product-preview__btn,
+.product-preview__button-set .canvas-side-tab + .canvas-side-tab {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.product-preview__btn.is-active,
+.product-preview__button-set .canvas-side-tab.is-active {
+  background: linear-gradient(160deg, rgba(124, 157, 251, 0.38), rgba(124, 157, 251, 0.2));
+  color: #f7f9ff;
+  box-shadow: inset 0 0 0 1px rgba(124, 157, 251, 0.4);
+}
+
+.product-preview__label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.product-preview__button-set .canvas-side-tab {
+  min-width: 110px;
+  border: none;
+  background: transparent;
+}
+
+.product-preview__button-set .canvas-side-tab.is-inactive {
+  background: rgba(255, 99, 132, 0.14);
+  color: rgba(255, 220, 226, 0.95);
+}
+
+.product-preview__button-set .canvas-side-tab.is-inactive.is-active {
+  background: linear-gradient(145deg, rgba(255, 112, 138, 0.38), rgba(255, 112, 138, 0.24));
+  color: #fff0f0;
+}
+
+.product-preview__stage-shell {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  width: 100%;
+}
+
+.product-preview__stage {
+  position: relative;
+  flex: 1;
+  min-height: 300px;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 0 14px 14px;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), transparent 60%),
+    rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.product-preview__stage-shell,
+.product-preview__stage {
+  padding: 0;
+}
+
+.product-preview__image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: 0;
+}
+
+.product-preview__stage.is-edit-mode .product-preview__image {
+  position: absolute;
+  object-fit: contain;
+}
+
+.product-preview__canvas-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.product-preview__canvas-rect {
+  fill: rgba(136, 192, 255, 0.14);
+  stroke: rgba(136, 192, 255, 0.9);
+  stroke-width: 2;
+}
+
+.product-preview__canvas-rect.is-outline-only {
+  fill: transparent;
+}
+
+.product-preview__design-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.product-preview__design-overlay svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+.product-preview__design-overlay text {
+  font-family: Arial, sans-serif;
+  fill: #ffffff;
+}
+
+.product-preview__design-overlay .layer-placeholder {
+  fill: rgba(255, 255, 255, 0.15);
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 1.4;
+  stroke-dasharray: 4 3;
+}
+
+.product-preview__icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(124, 157, 251, 0.3), rgba(124, 157, 251, 0.12));
+  box-shadow: inset 0 0 0 2px rgba(124, 157, 251, 0.5);
+  position: relative;
+}
+
+.product-preview__icon::after,
+.product-preview__icon::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.product-preview__icon--back::before {
+  border-style: dashed;
+}
+
+.product-preview__icon--full::before {
+  border-style: solid;
+}
+
+.product-preview__icon--edit::before {
+  border-style: dashed;
+}
+
+.product-preview__icon--edit::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  transform: rotate(-25deg);
+  top: 11px;
+  left: 6px;
+  border-radius: 1px;
+}
+
+.product-preview__icon--frame::after {
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.9);
+  inset: 5px;
+}
+
+.product-preview__icon--design {
+  box-shadow: inset 0 0 0 2px rgba(144, 240, 198, 0.7);
+  background: linear-gradient(135deg, rgba(144, 240, 198, 0.35), rgba(124, 157, 251, 0.15));
+}
+
+.product-preview__icon--design::before {
+  border-color: rgba(255, 255, 255, 0.85);
+  border-style: solid;
+}
+
+.product-preview__icon--design::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  top: 7px;
+  left: 7px;
+  box-shadow: 0 0 0 1px rgba(19, 25, 46, 0.35);
+}
+
+.product-preview__icon--front::before {
+  border-color: rgba(255, 255, 255, 0.9);
+  border-style: solid;
+}
