@@ -6,58 +6,97 @@
   <div class="floating-panel__body floating-panel__body--product-designer-preview">
     <div class="product-preview-panel" data-product-designer-preview>
       <div class="product-preview__controls">
-        <div class="product-preview__control-group product-preview__control-group--sides">
-          <p class="product-preview__group-label">Sides</p>
-          <div class="product-preview__button-set" data-preview-tabs role="tablist" aria-label="Product sides"></div>
-        </div>
-
-        <div class="product-preview__control-group product-preview__control-group--view">
-          <p class="product-preview__group-label">View Modes</p>
-          <div class="product-preview__button-set" role="group" aria-label="Preview mode">
-            <button
-              type="button"
-              class="product-preview__btn is-active"
-              data-view-mode="full"
-              data-view-toggle-btn
-              aria-pressed="true"
-            >
-              <span class="product-preview__icon product-preview__icon--full" aria-hidden="true"></span>
-              <span class="product-preview__label">Full</span>
-            </button>
-            <button
-              type="button"
-              class="product-preview__btn"
-              data-view-mode="edit"
-              data-view-toggle-btn
-              aria-pressed="false"
-            >
-              <span class="product-preview__icon product-preview__icon--edit" aria-hidden="true"></span>
-              <span class="product-preview__label">Edit</span>
-            </button>
+        <div class="product-preview__control-headers header-row-headers">
+          <div class="headers-deck">
+            <div class="headers-block is-active" style="opacity:1;pointer-events:auto;grid-template-columns: repeat(3, 1fr);">
+              <button class="tool" type="button" disabled>
+                <span class="tool__label">Sides</span>
+              </button>
+              <button class="tool" type="button" disabled>
+                <span class="tool__label">View Modes</span>
+              </button>
+              <button class="tool" type="button" disabled>
+                <span class="tool__label">Visibility</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="product-preview__control-group product-preview__control-group--visibility">
-          <p class="product-preview__group-label">Visibility</p>
-          <div class="product-preview__button-set" role="group" aria-label="Visibility toggles">
-            <button
-              type="button"
-              class="product-preview__btn is-active"
-              data-frame-toggle-btn
-              aria-pressed="true"
-            >
-              <span class="product-preview__icon product-preview__icon--frame" aria-hidden="true"></span>
-              <span class="product-preview__label">Frame</span>
-            </button>
-            <button
-              type="button"
-              class="product-preview__btn is-active"
-              data-design-toggle-btn
-              aria-pressed="true"
-            >
-              <span class="product-preview__icon product-preview__icon--design" aria-hidden="true"></span>
-              <span class="product-preview__label">Design</span>
-            </button>
+        <div class="product-preview__control-toolbar header-row-toolbar">
+          <div class="toolbar-deck">
+            <section class="toolbar-block is-active" style="opacity:1;pointer-events:auto;grid-template-columns: repeat(1, 1fr);">
+              <nav class="toolbar product-preview__toolbar">
+                <div
+                  class="product-preview__toolbar-group"
+                  data-preview-tabs
+                  role="tablist"
+                  aria-label="Product sides"
+                ></div>
+
+                <div class="product-preview__toolbar-group">
+                  <button
+                    class="tool"
+                    type="button"
+                    data-view-toggle-btn
+                    data-view-mode="full"
+                    aria-pressed="true"
+                  >
+                    <span class="tool__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                        <rect x="4.5" y="6" width="15" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+                        <path fill="currentColor" d="M10 10h4v4h-4z"></path>
+                      </svg>
+                    </span>
+                    <span class="tool__label">Full</span>
+                  </button>
+                  <button
+                    class="tool"
+                    type="button"
+                    data-view-toggle-btn
+                    data-view-mode="edit"
+                    aria-pressed="false"
+                  >
+                    <span class="tool__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                        <path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M5.5 8.5 9 12l-3.5 3.5"></path>
+                        <rect x="11" y="5.5" width="8" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+                      </svg>
+                    </span>
+                    <span class="tool__label">Edit</span>
+                  </button>
+                </div>
+
+                <div class="product-preview__toolbar-group">
+                  <button
+                    class="tool"
+                    type="button"
+                    data-frame-toggle-btn
+                    aria-pressed="true"
+                  >
+                    <span class="tool__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                        <rect x="5" y="5" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 2"></rect>
+                      </svg>
+                    </span>
+                    <span class="tool__label">Frame</span>
+                  </button>
+                  <button
+                    class="tool"
+                    type="button"
+                    data-design-toggle-btn
+                    aria-pressed="true"
+                  >
+                    <span class="tool__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                        <rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+                        <path fill="currentColor" d="M10 10h4v4h-4z"></path>
+                      </svg>
+                    </span>
+                    <span class="tool__label">Design</span>
+                  </button>
+                </div>
+              </nav>
+            </section>
           </div>
         </div>
       </div>

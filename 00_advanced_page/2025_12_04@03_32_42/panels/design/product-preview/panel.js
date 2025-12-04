@@ -187,19 +187,20 @@
         const isActive = state.side === side.id;
         const isEnabled = isCanvasEnabled(side.id);
         btn.type = "button";
-        btn.className = "canvas-side-tab product-preview__btn";
-        btn.classList.toggle("is-active", isActive);
-        btn.classList.toggle("is-enabled", isEnabled);
-        btn.classList.toggle("is-inactive", !isEnabled);
+        btn.className = "tool";
         btn.dataset.sideTab = side.id;
         btn.setAttribute("role", "tab");
         btn.setAttribute("aria-selected", String(isActive));
+        btn.setAttribute("aria-pressed", String(isActive));
         const label = side.name || toTitleCase(side.id, "Side");
-        const iconName =
-          side.id === "back" ? "back" : side.id === "front" ? "front" : "side";
         btn.innerHTML = `
-          <span class="product-preview__icon product-preview__icon--${iconName}" aria-hidden="true"></span>
-          <span class="product-preview__label">${label}</span>
+          <span class="tool__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+              <rect x="5" y="4" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+              <path fill="currentColor" d="M8.5 7.5h7v1.4h-7z"></path>
+            </svg>
+          </span>
+          <span class="tool__label">${label}</span>
         `;
         btn.setAttribute("aria-disabled", String(!isEnabled));
         btn.addEventListener("click", () => {
