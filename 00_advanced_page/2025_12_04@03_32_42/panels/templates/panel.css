@@ -1,0 +1,10 @@
+[data-panel-kind="templates"] .floating-panel__blank {
+  border-style: solid;
+  border-color: rgba(255, 206, 134, 0.4);
+  background: radial-gradient(circle at center, rgba(255, 206, 134, 0.12), rgba(10, 15, 26, 0.2));
+  box-shadow: inset 0 0 35px rgba(255, 206, 134, 0.05);
+}
+
+[data-panel-kind="templates"] .floating-panel__blank-helper {
+  max-width: 500px;
+}
