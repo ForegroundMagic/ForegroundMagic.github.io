@@ -628,59 +628,10 @@
       padding: 2px 2px;
       scroll-snap-type: x proximity;
       -webkit-overflow-scrolling: touch;
-
-      /* hide physical scrollbar (mobile-first) */
-      scrollbar-width: none;          /* Firefox */
     }
-    .color-swatch-list::-webkit-scrollbar{ display: none; } /* WebKit */
-
-    .swatch-nav{
-      flex: 0 0 auto;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.70);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 140ms ease, border-color 140ms ease, transform 80ms ease, opacity 140ms ease, box-shadow 200ms ease;
-    }
-    .swatch-nav:hover{
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.14);
-    }
-    .swatch-nav:active{ transform: translateY(1px); }
-
-    .swatch-nav[disabled],
-    .swatch-nav[aria-disabled="true"]{
-      opacity: 0.28;
-      cursor: default;
-      box-shadow: none;
-    }
-
-    /* subtle “scroll hint” pulse on enabled arrows */
-    @keyframes navPulse{
-      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.0); }
-      50% { box-shadow: 0 0 0 6px rgba(255,255,255,0.08); }
-    }
-    .swatch-nav.is-hint{
-      animation: navPulse 1.2s ease-in-out infinite;
-    }
-
-    .swatch-nav svg{
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.25;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+    .color-swatch-list::-webkit-scrollbar{ height: 8px; }
+    .color-swatch-list::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.10); border-radius: 999px; }
+    .color-swatch-list::-webkit-scrollbar-track{ background: transparent; }
 
     .swatch-btn{
       appearance: none;
@@ -867,18 +818,9 @@
           </div>
 
 <div class="color-toolbar" aria-label="Color switcher">
-  <button class="swatch-nav" type="button" id="swatchPrev" aria-label="Scroll colors left" aria-disabled="true" disabled>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
-  </button>
-
   <div class="color-swatch-list" id="colorSwatchList" aria-label="Available colors">
     <!-- swatches injected by JS -->
   </div>
-
-  <button class="swatch-nav" type="button" id="swatchNext" aria-label="Scroll colors right" aria-disabled="false">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-  </button>
-
   <div class="color-selected" aria-label="Selected color">
     <span class="k">Color:</span>
     <span class="v" id="selectedColorName">—</span>
@@ -983,8 +925,6 @@ const COLORS = [
 ];
 
 const swatchList = document.getElementById("colorSwatchList");
-const swatchPrev = document.getElementById("swatchPrev");
-const swatchNext = document.getElementById("swatchNext");
 const selectedColorNameEl = document.getElementById("selectedColorName");
 
 function swatchPath(colorKey){
@@ -1045,45 +985,6 @@ function buildSwatches(){
   swatchList.appendChild(frag);
 }
 
-function updateSwatchNavState(){
-  if (!swatchList) return;
-  const maxScroll = swatchList.scrollWidth - swatchList.clientWidth;
-  const leftAtEnd = swatchList.scrollLeft <= 1;
-  const rightAtEnd = swatchList.scrollLeft >= (maxScroll - 1);
-
-  if (swatchPrev){
-    swatchPrev.disabled = leftAtEnd || maxScroll <= 1;
-    swatchPrev.setAttribute("aria-disabled", String(swatchPrev.disabled));
-    swatchPrev.classList.toggle("is-hint", !swatchPrev.disabled && !rightAtEnd);
-  }
-  if (swatchNext){
-    swatchNext.disabled = rightAtEnd || maxScroll <= 1;
-    swatchNext.setAttribute("aria-disabled", String(swatchNext.disabled));
-    swatchNext.classList.toggle("is-hint", !swatchNext.disabled && !leftAtEnd);
-  }
-}
-
-function scrollSwatchesBy(delta){
-  if (!swatchList) return;
-  swatchList.scrollBy({ left: delta, behavior: "smooth" });
-}
-
-function attachSwatchNav(){
-  if (swatchPrev) swatchPrev.addEventListener("click", () => scrollSwatchesBy(-220));
-  if (swatchNext) swatchNext.addEventListener("click", () => scrollSwatchesBy(220));
-
-  if (swatchList){
-    swatchList.addEventListener("scroll", () => {
-      // throttle-ish: next tick
-      window.requestAnimationFrame(updateSwatchNavState);
-    }, { passive: true });
-  }
-  window.addEventListener("resize", () => window.requestAnimationFrame(updateSwatchNavState));
-  // initial state
-  window.requestAnimationFrame(updateSwatchNavState);
-}
-
-
     function setActivePair(a, b, isA){
       if (!a || !b) return;
       a.classList.toggle("is-active", isA);
@@ -1131,10 +1032,7 @@ function setMode(mode){
 
     // Initialize defaults
 buildSwatches();
-attachSwatchNav();
 setSelectedColor(currentColorKey); // also calls setPreview()
-// after swatches render, re-check nav
-window.requestAnimationFrame(updateSwatchNavState);
 setMode("full");
 setToggle(togFrame, true);
 setToggle(togDesign, true);

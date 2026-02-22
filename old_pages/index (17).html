@@ -605,141 +605,6 @@
       display: block;
     }
 
-    /* ===== Color swatch toolbar (below preview) ===== */
-    .color-toolbar{
-      flex: 0 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 8px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      background: rgba(255,255,255,0.015);
-      overflow: hidden;
-    }
-
-    .color-swatch-list{
-      flex: 1 1 auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: 2px 2px;
-      scroll-snap-type: x proximity;
-      -webkit-overflow-scrolling: touch;
-
-      /* hide physical scrollbar (mobile-first) */
-      scrollbar-width: none;          /* Firefox */
-    }
-    .color-swatch-list::-webkit-scrollbar{ display: none; } /* WebKit */
-
-    .swatch-nav{
-      flex: 0 0 auto;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.70);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 140ms ease, border-color 140ms ease, transform 80ms ease, opacity 140ms ease, box-shadow 200ms ease;
-    }
-    .swatch-nav:hover{
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.14);
-    }
-    .swatch-nav:active{ transform: translateY(1px); }
-
-    .swatch-nav[disabled],
-    .swatch-nav[aria-disabled="true"]{
-      opacity: 0.28;
-      cursor: default;
-      box-shadow: none;
-    }
-
-    /* subtle “scroll hint” pulse on enabled arrows */
-    @keyframes navPulse{
-      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.0); }
-      50% { box-shadow: 0 0 0 6px rgba(255,255,255,0.08); }
-    }
-    .swatch-nav.is-hint{
-      animation: navPulse 1.2s ease-in-out infinite;
-    }
-
-    .swatch-nav svg{
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.25;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .swatch-btn{
-      appearance: none;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.02);
-      border-radius: 999px;
-      width: 38px;
-      height: 38px;
-      padding: 0;
-      cursor: pointer;
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      scroll-snap-align: start;
-      transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-    }
-    .swatch-btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.22); }
-    .swatch-btn.is-active{
-      border-color: rgba(144, 176, 255, 0.95);
-      box-shadow: 0 0 0 3px rgba(144, 176, 255, 0.18);
-    }
-
-    .swatch-btn img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .color-selected{
-      flex: 0 0 auto;
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      white-space: nowrap;
-      padding-left: 6px;
-      border-left: 1px solid rgba(255,255,255,0.08);
-    }
-    .color-selected .k{
-      font-size: 11px;
-      font-weight: 800;
-      color: rgba(255,255,255,0.62);
-    }
-    .color-selected .v{
-      font-size: 12px;
-      font-weight: 850;
-      color: rgba(255,255,255,0.92);
-      max-width: 180px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    @media (max-width: 420px){
-      .swatch-btn{ width: 34px; height: 34px; }
-      .color-selected .v{ max-width: 120px; }
-    }
-
   </style>
 </head>
 <body>
@@ -865,25 +730,6 @@
               loading="eager"
             />
           </div>
-
-<div class="color-toolbar" aria-label="Color switcher">
-  <button class="swatch-nav" type="button" id="swatchPrev" aria-label="Scroll colors left" aria-disabled="true" disabled>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
-  </button>
-
-  <div class="color-swatch-list" id="colorSwatchList" aria-label="Available colors">
-    <!-- swatches injected by JS -->
-  </div>
-
-  <button class="swatch-nav" type="button" id="swatchNext" aria-label="Scroll colors right" aria-disabled="false">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-  </button>
-
-  <div class="color-selected" aria-label="Selected color">
-    <span class="k">Color:</span>
-    <span class="v" id="selectedColorName">—</span>
-  </div>
-</div>
         </div>
 </div>
 </div>
@@ -940,149 +786,8 @@
     const togFrame = document.getElementById("togFrame");
     const togDesign = document.getElementById("togDesign");
 
-// --- Color switching ---
-const COLORS = [
-  { key: "01_maroon", name: "Maroon" },
-  { key: "02_athletic_heather", name: "Athletic Heather" },
-  { key: "03_heather_military_green", name: "Heather Military Green" },
-  { key: "04_heather_sand_dune", name: "Heather Sand Dune" },
-  { key: "05_heather_mauve", name: "Heather Mauve" },
-  { key: "06_heather_team_purple", name: "Heather Team Purple" },
-  { key: "07_heather_mint", name: "Heather Mint" },
-  { key: "08_natural", name: "Natural" },
-  { key: "09_heather_orange", name: "Heather Orange" },
-  { key: "10_heather_peach", name: "Heather Peach" },
-  { key: "11_heather_raspberry", name: "Heather Raspberry" },
-  { key: "12_heather_red", name: "Heather Red" },
-  { key: "13_vintage_black", name: "Vintage Black" },
-  { key: "14_vintage_white", name: "Vintage White" },
-  { key: "15_pink", name: "Pink" },
-  { key: "16_forest", name: "Forest" },
-  { key: "17_white", name: "White" },
-  { key: "18_yellow", name: "Yellow" },
-  { key: "19_asphalt", name: "Asphalt" },
-  { key: "20_deep_teal", name: "Deep Teal" },
-  { key: "21_heather_royal", name: "Heather Royal" },
-  { key: "22_kelly", name: "Kelly" },
-  { key: "23_red", name: "Red" },
-  { key: "24_leaf", name: "Leaf" },
-  { key: "25_team_purple", name: "Team Purple" },
-  { key: "26_true_royal", name: "True Royal" },
-  { key: "27_navy", name: "Navy" },
-  { key: "28_orange", name: "Orange" },
-  { key: "29_soft_pink", name: "Soft Pink" },
-  { key: "30_teal", name: "Teal" },
-  { key: "31_turquoise", name: "Turquoise" },
-  { key: "32_black", name: "Black" },
-  { key: "33_canvas_red", name: "Canvas Red" },
-  { key: "34_cardinal", name: "Cardinal" },
-  { key: "35_dark_grey_heather", name: "Dark Grey Heather" },
-  { key: "36_gold", name: "Gold" },
-  { key: "37_light_blue", name: "Light Blue" },
-  { key: "38_maize_yellow", name: "Maize Yellow" }
-];
-
-const swatchList = document.getElementById("colorSwatchList");
-const swatchPrev = document.getElementById("swatchPrev");
-const swatchNext = document.getElementById("swatchNext");
-const selectedColorNameEl = document.getElementById("selectedColorName");
-
-function swatchPath(colorKey){
-  // colorKey like "06_heather_team_purple"
-  return `shop/products/3001C_BC_UJSST/color/swatch/96x96px/${colorKey}_96x96.png`;
-}
-function productPath(colorKey, side){
-  // side: "front" | "back"
-  return `shop/products/3001C_BC_UJSST/color/product/${colorKey}_${side}.png`;
-}
-
-let currentColorKey = "06_heather_team_purple";
-let currentSide = "front";
-
-function setSelectedColor(colorKey){
-  currentColorKey = colorKey;
-
-  const meta = COLORS.find(c => c.key === colorKey);
-  if (selectedColorNameEl) selectedColorNameEl.textContent = meta ? meta.name : colorKey;
-
-  // active swatch styling
-  if (swatchList){
-    [...swatchList.querySelectorAll(".swatch-btn")].forEach(btn => {
-      btn.classList.toggle("is-active", btn.dataset.colorKey === colorKey);
-      btn.setAttribute("aria-pressed", String(btn.dataset.colorKey === colorKey));
-    });
-  }
-
-  // refresh preview for current side
-  setPreview(currentSide);
-}
-
-function buildSwatches(){
-  if (!swatchList) return;
-  const frag = document.createDocumentFragment();
-
-  COLORS.forEach(c => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "swatch-btn";
-    btn.dataset.colorKey = c.key;
-    btn.setAttribute("aria-label", c.name);
-    btn.setAttribute("title", c.name);
-    btn.setAttribute("aria-pressed", "false");
-
-    const img = document.createElement("img");
-    img.alt = c.name;
-    img.loading = "lazy";
-    img.src = swatchPath(c.key);
-
-    btn.appendChild(img);
-    btn.addEventListener("click", () => setSelectedColor(c.key));
-
-    frag.appendChild(btn);
-  });
-
-  swatchList.innerHTML = "";
-  swatchList.appendChild(frag);
-}
-
-function updateSwatchNavState(){
-  if (!swatchList) return;
-  const maxScroll = swatchList.scrollWidth - swatchList.clientWidth;
-  const leftAtEnd = swatchList.scrollLeft <= 1;
-  const rightAtEnd = swatchList.scrollLeft >= (maxScroll - 1);
-
-  if (swatchPrev){
-    swatchPrev.disabled = leftAtEnd || maxScroll <= 1;
-    swatchPrev.setAttribute("aria-disabled", String(swatchPrev.disabled));
-    swatchPrev.classList.toggle("is-hint", !swatchPrev.disabled && !rightAtEnd);
-  }
-  if (swatchNext){
-    swatchNext.disabled = rightAtEnd || maxScroll <= 1;
-    swatchNext.setAttribute("aria-disabled", String(swatchNext.disabled));
-    swatchNext.classList.toggle("is-hint", !swatchNext.disabled && !leftAtEnd);
-  }
-}
-
-function scrollSwatchesBy(delta){
-  if (!swatchList) return;
-  swatchList.scrollBy({ left: delta, behavior: "smooth" });
-}
-
-function attachSwatchNav(){
-  if (swatchPrev) swatchPrev.addEventListener("click", () => scrollSwatchesBy(-220));
-  if (swatchNext) swatchNext.addEventListener("click", () => scrollSwatchesBy(220));
-
-  if (swatchList){
-    swatchList.addEventListener("scroll", () => {
-      // throttle-ish: next tick
-      window.requestAnimationFrame(updateSwatchNavState);
-    }, { passive: true });
-  }
-  window.addEventListener("resize", () => window.requestAnimationFrame(updateSwatchNavState));
-  // initial state
-  window.requestAnimationFrame(updateSwatchNavState);
-}
-
+    const frontSrc = "shop/products/3001C_BC_UJSST/color/product/06_heather_team_purple_front.png";
+    const backSrc  = "shop/products/3001C_BC_UJSST/color/product/06_heather_team_purple_back.png";
 
     function setActivePair(a, b, isA){
       if (!a || !b) return;
@@ -1098,17 +803,15 @@ function attachSwatchNav(){
       btn.setAttribute("aria-pressed", String(on));
     }
 
-    
-function setPreview(side){
-  if (!previewImg) return;
-  currentSide = (side === "back") ? "back" : "front";
-  const isFront = currentSide === "front";
-  previewImg.src = productPath(currentColorKey, currentSide);
-  previewImg.alt = isFront ? "Product preview (front)" : "Product preview (back)";
-  setActivePair(btnFront, btnBack, isFront);
-}
+    function setPreview(side){
+      if (!previewImg) return;
+      const isFront = side === "front";
+      previewImg.src = isFront ? frontSrc : backSrc;
+      previewImg.alt = isFront ? "Product preview (front)" : "Product preview (back)";
+      setActivePair(btnFront, btnBack, isFront);
+    }
 
-function setMode(mode){
+    function setMode(mode){
       const isFull = mode === "full";
       setActivePair(btnFull, btnEdit, isFull);
     }
@@ -1130,15 +833,11 @@ function setMode(mode){
     });
 
     // Initialize defaults
-buildSwatches();
-attachSwatchNav();
-setSelectedColor(currentColorKey); // also calls setPreview()
-// after swatches render, re-check nav
-window.requestAnimationFrame(updateSwatchNavState);
-setMode("full");
-setToggle(togFrame, true);
-setToggle(togDesign, true);
-});
+    setPreview("front");
+    setMode("full");
+    setToggle(togFrame, true);
+    setToggle(togDesign, true);
+  });
 </script>
 
 <!-- Product info overlay -->
