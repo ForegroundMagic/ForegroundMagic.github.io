@@ -12,7 +12,7 @@
       padding: 0;
       overflow: hidden;
       background: #080C16;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       color: rgba(255,255,255,0.92);
     }
 
@@ -59,28 +59,29 @@
       min-height: 0;
     }
 
-    /* ===== Top Info Bar: EXACT 50/50 ===== */
+    /* ===== Top Info Bar (Logo + Share Code/Status) ===== */
     .topbar{
       flex: 0 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;       /* 50/50 */
-      column-gap: 10px;                    /* small gap between halves */
+      display: flex;
       align-items: center;
-      padding: 8px 10px;                   /* reduced vertical space */
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
       background: linear-gradient(to bottom, rgba(255,255,255,0.04), rgba(255,255,255,0.00));
       border-bottom: 1px solid var(--stroke);
       min-width: 0;
+      flex-wrap: wrap; /* allow share pill to drop under on tiny widths */
     }
 
     .brand{
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       min-width: 0;
-      overflow: hidden;
+      flex: 1 1 auto;
     }
 
-    /* bigger logo */
+    /* at least twice as big as before */
     .logo{
       width: 56px;
       height: 56px;
@@ -90,77 +91,74 @@
       flex: 0 0 auto;
     }
 
-    /* text always visible, never taller than logo */
+    /* text always visible and never taller than logo */
     .brand__text{
       display: flex;
       flex-direction: column;
       justify-content: center;
-      max-height: 56px;
-      line-height: 1.12;
-      min-width: 0;
-      overflow: hidden;
+      max-height: 56px;     /* never exceed logo height */
+      line-height: 1.15;
+      overflow: hidden;     /* protects layout, but text should fit */
     }
+
     .brand__title{
       font-size: 14px;
       font-weight: 750;
       letter-spacing: 0.2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       margin: 0;
+      white-space: nowrap;
     }
+
     .brand__sub{
       font-size: 12px;
       font-weight: 600;
       color: var(--text-dim);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       margin: 0;
+      white-space: nowrap;
     }
 
-    /* Right half: code/status container fills its 50% */
-    .shareWrap{
-      min-width: 0;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    /* Code + status pill (no "CODE" label) */
+    /* Share pill: code + status (right side of topbar) */
     .share-pill{
-      width: 100%;
-      max-width: 100%;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
       gap: 10px;
-      padding: 7px 10px;                   /* reduced height */
+      padding: 7px 10px;
       border: 1px solid var(--stroke);
       border-radius: 999px;
       background: rgba(255,255,255,0.03);
       box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-      min-width: 0;
+      flex: 0 0 auto;
+      max-width: 100%;
+      white-space: nowrap;
     }
 
     .share-code{
-      min-width: 0;
-      font-size: 12px;
-      font-weight: 750;
-      letter-spacing: 1.0px;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .share-code b{
       color: rgba(255,255,255,0.92);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 12px;
+      letter-spacing: 0.8px;
+    }
+
+    .divider{
+      width: 1px;
+      height: 16px;
+      background: var(--stroke);
+      flex: 0 0 auto;
     }
 
     .status{
-      flex: 0 0 auto;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-size: 11px;
       color: var(--text-dim);
-      white-space: nowrap;
     }
 
     .dot{
@@ -171,62 +169,46 @@
       box-shadow: 0 0 0 3px rgba(255, 196, 61, 0.12);
     }
 
-    /* If right side gets tight: stack code on top, status below */
-    @media (max-width: 420px){
-      .share-pill{
-        flex-direction: column;
-        align-items: flex-end;             /* right aligned */
-        gap: 4px;
-        padding: 7px 10px;
-      }
-      .share-code, .status{
-        width: 100%;
-        text-align: right;
-      }
-    }
-
-    /* ===== Buttons toolbar: 4 buttons in one row, compact ===== */
+    /* ===== Buttons Bar (separate toolbar) ===== */
     .btnbar{
       flex: 0 0 auto;
-      padding: 8px 10px;                  /* reduced height */
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
       border-bottom: 1px solid var(--stroke);
       background: rgba(255,255,255,0.02);
+      min-width: 0;
     }
 
-    /* One row, 4 equal buttons, with a "medium gap" in the middle */
-    .btngrid{
-      display: grid;
-      grid-template-columns: 1fr 1fr 24px 1fr 1fr;  /* middle spacer column */
-      align-items: stretch;
+    .btnbar__left,
+    .btnbar__right{
+      display: flex;
+      align-items: center;
       gap: 8px;
+      min-width: 0;
     }
 
-    .midGap{ width: 24px; }
+    .btnbar__left{ justify-content: flex-start; }
+    .btnbar__right{ justify-content: flex-end; }
 
-    /* Buttons: no wrapping, font auto-adjust via clamp, icon stays */
     .btn{
       appearance: none;
       border: 1px solid var(--stroke);
       background: var(--btn);
       color: rgba(255,255,255,0.9);
       border-radius: 12px;
-      padding: 10px 10px;                 /* compact */
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 650;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
-
-      /* key: prevent new lines and reduce font if needed */
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-weight: 700;
-      font-size: clamp(10px, 2.7vw, 12px); /* scales down on mobile */
-      line-height: 1;
-      min-width: 0;
       transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
       user-select: none;
+      white-space: nowrap;
     }
     .btn:hover{ background: var(--btn-hover); border-color: var(--stroke2); }
     .btn:active{ background: var(--btn-active); transform: translateY(1px); }
@@ -240,9 +222,10 @@
       border-color: rgba(86, 132, 255, 0.55);
     }
 
-    .icon{ width: 14px; height: 14px; flex: 0 0 auto; display: inline-block; }
+    .icon{ width: 14px; height: 14px; display: inline-block; }
     .icon svg{
-      width: 14px; height: 14px;
+      width: 14px;
+      height: 14px;
       display: block;
       fill: none;
       stroke: rgba(255,255,255,0.82);
@@ -251,20 +234,12 @@
       stroke-linejoin: round;
     }
 
-    /* If extremely narrow, keep ONE ROW and just shrink text/icon slightly */
-    @media (max-width: 340px){
-      .btn{ gap: 6px; padding: 9px 8px; }
-      .icon{ width: 13px; height: 13px; }
-      .icon svg{ width: 13px; height: 13px; }
-      .btngrid{ grid-template-columns: 1fr 1fr 18px 1fr 1fr; }
-    }
-
     /* ===== Content ===== */
     .content{
       flex: 1 1 auto;
       min-height: 0;
       overflow: hidden;
-      padding: 10px;                       /* slightly reduced */
+      padding: 12px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
@@ -279,6 +254,7 @@
       min-width: 0;
     }
 
+    /* Product pill now only name + sku */
     .product-pill{
       display: inline-flex;
       align-items: center;
@@ -291,23 +267,16 @@
       min-width: 0;
       max-width: 100%;
       white-space: nowrap;
-      overflow: hidden;
     }
+
     .product-name{
       font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
+      font-weight: 650;
     }
-    .divider{
-      width: 1px;
-      height: 16px;
-      background: var(--stroke);
-      flex: 0 0 auto;
-    }
+
     .product-code{
       font-size: 11px;
       color: var(--text-dim);
-      white-space: nowrap;
     }
 
     .workspace{
@@ -317,13 +286,34 @@
       border: 1px dashed rgba(255,255,255,0.08);
       border-radius: 12px;
     }
+
+    /* ===== Responsive stacking for button groups (your requested behavior) ===== */
+    @media (max-width: 560px){
+      .btnbar__left,
+      .btnbar__right{
+        flex-direction: column;  /* Inspector/Canvas stack on left; Import/Export stack on right */
+        align-items: stretch;
+      }
+      .btnbar__left .btn,
+      .btnbar__right .btn{
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 420px){
+      /* keep the top info compact */
+      .brand__title{ font-size: 18px; }
+      .brand__sub{ font-size: 15px; }
+      .btn{ padding: 10px 11px; }
+    }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="app">
 
-      <!-- TOP INFO BAR (50/50) -->
+      <!-- TOP INFO BAR -->
       <div class="topbar">
         <div class="brand">
           <img class="logo" src="assets/graphics/logo/FM_logo.svg" alt="Foreground Magic logo" />
@@ -333,41 +323,40 @@
           </div>
         </div>
 
-        <div class="shareWrap">
-          <div class="share-pill" aria-label="Share code and save status">
-            <div class="share-code" id="shareCode">--------</div>
-            <div class="status"><span class="dot" aria-hidden="true"></span><span id="saveStatus">Unsaved</span></div>
-          </div>
+        <div class="share-pill" aria-label="Share code and save status">
+          <div class="share-code"><b id="shareCode">--------</b></div>
+          <div class="divider" aria-hidden="true"></div>
+          <div class="status"><span class="dot" aria-hidden="true"></span><span id="saveStatus">Unsaved</span></div>
         </div>
       </div>
 
-      <!-- BUTTON TOOLBAR (4 buttons in one row) -->
+      <!-- BUTTON TOOLBAR -->
       <div class="btnbar">
-        <div class="btngrid">
-          <button class="btn" type="button" title="Inspector">
+        <div class="btnbar__left">
+          <button class="btn" type="button">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M9 9h6M9 12h6M9 15h6"/></svg>
             </span>
             Inspector
           </button>
 
-          <button class="btn" type="button" title="Canvas">
+          <button class="btn" type="button">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
             </span>
             Canvas
           </button>
+        </div>
 
-          <div class="midGap" aria-hidden="true"></div>
-
-          <button class="btn" type="button" title="Import">
+        <div class="btnbar__right">
+          <button class="btn" type="button">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M4 21h16"/></svg>
             </span>
             Import
           </button>
 
-          <button class="btn btn--primary" type="button" title="Export">
+          <button class="btn btn--primary" type="button">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M16 17l-4 4-4-4"/><path d="M4 3h16"/></svg>
             </span>
@@ -385,6 +374,7 @@
             <div class="product-code">SKU: STA-001</div>
           </div>
         </div>
+
         <div class="workspace"></div>
       </div>
 
@@ -392,14 +382,19 @@
   </div>
 
   <script>
-    // Mockup 8-char A-Z0-9 code
+    // Mockup 8-char A-Z0-9 code (share id). Replace with server-issued id later.
     function genCode(len = 8) {
       const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       let out = "";
       for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
       return out;
     }
+
+    // For the mockup: generate at load
     document.getElementById("shareCode").textContent = genCode(8);
+
+    // Future: when saved/exported -> change dot color + label + possibly lock/share URL, etc.
+    // document.getElementById("saveStatus").textContent = "Saved";
   </script>
 </body>
 </html>
