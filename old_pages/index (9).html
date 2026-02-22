@@ -300,7 +300,16 @@
       background: var(--stroke);
       flex: 0 0 auto;
     }
-/* ===== Modal overlay for product details ===== */
+
+    .workspace{
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+      border: 1px dashed rgba(255,255,255,0.08);
+      border-radius: 12px;
+    }
+  
+    /* ===== Modal overlay for product details ===== */
     .overlay{
       position: fixed;
       inset: 0;
@@ -460,15 +469,14 @@
           </button>
         </div>
         </div>
-</div>
+        <div class="workspace"></div>
+      </div>
 
     </div>
   </div>
 
-  
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-function genCode(len = 8) {
+    function genCode(len = 8) {
       const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       let out = "";
       for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
@@ -501,9 +509,7 @@ function genCode(len = 8) {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && overlay.classList.contains("is-open")) closeOverlay();
     });
-    });
-  </script>
-
+</script>
 
   <!-- Product info overlay -->
   <div class="overlay" id="productOverlay" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
