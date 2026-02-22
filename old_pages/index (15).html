@@ -394,32 +394,16 @@
 
   
     
-    /* ===== Unified 6-button preview toolbar (icon + label) ===== */
-    .product-preview-area .preview-toolbar{
-      flex: 0 0 auto;
-      display: grid;
-      /* 6 buttons kept uniform; add spacer columns between pairs */
-      grid-template-columns: 1fr 1fr var(--pair-gap) 1fr 1fr var(--pair-gap) 1fr 1fr;
-      align-items: stretch;
+    /* ===== Mobile 6-button action bar (icon + label) ===== */
+    .preview-actions{
+      display: none; /* enabled on small screens */
+      grid-template-columns: repeat(6, 1fr);
       gap: 0;
-      width: 100%;
-      max-width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 10px;
     }
 
-    .product-preview-area .pairGap{
-      width: 100%;
-    }
-
-    /* tighter gaps on small screens, wider on large screens */
-    :root{ --pair-gap: 8px; }
-    @media (min-width: 900px){
-      :root{ --pair-gap: 18px; }
-    }
-    @media (max-width: 420px){
-      :root{ --pair-gap: 6px; }
-    }
-
-    .product-preview-area .action-btn{
+    .action-btn{
       appearance: none;
       border: 0;
       background: transparent;
@@ -437,11 +421,11 @@
       transition: color 120ms ease, background 120ms ease;
     }
 
-    .product-preview-area .action-btn:hover{ background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.85); }
-    .product-preview-area .action-btn.is-active{ color: rgba(144, 176, 255, 0.95); }
-    .product-preview-area .action-btn.is-active .action-ico{ border-color: rgba(144, 176, 255, 0.95); }
+    .action-btn:hover{ background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.85); }
+    .action-btn.is-active{ color: rgba(144, 176, 255, 0.95); }
+    .action-btn.is-active .action-ico{ border-color: rgba(144, 176, 255, 0.95); }
 
-    .product-preview-area .action-ico{
+    .action-ico{
       width: 34px;
       height: 34px;
       border-radius: 10px;
@@ -451,9 +435,7 @@
       justify-content: center;
       box-sizing: border-box;
     }
-    .product-preview-area .action-ico--dashed{ border-style: dashed; }
-
-    .product-preview-area .action-ico svg{
+    .action-ico svg{
       width: 20px;
       height: 20px;
       display: block;
@@ -464,18 +446,21 @@
       stroke-linejoin: round;
     }
 
-    .product-preview-area .action-label{
+    .action-label{
       font-size: 12px;
       font-weight: 800;
       line-height: 1;
       white-space: nowrap;
     }
 
-    /* keep label readable on very small widths */
-    @media (max-width: 340px){
-      .product-preview-area .action-ico{ width: 32px; height: 32px; border-radius: 9px; }
-      .product-preview-area .action-ico svg{ width: 18px; height: 18px; }
-      .product-preview-area .action-label{ font-size: 11px; }
+    /* Mobile switch: show 6 buttons, hide grouped controls */
+    @media (max-width: 560px){
+      .product-preview-area .preview-toolbar{ display: none !important; }
+      .product-preview-area .preview-actions{ display: grid !important; }
+    }
+    @media (min-width: 561px){
+      .product-preview-area .preview-toolbar{ display: flex !important; }
+      .product-preview-area .preview-actions{ display: none !important; }
     }
 
     /* ===== Product preview area ===== */
@@ -674,47 +659,66 @@
         </div>
         
         <div class="product-preview-area" aria-label="Product preview">
-                    <div class="preview-toolbar" aria-label="Preview controls">
-            <button class="action-btn is-active" type="button" id="btnFront" aria-pressed="true" title="Front">
+          <div class="preview-toolbar" aria-label="Preview controls">
+            <div class="segmented" role="tablist" aria-label="Preview side">
+              <button class="seg-btn is-active" type="button" id="btnFront" aria-selected="true">Front</button>
+              <button class="seg-btn" type="button" id="btnBack" aria-selected="false">Back</button>
+            </div>
+
+            <div class="segmented" role="tablist" aria-label="View mode">
+              <button class="seg-btn is-active" type="button" id="btnFull" aria-selected="true">Full</button>
+              <button class="seg-btn" type="button" id="btnEdit" aria-selected="false">Edit</button>
+            </div>
+
+            <button class="tog is-on" type="button" id="togFrame" aria-pressed="true">
+              <span class="label">Frame</span>
+              <span class="switch" aria-hidden="true"></span>
+            </button>
+
+            <button class="tog is-on" type="button" id="togDesign" aria-pressed="true">
+              <span class="label">Design</span>
+              <span class="switch" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          
+          <div class="preview-actions" aria-label="Mobile preview actions">
+            <button class="action-btn is-active" type="button" id="mFront" aria-pressed="true">
               <span class="action-ico" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M8 7h8"/></svg>
               </span>
               <span class="action-label">Front</span>
             </button>
 
-            <button class="action-btn" type="button" id="btnBack" aria-pressed="false" title="Back">
+            <button class="action-btn" type="button" id="mBack" aria-pressed="false">
               <span class="action-ico" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M8 17h8"/></svg>
               </span>
               <span class="action-label">Back</span>
             </button>
 
-            <div class="pairGap" aria-hidden="true"></div>
-
-            <button class="action-btn is-active" type="button" id="btnFull" aria-pressed="true" title="Full">
+            <button class="action-btn is-active" type="button" id="mFull" aria-pressed="true">
               <span class="action-ico" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/></svg>
               </span>
               <span class="action-label">Full</span>
             </button>
 
-            <button class="action-btn" type="button" id="btnEdit" aria-pressed="false" title="Edit">
+            <button class="action-btn" type="button" id="mEdit" aria-pressed="false">
               <span class="action-ico" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M4 12h7"/><path d="M11 12l-3-3"/><path d="M11 12l-3 3"/><path d="M14 7h6v10h-6z"/></svg>
               </span>
               <span class="action-label">Edit</span>
             </button>
 
-            <div class="pairGap" aria-hidden="true"></div>
-
-            <button class="action-btn is-active" type="button" id="togFrame" aria-pressed="true" title="Frame">
-              <span class="action-ico action-ico--dashed" aria-hidden="true">
+            <button class="action-btn is-active" type="button" id="mFrame" aria-pressed="true">
+              <span class="action-ico" aria-hidden="true" style="border-style:dashed;">
                 <svg viewBox="0 0 24 24"><path d="M8 8h8v8H8z"/></svg>
               </span>
               <span class="action-label">Frame</span>
             </button>
 
-            <button class="action-btn is-active" type="button" id="togDesign" aria-pressed="true" title="Design">
+            <button class="action-btn is-active" type="button" id="mDesign" aria-pressed="true">
               <span class="action-ico" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M9 9h6v6H9z"/></svg>
               </span>
@@ -737,142 +741,196 @@
     </div>
   </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // --- Share code ---
-    function genCode(len = 8) {
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+function genCode(len = 8) {
       const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       let out = "";
       for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
       return out;
     }
-    const shareEl = document.getElementById("shareCode");
-    if (shareEl) shareEl.textContent = genCode(8);
+    document.getElementById("shareCode").textContent = genCode(8);
+  
 
-    // --- Product info overlay open/close ---
+    // Product overlay open/close
     const overlay = document.getElementById("productOverlay");
     const openBtn = document.getElementById("productInfoBtn");
     const closeBtn = document.getElementById("closeOverlayBtn");
 
     function openOverlay(){
-      if (!overlay) return;
       overlay.classList.add("is-open");
     }
     function closeOverlay(){
-      if (!overlay) return;
       overlay.classList.remove("is-open");
     }
 
     if (openBtn) openBtn.addEventListener("click", openOverlay);
     if (closeBtn) closeBtn.addEventListener("click", closeOverlay);
 
-    if (overlay){
-      overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) closeOverlay();
-      });
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && overlay.classList.contains("is-open")) closeOverlay();
-      });
-    }
-
-    // --- Preview controls (Front/Back, Full/Edit, Frame/Design) ---
-    const previewImg = document.getElementById("previewImg");
-
-    const btnFront = document.getElementById("btnFront");
-    const btnBack  = document.getElementById("btnBack");
-    const btnFull  = document.getElementById("btnFull");
-    const btnEdit  = document.getElementById("btnEdit");
-    const togFrame = document.getElementById("togFrame");
-    const togDesign = document.getElementById("togDesign");
-
-    const frontSrc = "shop/products/3001C_BC_UJSST/color/product/06_heather_team_purple_front.png";
-    const backSrc  = "shop/products/3001C_BC_UJSST/color/product/06_heather_team_purple_back.png";
-
-    function setActivePair(a, b, isA){
-      if (!a || !b) return;
-      a.classList.toggle("is-active", isA);
-      b.classList.toggle("is-active", !isA);
-      a.setAttribute("aria-pressed", String(isA));
-      b.setAttribute("aria-pressed", String(!isA));
-    }
-
-    function setToggle(btn, on){
-      if (!btn) return;
-      btn.classList.toggle("is-active", on);
-      btn.setAttribute("aria-pressed", String(on));
-    }
-
-    function setPreview(side){
-      if (!previewImg) return;
-      const isFront = side === "front";
-      previewImg.src = isFront ? frontSrc : backSrc;
-      previewImg.alt = isFront ? "Product preview (front)" : "Product preview (back)";
-      setActivePair(btnFront, btnBack, isFront);
-    }
-
-    function setMode(mode){
-      const isFull = mode === "full";
-      setActivePair(btnFull, btnEdit, isFull);
-    }
-
-    if (btnFront) btnFront.addEventListener("click", () => setPreview("front"));
-    if (btnBack)  btnBack.addEventListener("click",  () => setPreview("back"));
-
-    if (btnFull) btnFull.addEventListener("click", () => setMode("full"));
-    if (btnEdit) btnEdit.addEventListener("click", () => setMode("edit"));
-
-    if (togFrame) togFrame.addEventListener("click", () => {
-      const on = !togFrame.classList.contains("is-active");
-      setToggle(togFrame, on);
+    // Close on backdrop click
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeOverlay();
     });
 
-    if (togDesign) togDesign.addEventListener("click", () => {
-      const on = !togDesign.classList.contains("is-active");
-      setToggle(togDesign, on);
+    // Close on ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay.classList.contains("is-open")) closeOverlay();
     });
 
-    // Initialize defaults
-    setPreview("front");
-    setMode("full");
-    setToggle(togFrame, true);
-    setToggle(togDesign, true);
-  });
-</script>
+      // Preview toggle (front/back)
+      const previewImg = document.getElementById("previewImg");
+      const btnFront = document.getElementById("btnFront");
+      const btnBack = document.getElementById("btnBack");
 
-<!-- Product info overlay -->
-<div class="overlay" id="productOverlay" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
-  <div class="modal">
-    <div class="modal-head">
-      <div>
-        <h2 class="modal-title" id="productModalTitle">Product Details</h2>
-        <div class="modal-sub">Quick reference info for the selected blank.</div>
+      const frontSrc = "shop/products/3001C_BC_UJSST/color/product/06_heather_team_purple_front.png";
+      const backSrc  = "shop/products/3001C_BC_UJSST/color/product/06_heather_team_purple_back.png";
+
+      function setPreview(side){
+        if (!previewImg) return;
+        const isFront = side === "front";
+        previewImg.src = isFront ? frontSrc : backSrc;
+        previewImg.alt = isFront ? "Product preview (front)" : "Product preview (back)";
+        if (btnFront && btnBack){
+          btnFront.classList.toggle("is-active", isFront);
+          btnBack.classList.toggle("is-active", !isFront);
+          btnFront.setAttribute("aria-selected", String(isFront));
+          btnBack.setAttribute("aria-selected", String(!isFront));
+        }
+      }
+
+      if (btnFront) btnFront.addEventListener("click", () => setPreview("front"));
+      if (btnBack) btnBack.addEventListener("click", () => setPreview("back"));
+
+
+      // View mode toggle (Full/Edit) - UI only for now
+      const btnFull = document.getElementById("btnFull");
+      const btnEdit = document.getElementById("btnEdit");
+
+      function setMode(mode){
+        const isFull = mode === "full";
+        if (btnFull && btnEdit){
+          btnFull.classList.toggle("is-active", isFull);
+          btnEdit.classList.toggle("is-active", !isFull);
+          btnFull.setAttribute("aria-selected", String(isFull));
+          btnEdit.setAttribute("aria-selected", String(!isFull));
+        }
+      }
+      if (btnFull) btnFull.addEventListener("click", () => setMode("full"));
+      if (btnEdit) btnEdit.addEventListener("click", () => setMode("edit"));
+
+      // On/off toggles (Frame/Design) - UI only for now
+      const togFrame = document.getElementById("togFrame");
+      const togDesign = document.getElementById("togDesign");
+
+      function toggleBtn(btn){
+        if (!btn) return;
+        const on = !btn.classList.contains("is-on");
+        btn.classList.toggle("is-on", on);
+        btn.setAttribute("aria-pressed", String(on));
+      }
+      if (togFrame) togFrame.addEventListener("click", () => toggleBtn(togFrame));
+      if (togDesign) togDesign.addEventListener("click", () => toggleBtn(togDesign));
+
+
+      // Mobile 6-button bar (kept in sync with desktop controls)
+      const mFront = document.getElementById("mFront");
+      const mBack = document.getElementById("mBack");
+      const mFull = document.getElementById("mFull");
+      const mEdit = document.getElementById("mEdit");
+      const mFrame = document.getElementById("mFrame");
+      const mDesign = document.getElementById("mDesign");
+
+      function setActivePair(a, b, isA){
+        if (!a || !b) return;
+        a.classList.toggle("is-active", isA);
+        b.classList.toggle("is-active", !isA);
+        a.setAttribute("aria-pressed", String(isA));
+        b.setAttribute("aria-pressed", String(!isA));
+      }
+
+      function setToggle(btn, on){
+        if (!btn) return;
+        btn.classList.toggle("is-active", on);
+        btn.setAttribute("aria-pressed", String(on));
+      }
+
+      if (mFront) mFront.addEventListener("click", () => { setPreview("front"); setActivePair(mFront, mBack, true); });
+      if (mBack)  mBack.addEventListener("click",  () => { setPreview("back");  setActivePair(mFront, mBack, false); });
+
+      if (mFull) mFull.addEventListener("click", () => { setMode("full"); setActivePair(mFull, mEdit, true); });
+      if (mEdit) mEdit.addEventListener("click", () => { setMode("edit"); setActivePair(mFull, mEdit, false); });
+
+      if (mFrame) mFrame.addEventListener("click", () => {
+        const on = !mFrame.classList.contains("is-active");
+        setToggle(mFrame, on);
+        if (typeof toggleBtn === "function" && togFrame) toggleBtn(togFrame); // keep desktop toggle in sync
+      });
+
+      if (mDesign) mDesign.addEventListener("click", () => {
+        const on = !mDesign.classList.contains("is-active");
+        setToggle(mDesign, on);
+        if (typeof toggleBtn === "function" && togDesign) toggleBtn(togDesign);
+      });
+
+      // Keep mobile state updated when desktop controls are used
+      const _setPreview = setPreview;
+      setPreview = (side) => {
+        _setPreview(side);
+        setActivePair(mFront, mBack, side === "front");
+      };
+
+      const _setMode = setMode;
+      setMode = (mode) => {
+        _setMode(mode);
+        setActivePair(mFull, mEdit, mode === "full");
+      };
+
+      // Initialize mobile UI to match defaults
+      setActivePair(mFront, mBack, true);
+      setActivePair(mFull, mEdit, true);
+      setToggle(mFrame, true);
+      setToggle(mDesign, true);
+
+    });
+  </script>
+
+
+  <!-- Product info overlay -->
+  <div class="overlay" id="productOverlay" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <h2 class="modal-title" id="productModalTitle">Product Details</h2>
+          <div class="modal-sub">Quick reference info for the selected blank.</div>
+        </div>
+        <button class="close-btn" type="button" id="closeOverlayBtn" aria-label="Close">
+          ✕
+        </button>
       </div>
-      <button class="close-btn" type="button" id="closeOverlayBtn" aria-label="Close">✕</button>
-    </div>
 
-    <div class="kv">
-      <div class="k">Product Code</div><div class="v">3001C_BC_UJSST</div>
-      <div class="k">Product Name</div><div class="v">3001C Bella + Canvas Unisex Jersey Short-Sleeve T-Shirt</div>
-      <div class="k">Fabric</div><div class="v">Airlume combed &amp; ring-spun cotton (solid colors), 32 singles, ~4.2 oz/yd²</div>
-      <div class="k">Fit &amp; Build</div><div class="v">Unisex sizing, crew neck, side-seamed with shoulder taping</div>
-    </div>
+      <div class="kv">
+        <div class="k">Product Code</div><div class="v">3001C_BC_UJSST</div>
+        <div class="k">Product Name</div><div class="v">3001C Bella + Canvas Unisex Jersey Short-Sleeve T-Shirt</div>
+        <div class="k">Fabric</div><div class="v">Airlume combed &amp; ring-spun cotton (solid colors), 32 singles, ~4.2 oz/yd²</div>
+        <div class="k">Fit &amp; Build</div><div class="v">Unisex sizing, crew neck, side-seamed with shoulder taping</div>
+      </div>
 
-    <p>
-      The 3001C is a soft, lightweight jersey tee designed to be a reliable everyday blank. The smooth surface and tight-knit jersey
-      make it a strong choice for print work, keeping details crisp and consistent.
-    </p>
-    <p>
-      Typical construction highlights include side seams (for a more flattering, consistent drape) and shoulder-to-shoulder taping
-      (to help maintain shape). Solid colorways are commonly listed as 100% Airlume combed and ring-spun cotton, while heather/blend
-      variants may include polyester.
-    </p>
-    <p>
-      If you import a design and edit it, a simple workflow is “clone on edit”: treat the imported design as a new draft ID, then saving/exporting
-      produces a new share code. That prevents accidental overwrites while still allowing a future “history” feature if you want it later.
-    </p>
+      <p>
+        The 3001C is a soft, lightweight jersey tee designed to be a reliable everyday blank. The smooth surface and tight-knit jersey
+        make it a strong choice for print work, keeping details crisp and consistent.
+      </p>
+      <p>
+        Typical construction highlights include side seams (for a more flattering, consistent drape) and shoulder-to-shoulder taping
+        (to help maintain shape). Solid colorways are commonly listed as 100% Airlume combed and ring-spun cotton, while heather/blend
+        variants may include polyester.
+      </p>
+      <p>
+        If you import a design and edit it, a simple workflow is “clone on edit”: treat the imported design as a new draft ID, then saving/exporting
+        produces a new share code. That prevents accidental overwrites while still allowing a future “history” feature if you want it later.
+      </p>
+    </div>
   </div>
-</div>
 
 </body>
 </html>
