@@ -122,13 +122,12 @@
     .share-pill{
       display: inline-flex;
       align-items: center;
-      justify-content: flex-end;
       gap: 10px;
-      padding: 0;               /* no bubble */
-      border: none;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
+      padding: 6px 10px;
+      border: 1px solid var(--stroke);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
       white-space: nowrap;
     }
 
@@ -261,44 +260,35 @@
       min-width: 0;
     }
 
-    .product-code-link{
-      appearance: none;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.92);
-      border-radius: 999px;
-      padding: 8px 10px;
+    .product-pill{
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      cursor: pointer;
+      gap: 10px;
+      padding: 7px 10px;
+      border: 1px solid var(--stroke);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
       box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-      white-space: nowrap;
+      min-width: 0;
       max-width: 100%;
+      white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
+    }
+    .product-name{
       font-size: 12px;
-      font-weight: 650;
+      font-weight: 700;
+      white-space: nowrap;
     }
-    .product-code-link:hover{ border-color: var(--stroke2); background: rgba(255,255,255,0.05); }
-    .product-code-link:active{ transform: translateY(1px); }
-
-    .product-code-label{
-      color: var(--text-dim);
-      font-weight: 600;
-      font-size: 11px;
-    }
-    .product-code-value{
-      letter-spacing: 0.3px;
-      font-weight: 750;
-    }
-
-    /* keep divider class for other uses if any */
     .divider{
       width: 1px;
       height: 16px;
       background: var(--stroke);
       flex: 0 0 auto;
+    }
+    .product-code{
+      font-size: 11px;
+      color: var(--text-dim);
+      white-space: nowrap;
     }
 
     .workspace{
@@ -308,99 +298,6 @@
       border: 1px dashed rgba(255,255,255,0.08);
       border-radius: 12px;
     }
-  
-    /* ===== Modal overlay for product details ===== */
-    .overlay{
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 9999;
-    }
-    .overlay.is-open{ display: flex; }
-
-    .modal{
-      width: min(560px, 92vw);
-      max-height: min(72vh, 680px);
-      overflow: auto;
-      background: rgba(14, 21, 34, 0.98);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 16px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.55);
-      padding: 14px 14px 16px;
-      color: rgba(255,255,255,0.92);
-    }
-
-    /* modal internal scrolling without affecting page scrollbars */
-    .modal::-webkit-scrollbar{ width: 10px; }
-    .modal::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.10); border-radius: 999px; }
-    .modal::-webkit-scrollbar-track{ background: transparent; }
-
-    .modal-head{
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      margin-bottom: 12px;
-    }
-
-    .modal-title{
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: 0.2px;
-      margin: 0;
-    }
-    .modal-sub{
-      margin: 6px 0 0;
-      color: rgba(255,255,255,0.70);
-      font-size: 12px;
-      line-height: 1.35;
-    }
-
-    .close-btn{
-      appearance: none;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.85);
-      border-radius: 10px;
-      width: 34px;
-      height: 34px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex: 0 0 auto;
-    }
-    .close-btn:hover{ background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.16); }
-
-    .kv{
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 8px 10px;
-      font-size: 12px;
-      margin: 10px 0 12px;
-    }
-    .kv .k{ color: rgba(255,255,255,0.62); font-weight: 650; }
-    .kv .v{ color: rgba(255,255,255,0.92); font-weight: 700; }
-
-    .modal p{
-      margin: 10px 0 0;
-      color: rgba(255,255,255,0.78);
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    @media (max-width: 420px){
-      .kv{ grid-template-columns: 1fr; }
-    }
-
   </style>
 </head>
 <body>
@@ -463,11 +360,11 @@
       <!-- CONTENT -->
       <div class="content">
         <div class="content-top">
-          <button class="product-code-link" type="button" id="productInfoBtn" aria-label="Show product info">
-            <span class="product-code-label">Product Code:</span>
-            <span class="product-code-value">3001C_BC_UJSST</span>
-          </button>
-        </div>
+          <div class="product-pill" aria-label="Product details">
+            <div class="product-name">Product Code</div>
+            <div class="divider" aria-hidden="true"></div>
+            <div class="product-code">3001C_BC_UJSST</div>
+          </div>
         </div>
         <div class="workspace"></div>
       </div>
@@ -483,69 +380,6 @@
       return out;
     }
     document.getElementById("shareCode").textContent = genCode(8);
-  
-
-    // Product overlay open/close
-    const overlay = document.getElementById("productOverlay");
-    const openBtn = document.getElementById("productInfoBtn");
-    const closeBtn = document.getElementById("closeOverlayBtn");
-
-    function openOverlay(){
-      overlay.classList.add("is-open");
-    }
-    function closeOverlay(){
-      overlay.classList.remove("is-open");
-    }
-
-    if (openBtn) openBtn.addEventListener("click", openOverlay);
-    if (closeBtn) closeBtn.addEventListener("click", closeOverlay);
-
-    // Close on backdrop click
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) closeOverlay();
-    });
-
-    // Close on ESC
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && overlay.classList.contains("is-open")) closeOverlay();
-    });
-</script>
-
-  <!-- Product info overlay -->
-  <div class="overlay" id="productOverlay" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
-    <div class="modal">
-      <div class="modal-head">
-        <div>
-          <h2 class="modal-title" id="productModalTitle">Product Details</h2>
-          <div class="modal-sub">Quick reference info for the selected blank.</div>
-        </div>
-        <button class="close-btn" type="button" id="closeOverlayBtn" aria-label="Close">
-          ✕
-        </button>
-      </div>
-
-      <div class="kv">
-        <div class="k">Product Code</div><div class="v">3001C_BC_UJSST</div>
-        <div class="k">Product Name</div><div class="v">3001C Bella + Canvas Unisex Jersey Short-Sleeve T-Shirt</div>
-        <div class="k">Fabric</div><div class="v">Airlume combed &amp; ring-spun cotton (solid colors), 32 singles, ~4.2 oz/yd²</div>
-        <div class="k">Fit &amp; Build</div><div class="v">Unisex sizing, crew neck, side-seamed with shoulder taping</div>
-      </div>
-
-      <p>
-        The 3001C is a soft, lightweight jersey tee designed to be a reliable everyday blank. The smooth surface and tight-knit jersey
-        make it a strong choice for print work, keeping details crisp and consistent.
-      </p>
-      <p>
-        Typical construction highlights include side seams (for a more flattering, consistent drape) and shoulder-to-shoulder taping
-        (to help maintain shape). Solid colorways are commonly listed as 100% Airlume combed and ring-spun cotton, while heather/blend
-        variants may include polyester.
-      </p>
-      <p>
-        If you import a design and edit it, a simple workflow is “clone on edit”: treat the imported design as a new draft ID, then saving/exporting
-        produces a new share code. That prevents accidental overwrites while still allowing a future “history” feature if you want it later.
-      </p>
-    </div>
-  </div>
-
+  </script>
 </body>
 </html>
