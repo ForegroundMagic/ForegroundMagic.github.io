@@ -406,12 +406,8 @@
       flex-direction: column;
       gap: 10px;
 
-      /* always centered and always smaller than .content */
-      box-sizing: border-box;
-      width: min(940px, 100%);
-      max-width: 100%;
-      margin: 0 auto;          /* center */
-      align-self: center;      /* center within flex column */
+      /* slightly smaller feel than full content width */
+      width: min(980px, 100%);
     }
 
     .preview-toolbar{
@@ -452,7 +448,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      max-width: 100%;
     }
 
     .preview-viewport img{

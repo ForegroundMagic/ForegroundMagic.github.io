@@ -392,77 +392,6 @@
       .kv{ grid-template-columns: 1fr; }
     }
 
-  
-    /* ===== Product preview area ===== */
-    .product-preview-area{
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      background: rgba(255,255,255,0.02);
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-
-      /* always centered and always smaller than .content */
-      box-sizing: border-box;
-      width: min(940px, 100%);
-      max-width: 100%;
-      margin: 0 auto;          /* center */
-      align-self: center;      /* center within flex column */
-    }
-
-    .preview-toolbar{
-      flex: 0 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 8px;
-    }
-
-    .seg-btn{
-      appearance: none;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.86);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 750;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 120ms ease, border-color 120ms ease;
-    }
-    .seg-btn:hover{ background: rgba(255,255,255,0.08); border-color: var(--stroke2); }
-    .seg-btn.is-active{
-      background: rgba(86, 132, 255, 0.20);
-      border-color: rgba(86, 132, 255, 0.40);
-      color: rgba(255,255,255,0.92);
-    }
-
-    .preview-viewport{
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow: hidden;
-      border-radius: 12px;
-      background: rgba(0,0,0,0.10);
-      border: 1px dashed rgba(255,255,255,0.10);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      max-width: 100%;
-    }
-
-    .preview-viewport img{
-      width: 100%;
-      height: 100%;
-      object-fit: contain; /* show full image, keep proportions */
-      object-position: center;
-      display: block;
-    }
-
   </style>
 </head>
 <body>
@@ -530,23 +459,7 @@
             <span class="product-code-value">3001C_BC_UJSST</span>
           </button>
         </div>
-        
-        <div class="product-preview-area" aria-label="Product preview">
-          <div class="preview-toolbar" role="tablist" aria-label="Preview side">
-            <button class="seg-btn is-active" type="button" id="btnFront" aria-selected="true">Front</button>
-            <button class="seg-btn" type="button" id="btnBack" aria-selected="false">Back</button>
-          </div>
-
-          <div class="preview-viewport">
-            <img
-              id="previewImg"
-              src="shop/products/3001C_BC_UJSST/color/product/06_heather_team_purple_front.png"
-              alt="Product preview (front)"
-              loading="eager"
-            />
-          </div>
         </div>
-</div>
 </div>
 
     </div>
@@ -588,31 +501,6 @@ function genCode(len = 8) {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && overlay.classList.contains("is-open")) closeOverlay();
     });
-
-      // Preview toggle (front/back)
-      const previewImg = document.getElementById("previewImg");
-      const btnFront = document.getElementById("btnFront");
-      const btnBack = document.getElementById("btnBack");
-
-      const frontSrc = "shop/products/3001C_BC_UJSST/color/product/06_heather_team_purple_front.png";
-      const backSrc  = "shop/products/3001C_BC_UJSST/color/product/06_heather_team_purple_back.png";
-
-      function setPreview(side){
-        if (!previewImg) return;
-        const isFront = side === "front";
-        previewImg.src = isFront ? frontSrc : backSrc;
-        previewImg.alt = isFront ? "Product preview (front)" : "Product preview (back)";
-        if (btnFront && btnBack){
-          btnFront.classList.toggle("is-active", isFront);
-          btnBack.classList.toggle("is-active", !isFront);
-          btnFront.setAttribute("aria-selected", String(isFront));
-          btnBack.setAttribute("aria-selected", String(!isFront));
-        }
-      }
-
-      if (btnFront) btnFront.addEventListener("click", () => setPreview("front"));
-      if (btnBack) btnBack.addEventListener("click", () => setPreview("back"));
-
     });
   </script>
 
