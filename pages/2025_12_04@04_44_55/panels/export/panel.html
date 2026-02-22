@@ -1,0 +1,45 @@
+<section class="floating-panel" data-panel-shell data-panel-kind="export">
+  <header class="floating-panel__header">
+    <div>
+      <p class="floating-panel__eyebrow">Export</p>
+      <h2 class="floating-panel__title" data-panel-title>Export Design Settings</h2>
+    </div>
+  </header>
+  <div class="floating-panel__body export-panel" aria-live="polite" aria-label="Export settings panel">
+    <div class="export-panel__summary" data-export-summary>
+      <section class="export-section">
+        <div class="export-section__header">
+          <p class="export-section__eyebrow">Product</p>
+          <div data-product-chip>None selected</div>
+        </div>
+        <dl class="summary-grid" data-product-summary></dl>
+      </section>
+
+      <section class="export-section">
+        <div class="export-section__header">
+          <p class="export-section__eyebrow">Design</p>
+          <div data-canvas-count>0 sides · 0 canvases</div>
+        </div>
+        <div class="canvas-summary" data-canvas-summary></div>
+      </section>
+
+      <section class="export-section export-section--json">
+        <div class="export-section__header">
+          <p class="export-section__eyebrow">JSON Preview</p>
+          <div class="export-section__note">Auto-updates when settings change.</div>
+        </div>
+        <pre class="export-json" data-json-preview aria-label="Export JSON preview"></pre>
+      </section>
+    </div>
+
+    <div class="export-panel__actions">
+      <div class="export-status" data-export-status>Ready to export current settings.</div>
+      <div class="export-actions">
+        <button class="export-btn export-btn--ghost" type="button" data-save-server>Save to Server</button>
+        <button class="export-btn export-btn--primary" type="button" data-download-export>
+          Download locally / Export
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

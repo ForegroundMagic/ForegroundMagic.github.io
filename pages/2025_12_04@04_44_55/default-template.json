@@ -1,0 +1,147 @@
+{
+  "product": {
+    "code": "3001C_BC_UJSST",
+    "size": "L",
+    "color": "canvas_red"
+  },
+  "design": {
+    "sides": [
+      {
+        "id": "front",
+        "name": "Front",
+        "enabled": true,
+        "canvases": [
+          {
+            "id": "front-default-canvas",
+            "side": "front",
+            "presetName": "Default Preset",
+            "x": 400.5,
+            "y": 226,
+            "width": 360,
+            "height": 477,
+            "layers": [
+              {
+                "id": "layer-1",
+                "type": "svg",
+                "objectId": "logo-main",
+                "x": 100,
+                "y": 120,
+                "width": 200,
+                "height": 200,
+                "scale": 1,
+                "rotation": 0,
+                "opacity": 1,
+                "color": "#FFFFFF",
+                "zIndex": 1,
+                "locked": false,
+                "visible": true,
+                "svg": {
+                  "assetRef": "assets/logo-main.svg",
+                  "viewBox": "0 0 100 100",
+                  "preserveAspectRatio": "xMidYMid meet",
+                  "content": "<path d='M10 10L90 10L50 90Z' />"
+                }
+              },
+              {
+                "id": "layer-2",
+                "type": "text",
+                "objectId": "headline-1",
+                "x": 150,
+                "y": 380,
+                "width": 400,
+                "height": 80,
+                "scale": 1,
+                "rotation": 0,
+                "opacity": 1,
+                "color": "#FFFFFF",
+                "zIndex": 2,
+                "locked": false,
+                "visible": true,
+                "text": {
+                  "content": "YOUR CUSTOM TEXT",
+                  "fontFamily": "Arial",
+                  "fontSize": 32,
+                  "fontWeight": "bold",
+                  "fontStyle": "normal",
+                  "letterSpacing": 0,
+                  "lineHeight": 1.2,
+                  "textAlign": "center",
+                  "textTransform": "uppercase",
+                  "decoration": "none"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "back",
+        "name": "Back",
+        "enabled": true,
+        "canvases": [
+          {
+            "id": "back-default-canvas",
+            "side": "back",
+            "presetName": "Default Preset",
+            "x": 400.5,
+            "y": 226,
+            "width": 360,
+            "height": 477,
+            "layers": [
+              {
+                "id": "layer-1",
+                "type": "svg",
+                "objectId": "logo-main",
+                "x": 100,
+                "y": 120,
+                "width": 200,
+                "height": 200,
+                "scale": 1,
+                "rotation": 0,
+                "opacity": 1,
+                "color": "#FFFFFF",
+                "zIndex": 1,
+                "locked": false,
+                "visible": true,
+                "svg": {
+                  "assetRef": "assets/logo-main.svg",
+                  "viewBox": "0 0 100 100",
+                  "preserveAspectRatio": "xMidYMid meet",
+                  "content": "<path d='M10 10L90 10L50 90Z' />"
+                }
+              },
+              {
+                "id": "layer-2",
+                "type": "text",
+                "objectId": "headline-1",
+                "x": 150,
+                "y": 380,
+                "width": 400,
+                "height": 80,
+                "scale": 1,
+                "rotation": 0,
+                "opacity": 1,
+                "color": "#FFFFFF",
+                "zIndex": 2,
+                "locked": false,
+                "visible": true,
+                "text": {
+                  "content": "YOUR CUSTOM TEXT",
+                  "fontFamily": "Arial",
+                  "fontSize": 32,
+                  "fontWeight": "bold",
+                  "fontStyle": "normal",
+                  "letterSpacing": 0,
+                  "lineHeight": 1.2,
+                  "textAlign": "center",
+                  "textTransform": "uppercase",
+                  "decoration": "none"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+[data-panel-kind="layers-panel"] .floating-panel__body--layers {
+  min-height: 220px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.layers-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.layers-eyebrow {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.layers-side {
+  margin: 0;
+  font-weight: 600;
+}
+
+.layers-hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.layers-list {
+  flex: 1 1 auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+
+.layer-row {
+  display: grid;
+  grid-template-columns: 44px 1fr 80px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+}
+
+.layer-row.is-selected {
+  border-color: rgba(124, 157, 251, 0.6);
+  box-shadow: 0 0 0 1px rgba(124, 157, 251, 0.3);
+  background: linear-gradient(180deg, rgba(124, 157, 251, 0.08), rgba(124, 157, 251, 0.04));
+}
+
+.layer-row.is-empty {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.layer-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: 700;
+}
+
+.layer-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.layer-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.layer-sub {
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.layer-type {
+  justify-self: end;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.layer-controls {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.layer-move-btn {
+  all: unset;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: inherit;
+}
+
+.layer-move-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

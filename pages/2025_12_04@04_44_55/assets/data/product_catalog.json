@@ -1,0 +1,465 @@
+{
+  "generated_at": "2025-11-12T04:59:14.264247Z",
+  "products": [
+    {
+      "product_id": 4,
+      "product_code": "Product_Demo_03",
+      "product_name": "Product_Demo_03",
+      "description": "Demo Description.\r",
+      "type": "T-Shirt",
+      "created_at": "2025-10-24 02:56:16",
+      "hero": "assets/img/products/Product_Demo_03/preview/26_true_royal_front.png",
+      "colors": [
+        {
+          "color_asset_id": 59,
+          "name": "Heather Royal",
+          "code": "heather_royal",
+          "preview": "assets/img/products/Product_Demo_03/preview/21_heather_royal_front.png"
+        },
+        {
+          "color_asset_id": 60,
+          "name": "Kelly",
+          "code": "kelly",
+          "preview": "assets/img/products/Product_Demo_03/preview/22_kelly_front.png"
+        },
+        {
+          "color_asset_id": 61,
+          "name": "Red",
+          "code": "red",
+          "preview": "assets/img/products/Product_Demo_03/preview/23_red_front.png"
+        },
+        {
+          "color_asset_id": 62,
+          "name": "Leaf",
+          "code": "leaf",
+          "preview": "assets/img/products/Product_Demo_03/preview/24_leaf_front.png"
+        },
+        {
+          "color_asset_id": 63,
+          "name": "Team Purple",
+          "code": "team_purple",
+          "preview": "assets/img/products/Product_Demo_03/preview/25_team_purple_front.png"
+        },
+        {
+          "color_asset_id": 64,
+          "name": "True Royal",
+          "code": "true_royal",
+          "preview": "assets/img/products/Product_Demo_03/preview/26_true_royal_front.png"
+        },
+        {
+          "color_asset_id": 65,
+          "name": "Navy",
+          "code": "navy",
+          "preview": "assets/img/products/Product_Demo_03/preview/27_navy_front.png"
+        },
+        {
+          "color_asset_id": 66,
+          "name": "Orange",
+          "code": "orange",
+          "preview": "assets/img/products/Product_Demo_03/preview/28_orange_front.png"
+        },
+        {
+          "color_asset_id": 67,
+          "name": "Soft Pink",
+          "code": "soft_pink",
+          "preview": "assets/img/products/Product_Demo_03/preview/29_soft_pink_front.png"
+        },
+        {
+          "color_asset_id": 68,
+          "name": "Teal",
+          "code": "teal",
+          "preview": "assets/img/products/Product_Demo_03/preview/30_teal_front.png"
+        }
+      ],
+      "likes": 53,
+      "favorites": 30
+    },
+    {
+      "product_id": 3,
+      "product_code": "Product_Demo_02",
+      "product_name": "Product_Demo_02",
+      "description": "Demo Description.\r",
+      "type": "T-Shirt",
+      "created_at": "2025-10-24 02:12:17",
+      "hero": "assets/img/products/Product_Demo_02/preview/20_deep_teal_front.png",
+      "colors": [
+        {
+          "color_asset_id": 49,
+          "name": "Heather Raspberry",
+          "code": "heather_raspberry",
+          "preview": "assets/img/products/Product_Demo_02/preview/11_heather_raspberry_front.png"
+        },
+        {
+          "color_asset_id": 50,
+          "name": "Heather Red",
+          "code": "heather_red",
+          "preview": "assets/img/products/Product_Demo_02/preview/12_heather_red_front.png"
+        },
+        {
+          "color_asset_id": 51,
+          "name": "Vintage Black",
+          "code": "vintage_black",
+          "preview": "assets/img/products/Product_Demo_02/preview/13_vintage_black_front.png"
+        },
+        {
+          "color_asset_id": 52,
+          "name": "Vintage White",
+          "code": "vintage_white",
+          "preview": "assets/img/products/Product_Demo_02/preview/14_vintage_white_front.png"
+        },
+        {
+          "color_asset_id": 53,
+          "name": "Pink",
+          "code": "pink",
+          "preview": "assets/img/products/Product_Demo_02/preview/15_pink_front.png"
+        },
+        {
+          "color_asset_id": 54,
+          "name": "Forest",
+          "code": "forest",
+          "preview": "assets/img/products/Product_Demo_02/preview/16_forest_front.png"
+        },
+        {
+          "color_asset_id": 55,
+          "name": "White",
+          "code": "white",
+          "preview": "assets/img/products/Product_Demo_02/preview/17_white_front.png"
+        },
+        {
+          "color_asset_id": 56,
+          "name": "Yellow",
+          "code": "yellow",
+          "preview": "assets/img/products/Product_Demo_02/preview/18_yellow_front.png"
+        },
+        {
+          "color_asset_id": 57,
+          "name": "Asphalt",
+          "code": "asphalt",
+          "preview": "assets/img/products/Product_Demo_02/preview/19_asphalt_front.png"
+        },
+        {
+          "color_asset_id": 58,
+          "name": "Deep Teal",
+          "code": "deep_teal",
+          "preview": "assets/img/products/Product_Demo_02/preview/20_deep_teal_front.png"
+        }
+      ],
+      "likes": 46,
+      "favorites": 25
+    },
+    {
+      "product_id": 2,
+      "product_code": "Product_Demo_01",
+      "product_name": "Product_Demo_01",
+      "description": "Demo Description.\r",
+      "type": "T-Shirt",
+      "created_at": "2025-10-24 02:12:17",
+      "hero": "assets/img/products/Product_Demo_01/preview/06_heather_team_purple_front.png",
+      "colors": [
+        {
+          "color_asset_id": 39,
+          "name": "Maroon",
+          "code": "maroon",
+          "preview": "assets/img/products/Product_Demo_01/preview/01_maroon_front.png"
+        },
+        {
+          "color_asset_id": 40,
+          "name": "Athletic Heather",
+          "code": "athletic_heather",
+          "preview": "assets/img/products/Product_Demo_01/preview/02_athletic_heather_front.png"
+        },
+        {
+          "color_asset_id": 41,
+          "name": "Heather Military Green",
+          "code": "heather_military_green",
+          "preview": "assets/img/products/Product_Demo_01/preview/03_heather_military_green_front.png"
+        },
+        {
+          "color_asset_id": 42,
+          "name": "Heather Sand Dune",
+          "code": "heather_sand_dune",
+          "preview": "assets/img/products/Product_Demo_01/preview/04_heather_sand_dune_front.png"
+        },
+        {
+          "color_asset_id": 43,
+          "name": "Heather Mauve",
+          "code": "heather_mauve",
+          "preview": "assets/img/products/Product_Demo_01/preview/05_heather_mauve_front.png"
+        },
+        {
+          "color_asset_id": 44,
+          "name": "Heather Team Purple",
+          "code": "heather_team_purple",
+          "preview": "assets/img/products/Product_Demo_01/preview/06_heather_team_purple_front.png"
+        },
+        {
+          "color_asset_id": 45,
+          "name": "Heather Mint",
+          "code": "heather_mint",
+          "preview": "assets/img/products/Product_Demo_01/preview/07_heather_mint_front.png"
+        },
+        {
+          "color_asset_id": 46,
+          "name": "Natural",
+          "code": "natural",
+          "preview": "assets/img/products/Product_Demo_01/preview/08_natural_front.png"
+        },
+        {
+          "color_asset_id": 47,
+          "name": "Heather Orange",
+          "code": "heather_orange",
+          "preview": "assets/img/products/Product_Demo_01/preview/09_heather_orange_front.png"
+        },
+        {
+          "color_asset_id": 48,
+          "name": "Heather Peach",
+          "code": "heather_peach",
+          "preview": "assets/img/products/Product_Demo_01/preview/10_heather_peach_front.png"
+        }
+      ],
+      "likes": 39,
+      "favorites": 20
+    },
+    {
+      "product_id": 1,
+      "product_code": "3001C_BC_UJSST",
+      "product_name": "3001C Bella + Canvas Unisex Jersey Short-Sleeve T-Shirt",
+      "description": "Brand: Bella + Canvas\r",
+      "type": "T-Shirt",
+      "created_at": "2025-10-24 01:15:00",
+      "hero": "assets/img/products/3001C_BC_UJSST/preview/33_canvas_red_front.png",
+      "colors": [
+        {
+          "color_asset_id": 1,
+          "name": "Maroon",
+          "code": "maroon",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/01_maroon_front.png"
+        },
+        {
+          "color_asset_id": 2,
+          "name": "Athletic Heather",
+          "code": "athletic_heather",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/02_athletic_heather_front.png"
+        },
+        {
+          "color_asset_id": 3,
+          "name": "Heather Military Green",
+          "code": "heather_military_green",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/03_heather_military_green_front.png"
+        },
+        {
+          "color_asset_id": 4,
+          "name": "Heather Sand Dune",
+          "code": "heather_sand_dune",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/04_heather_sand_dune_front.png"
+        },
+        {
+          "color_asset_id": 5,
+          "name": "Heather Mauve",
+          "code": "heather_mauve",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/05_heather_mauve_front.png"
+        },
+        {
+          "color_asset_id": 6,
+          "name": "Heather Team Purple",
+          "code": "heather_team_purple",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/06_heather_team_purple_front.png"
+        },
+        {
+          "color_asset_id": 7,
+          "name": "Heather Mint",
+          "code": "heather_mint",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/07_heather_mint_front.png"
+        },
+        {
+          "color_asset_id": 8,
+          "name": "Natural",
+          "code": "natural",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/08_natural_front.png"
+        },
+        {
+          "color_asset_id": 9,
+          "name": "Heather Orange",
+          "code": "heather_orange",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/09_heather_orange_front.png"
+        },
+        {
+          "color_asset_id": 10,
+          "name": "Heather Peach",
+          "code": "heather_peach",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/10_heather_peach_front.png"
+        },
+        {
+          "color_asset_id": 11,
+          "name": "Heather Raspberry",
+          "code": "heather_raspberry",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/11_heather_raspberry_front.png"
+        },
+        {
+          "color_asset_id": 12,
+          "name": "Heather Red",
+          "code": "heather_red",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/12_heather_red_front.png"
+        },
+        {
+          "color_asset_id": 13,
+          "name": "Vintage Black",
+          "code": "vintage_black",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/13_vintage_black_front.png"
+        },
+        {
+          "color_asset_id": 14,
+          "name": "Vintage White",
+          "code": "vintage_white",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/14_vintage_white_front.png"
+        },
+        {
+          "color_asset_id": 15,
+          "name": "Pink",
+          "code": "pink",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/15_pink_front.png"
+        },
+        {
+          "color_asset_id": 16,
+          "name": "Forest",
+          "code": "forest",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/16_forest_front.png"
+        },
+        {
+          "color_asset_id": 17,
+          "name": "White",
+          "code": "white",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/17_white_front.png"
+        },
+        {
+          "color_asset_id": 18,
+          "name": "Yellow",
+          "code": "yellow",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/18_yellow_front.png"
+        },
+        {
+          "color_asset_id": 19,
+          "name": "Asphalt",
+          "code": "asphalt",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/19_asphalt_front.png"
+        },
+        {
+          "color_asset_id": 20,
+          "name": "Deep Teal",
+          "code": "deep_teal",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/20_deep_teal_front.png"
+        },
+        {
+          "color_asset_id": 21,
+          "name": "Heather Royal",
+          "code": "heather_royal",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/21_heather_royal_front.png"
+        },
+        {
+          "color_asset_id": 22,
+          "name": "Kelly",
+          "code": "kelly",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/22_kelly_front.png"
+        },
+        {
+          "color_asset_id": 23,
+          "name": "Red",
+          "code": "red",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/23_red_front.png"
+        },
+        {
+          "color_asset_id": 24,
+          "name": "Leaf",
+          "code": "leaf",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/24_leaf_front.png"
+        },
+        {
+          "color_asset_id": 25,
+          "name": "Team Purple",
+          "code": "team_purple",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/25_team_purple_front.png"
+        },
+        {
+          "color_asset_id": 26,
+          "name": "True Royal",
+          "code": "true_royal",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/26_true_royal_front.png"
+        },
+        {
+          "color_asset_id": 27,
+          "name": "Navy",
+          "code": "navy",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/27_navy_front.png"
+        },
+        {
+          "color_asset_id": 28,
+          "name": "Orange",
+          "code": "orange",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/28_orange_front.png"
+        },
+        {
+          "color_asset_id": 29,
+          "name": "Soft Pink",
+          "code": "soft_pink",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/29_soft_pink_front.png"
+        },
+        {
+          "color_asset_id": 30,
+          "name": "Teal",
+          "code": "teal",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/30_teal_front.png"
+        },
+        {
+          "color_asset_id": 31,
+          "name": "Turquoise",
+          "code": "turquoise",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/31_turquoise_front.png"
+        },
+        {
+          "color_asset_id": 32,
+          "name": "Black",
+          "code": "black",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/32_black_front.png"
+        },
+        {
+          "color_asset_id": 33,
+          "name": "Canvas Red",
+          "code": "canvas_red",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/33_canvas_red_front.png"
+        },
+        {
+          "color_asset_id": 34,
+          "name": "Cardinal",
+          "code": "cardinal",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/34_cardinal_front.png"
+        },
+        {
+          "color_asset_id": 35,
+          "name": "Dark Grey Heather",
+          "code": "dark_grey_heather",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/35_dark_grey_heather_front.png"
+        },
+        {
+          "color_asset_id": 36,
+          "name": "Gold",
+          "code": "gold",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/36_gold_front.png"
+        },
+        {
+          "color_asset_id": 37,
+          "name": "Light Blue",
+          "code": "light_blue",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/37_light_blue_front.png"
+        },
+        {
+          "color_asset_id": 38,
+          "name": "Maize Yellow",
+          "code": "maize_yellow",
+          "preview": "assets/img/products/3001C_BC_UJSST/preview/38_maize_yellow_front.png"
+        }
+      ],
+      "likes": 32,
+      "favorites": 15
+    }
+  ]
+}
