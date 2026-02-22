@@ -59,27 +59,28 @@
       min-height: 0;
     }
 
-    /* ===== Top Info Bar: content-sized brand + minimal share pill ===== */
+    /* ===== Top Info Bar: EXACT 50/50 ===== */
     .topbar{
       flex: 0 0 auto;
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;       /* 50/50 */
+      column-gap: 10px;                    /* small gap between halves */
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 8px 10px;
+      padding: 8px 10px;                   /* reduced vertical space */
       background: linear-gradient(to bottom, rgba(255,255,255,0.04), rgba(255,255,255,0.00));
       border-bottom: 1px solid var(--stroke);
       min-width: 0;
     }
 
     .brand{
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 10px;
-      flex: 0 0 auto;
       min-width: 0;
+      overflow: hidden;
     }
 
+    /* bigger logo */
     .logo{
       width: 56px;
       height: 56px;
@@ -89,19 +90,23 @@
       flex: 0 0 auto;
     }
 
+    /* text always visible, never taller than logo */
     .brand__text{
       display: flex;
       flex-direction: column;
       justify-content: center;
       max-height: 56px;
       line-height: 1.12;
-      flex: 0 0 auto;
+      min-width: 0;
+      overflow: hidden;
     }
     .brand__title{
       font-size: 14px;
       font-weight: 750;
       letter-spacing: 0.2px;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       margin: 0;
     }
     .brand__sub{
@@ -109,37 +114,47 @@
       font-weight: 600;
       color: var(--text-dim);
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       margin: 0;
     }
 
+    /* Right half: code/status container fills its 50% */
     .shareWrap{
+      min-width: 0;
       display: flex;
       justify-content: flex-end;
-      flex: 1 1 auto;
-      min-width: 0;
     }
 
+    /* Code + status pill (no "CODE" label) */
     .share-pill{
-      display: inline-flex;
+      width: 100%;
+      max-width: 100%;
+      display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      padding: 6px 10px;
+      padding: 7px 10px;                   /* reduced height */
       border: 1px solid var(--stroke);
       border-radius: 999px;
       background: rgba(255,255,255,0.03);
       box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-      white-space: nowrap;
+      min-width: 0;
     }
 
     .share-code{
+      min-width: 0;
       font-size: 12px;
       font-weight: 750;
       letter-spacing: 1.0px;
       color: rgba(255,255,255,0.92);
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .status{
+      flex: 0 0 auto;
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -154,18 +169,18 @@
       border-radius: 999px;
       background: rgba(255, 196, 61, 0.95);
       box-shadow: 0 0 0 3px rgba(255, 196, 61, 0.12);
-      flex: 0 0 auto;
     }
 
-    /* If space is tight: code on top, status below (still minimal width) */
+    /* If right side gets tight: stack code on top, status below */
     @media (max-width: 420px){
       .share-pill{
         flex-direction: column;
-        align-items: flex-end;
+        align-items: flex-end;             /* right aligned */
         gap: 4px;
-        white-space: normal;
+        padding: 7px 10px;
       }
       .share-code, .status{
+        width: 100%;
         text-align: right;
       }
     }
@@ -173,38 +188,41 @@
     /* ===== Buttons toolbar: 4 buttons in one row, compact ===== */
     .btnbar{
       flex: 0 0 auto;
-      padding: 8px 10px;
+      padding: 8px 10px;                  /* reduced height */
       border-bottom: 1px solid var(--stroke);
       background: rgba(255,255,255,0.02);
     }
 
+    /* One row, 4 equal buttons, with a "medium gap" in the middle */
     .btngrid{
       display: grid;
-      grid-template-columns: 1fr 1fr 24px 1fr 1fr;
+      grid-template-columns: 1fr 1fr 24px 1fr 1fr;  /* middle spacer column */
       align-items: stretch;
       gap: 8px;
     }
 
     .midGap{ width: 24px; }
 
+    /* Buttons: no wrapping, font auto-adjust via clamp, icon stays */
     .btn{
       appearance: none;
       border: 1px solid var(--stroke);
       background: var(--btn);
       color: rgba(255,255,255,0.9);
       border-radius: 12px;
-      padding: 10px 10px;
+      padding: 10px 10px;                 /* compact */
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
 
+      /* key: prevent new lines and reduce font if needed */
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       font-weight: 700;
-      font-size: clamp(10px, 2.7vw, 12px);
+      font-size: clamp(10px, 2.7vw, 12px); /* scales down on mobile */
       line-height: 1;
       min-width: 0;
       transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
@@ -233,6 +251,7 @@
       stroke-linejoin: round;
     }
 
+    /* If extremely narrow, keep ONE ROW and just shrink text/icon slightly */
     @media (max-width: 340px){
       .btn{ gap: 6px; padding: 9px 8px; }
       .icon{ width: 13px; height: 13px; }
@@ -245,7 +264,7 @@
       flex: 1 1 auto;
       min-height: 0;
       overflow: hidden;
-      padding: 10px;
+      padding: 10px;                       /* slightly reduced */
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
@@ -304,7 +323,7 @@
   <div class="page">
     <div class="app">
 
-      <!-- TOP INFO BAR -->
+      <!-- TOP INFO BAR (50/50) -->
       <div class="topbar">
         <div class="brand">
           <img class="logo" src="assets/graphics/logo/FM_logo.svg" alt="Foreground Magic logo" />
@@ -322,7 +341,7 @@
         </div>
       </div>
 
-      <!-- BUTTON TOOLBAR -->
+      <!-- BUTTON TOOLBAR (4 buttons in one row) -->
       <div class="btnbar">
         <div class="btngrid">
           <button class="btn" type="button" title="Inspector">
@@ -373,6 +392,7 @@
   </div>
 
   <script>
+    // Mockup 8-char A-Z0-9 code
     function genCode(len = 8) {
       const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       let out = "";
