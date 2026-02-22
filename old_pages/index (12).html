@@ -419,84 +419,27 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: 10px;
-      flex-wrap: wrap; /* allow wrap on small screens */
-    }
-
-    .segmented{
-      display: inline-flex;
-      align-items: center;
-      padding: 4px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      gap: 4px;
+      gap: 8px;
     }
 
     .seg-btn{
       appearance: none;
-      border: 0;
-      background: transparent;
-      color: rgba(255,255,255,0.72);
-      border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 120ms ease, color 120ms ease;
-    }
-    .seg-btn:hover{ background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.86); }
-    .seg-btn.is-active{
-      background: rgba(86, 132, 255, 0.22);
-      color: rgba(255,255,255,0.92);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.25);
-    }
-
-    .tog{
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      user-select: none;
-    }
-    .tog .label{
-      font-size: 12px;
-      font-weight: 800;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
       color: rgba(255,255,255,0.86);
-      white-space: nowrap;
-    }
-    .switch{
-      width: 44px;
-      height: 24px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.06);
-      position: relative;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 750;
       cursor: pointer;
-      flex: 0 0 auto;
+      white-space: nowrap;
+      transition: background 120ms ease, border-color 120ms ease;
     }
-    .switch::after{
-      content: "";
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 20px;
-      height: 20px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.88);
-      transition: transform 140ms ease, background 140ms ease;
-    }
-    .tog.is-on .switch{
-      background: rgba(86, 132, 255, 0.22);
+    .seg-btn:hover{ background: rgba(255,255,255,0.08); border-color: var(--stroke2); }
+    .seg-btn.is-active{
+      background: rgba(86, 132, 255, 0.20);
       border-color: rgba(86, 132, 255, 0.40);
-    }
-    .tog.is-on .switch::after{
-      transform: translateX(20px);
-      background: rgba(255,255,255,0.92);
+      color: rgba(255,255,255,0.92);
     }
 
     .preview-viewport{
@@ -589,26 +532,9 @@
         </div>
         
         <div class="product-preview-area" aria-label="Product preview">
-          <div class="preview-toolbar" aria-label="Preview controls">
-            <div class="segmented" role="tablist" aria-label="Preview side">
-              <button class="seg-btn is-active" type="button" id="btnFront" aria-selected="true">Front</button>
-              <button class="seg-btn" type="button" id="btnBack" aria-selected="false">Back</button>
-            </div>
-
-            <div class="segmented" role="tablist" aria-label="View mode">
-              <button class="seg-btn is-active" type="button" id="btnFull" aria-selected="true">Full</button>
-              <button class="seg-btn" type="button" id="btnEdit" aria-selected="false">Edit</button>
-            </div>
-
-            <button class="tog is-on" type="button" id="togFrame" aria-pressed="true">
-              <span class="label">Frame</span>
-              <span class="switch" aria-hidden="true"></span>
-            </button>
-
-            <button class="tog is-on" type="button" id="togDesign" aria-pressed="true">
-              <span class="label">Design</span>
-              <span class="switch" aria-hidden="true"></span>
-            </button>
+          <div class="preview-toolbar" role="tablist" aria-label="Preview side">
+            <button class="seg-btn is-active" type="button" id="btnFront" aria-selected="true">Front</button>
+            <button class="seg-btn" type="button" id="btnBack" aria-selected="false">Back</button>
           </div>
 
           <div class="preview-viewport">
@@ -686,36 +612,6 @@ function genCode(len = 8) {
 
       if (btnFront) btnFront.addEventListener("click", () => setPreview("front"));
       if (btnBack) btnBack.addEventListener("click", () => setPreview("back"));
-
-
-      // View mode toggle (Full/Edit) - UI only for now
-      const btnFull = document.getElementById("btnFull");
-      const btnEdit = document.getElementById("btnEdit");
-
-      function setMode(mode){
-        const isFull = mode === "full";
-        if (btnFull && btnEdit){
-          btnFull.classList.toggle("is-active", isFull);
-          btnEdit.classList.toggle("is-active", !isFull);
-          btnFull.setAttribute("aria-selected", String(isFull));
-          btnEdit.setAttribute("aria-selected", String(!isFull));
-        }
-      }
-      if (btnFull) btnFull.addEventListener("click", () => setMode("full"));
-      if (btnEdit) btnEdit.addEventListener("click", () => setMode("edit"));
-
-      // On/off toggles (Frame/Design) - UI only for now
-      const togFrame = document.getElementById("togFrame");
-      const togDesign = document.getElementById("togDesign");
-
-      function toggleBtn(btn){
-        if (!btn) return;
-        const on = !btn.classList.contains("is-on");
-        btn.classList.toggle("is-on", on);
-        btn.setAttribute("aria-pressed", String(on));
-      }
-      if (togFrame) togFrame.addEventListener("click", () => toggleBtn(togFrame));
-      if (togDesign) togDesign.addEventListener("click", () => toggleBtn(togDesign));
 
     });
   </script>
