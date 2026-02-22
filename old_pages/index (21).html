@@ -257,34 +257,9 @@
       flex: 0 0 auto;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: flex-start;
       min-width: 0;
     }
-
-    .current-info-btn{
-      appearance: none;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.92);
-      border-radius: 999px;
-      padding: 8px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-      white-space: nowrap;
-      max-width: 48vw;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 12px;
-      font-weight: 650;
-    }
-    .current-info-btn:hover{ border-color: var(--stroke2); background: rgba(255,255,255,0.05); }
-    .current-info-btn:active{ transform: translateY(1px); }
-    .current-info-btn .k{ color: var(--text-dim); font-weight: 600; font-size: 11px; }
-    .current-info-btn .v{ font-weight: 800; overflow: hidden; text-overflow: ellipsis; }
 
     .product-code-link{
       appearance: none;
@@ -636,7 +611,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 10px;
+      padding: 8px 8px;
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 12px;
       background: rgba(255,255,255,0.015);
@@ -650,10 +625,8 @@
       gap: 8px;
       overflow-x: auto;
       overflow-y: hidden;
-      padding: 4px 2px;
-      scroll-snap-type: x mandatory;
-      scroll-padding-left: 2px;
-      scroll-padding-right: 2px;
+      padding: 2px 2px;
+      scroll-snap-type: x proximity;
       -webkit-overflow-scrolling: touch;
 
       /* hide physical scrollbar (mobile-first) */
@@ -690,7 +663,14 @@
       box-shadow: none;
     }
 
-    /* no pulsing hints (mobile-first, keep it calm) */
+    /* subtle “scroll hint” pulse on enabled arrows */
+    @keyframes navPulse{
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.0); }
+      50% { box-shadow: 0 0 0 6px rgba(255,255,255,0.08); }
+    }
+    .swatch-nav.is-hint{
+      animation: navPulse 1.2s ease-in-out infinite;
+    }
 
     .swatch-nav svg{
       width: 18px;
@@ -717,23 +697,12 @@
       justify-content: center;
       overflow: hidden;
       scroll-snap-align: start;
-      transition: transform 120ms ease, border-color 120ms ease;
+      transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
     }
     .swatch-btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.22); }
     .swatch-btn.is-active{
       border-color: rgba(144, 176, 255, 0.95);
-      box-shadow: none;
-    }
-
-    /* Simple active highlight ring without glow */
-    .swatch-btn{ position: relative; }
-    .swatch-btn.is-active::after{
-      content: "";
-      position: absolute;
-      inset: 2px;
-      border-radius: 999px;
-      border: 2px solid rgba(144, 176, 255, 0.95);
-      pointer-events: none;
+      box-shadow: 0 0 0 3px rgba(144, 176, 255, 0.18);
     }
 
     .swatch-btn img{
@@ -743,9 +712,32 @@
       display: block;
     }
 
+    .color-selected{
+      flex: 0 0 auto;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      white-space: nowrap;
+      padding-left: 6px;
+      border-left: 1px solid rgba(255,255,255,0.08);
+    }
+    .color-selected .k{
+      font-size: 11px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.62);
+    }
+    .color-selected .v{
+      font-size: 12px;
+      font-weight: 850;
+      color: rgba(255,255,255,0.92);
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     @media (max-width: 420px){
       .swatch-btn{ width: 34px; height: 34px; }
-      .current-info-btn{ max-width: 52vw; }
+      .color-selected .v{ max-width: 120px; }
     }
 
   </style>
@@ -813,11 +805,6 @@
           <button class="product-code-link" type="button" id="productInfoBtn" aria-label="Show product info">
             <span class="product-code-label">Product Code:</span>
             <span class="product-code-value">3001C_BC_UJSST</span>
-          </button>
-
-          <button class="current-info-btn" type="button" id="currentInfoBtn" aria-label="Show current selection info">
-            <span class="k">Current Info:</span>
-            <span class="v" id="currentInfoText">—</span>
           </button>
         </div>
         
@@ -891,6 +878,11 @@
   <button class="swatch-nav" type="button" id="swatchNext" aria-label="Scroll colors right" aria-disabled="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
   </button>
+
+  <div class="color-selected" aria-label="Selected color">
+    <span class="k">Color:</span>
+    <span class="v" id="selectedColorName">—</span>
+  </div>
 </div>
         </div>
 </div>
@@ -993,15 +985,7 @@ const COLORS = [
 const swatchList = document.getElementById("colorSwatchList");
 const swatchPrev = document.getElementById("swatchPrev");
 const swatchNext = document.getElementById("swatchNext");
-const currentInfoText = document.getElementById("currentInfoText");
-
-// Current Info overlay
-const currentInfoBtn = document.getElementById("currentInfoBtn");
-const currentInfoOverlay = document.getElementById("currentInfoOverlay");
-const closeCurrentInfoBtn = document.getElementById("closeCurrentInfoBtn");
-const ciColor = document.getElementById("ciColor");
-const ciView = document.getElementById("ciView");
-const ciSize = document.getElementById("ciSize");
+const selectedColorNameEl = document.getElementById("selectedColorName");
 
 function swatchPath(colorKey){
   // colorKey like "06_heather_team_purple"
@@ -1015,53 +999,11 @@ function productPath(colorKey, side){
 let currentColorKey = "06_heather_team_purple";
 let currentSide = "front";
 
-function prettyColorName(colorKey){
-  const meta = COLORS.find(c => c.key === colorKey);
-  return meta ? meta.name : colorKey;
-}
-
-function getCurrentSize(){
-  // If/when you add a real size picker, hook it here.
-  const el = document.getElementById("sizeSelect") || document.querySelector("[data-size]");
-  const v = el ? (el.value || el.textContent || "") : "";
-  const out = String(v).trim();
-  return out || "—";
-}
-
-function updateCurrentInfo(){
-  const colorName = prettyColorName(currentColorKey);
-  const viewName = (currentSide === "back") ? "Back" : "Front";
-  const sizeName = getCurrentSize();
-
-  if (currentInfoText) currentInfoText.textContent = `${colorName} • ${viewName}`;
-  if (ciColor) ciColor.textContent = colorName;
-  if (ciView) ciView.textContent = viewName;
-  if (ciSize) ciSize.textContent = sizeName;
-}
-
-function openCurrentInfo(){
-  if (!currentInfoOverlay) return;
-  updateCurrentInfo();
-  currentInfoOverlay.classList.add("is-open");
-}
-function closeCurrentInfo(){
-  if (!currentInfoOverlay) return;
-  currentInfoOverlay.classList.remove("is-open");
-}
-
-if (currentInfoBtn) currentInfoBtn.addEventListener("click", openCurrentInfo);
-if (closeCurrentInfoBtn) closeCurrentInfoBtn.addEventListener("click", closeCurrentInfo);
-if (currentInfoOverlay){
-  currentInfoOverlay.addEventListener("click", (e) => {
-    if (e.target === currentInfoOverlay) closeCurrentInfo();
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && currentInfoOverlay.classList.contains("is-open")) closeCurrentInfo();
-  });
-}
-
 function setSelectedColor(colorKey){
   currentColorKey = colorKey;
+
+  const meta = COLORS.find(c => c.key === colorKey);
+  if (selectedColorNameEl) selectedColorNameEl.textContent = meta ? meta.name : colorKey;
 
   // active swatch styling
   if (swatchList){
@@ -1112,58 +1054,28 @@ function updateSwatchNavState(){
   if (swatchPrev){
     swatchPrev.disabled = leftAtEnd || maxScroll <= 1;
     swatchPrev.setAttribute("aria-disabled", String(swatchPrev.disabled));
+    swatchPrev.classList.toggle("is-hint", !swatchPrev.disabled && !rightAtEnd);
   }
   if (swatchNext){
     swatchNext.disabled = rightAtEnd || maxScroll <= 1;
     swatchNext.setAttribute("aria-disabled", String(swatchNext.disabled));
+    swatchNext.classList.toggle("is-hint", !swatchNext.disabled && !leftAtEnd);
   }
 }
 
-function swatchStep(){
-  if (!swatchList) return 160;
-  const btn = swatchList.querySelector(".swatch-btn");
-  if (!btn) return 160;
-  const styles = window.getComputedStyle(swatchList);
-  const gap = parseFloat(styles.columnGap || styles.gap || "0") || 0;
-  return btn.offsetWidth + gap;
-}
-
-function snapSwatchesToClosest(){
+function scrollSwatchesBy(delta){
   if (!swatchList) return;
-  const btns = [...swatchList.querySelectorAll(".swatch-btn")];
-  if (!btns.length) return;
-  const x = swatchList.scrollLeft;
-  let best = btns[0];
-  let bestDist = Math.abs(best.offsetLeft - x);
-  for (const b of btns){
-    const d = Math.abs(b.offsetLeft - x);
-    if (d < bestDist){ best = b; bestDist = d; }
-  }
-  swatchList.scrollTo({ left: best.offsetLeft, behavior: "auto" });
-}
-
-function scrollSwatchesBySteps(stepCount){
-  if (!swatchList) return;
-  const delta = swatchStep() * stepCount;
   swatchList.scrollBy({ left: delta, behavior: "smooth" });
 }
 
 function attachSwatchNav(){
-  if (swatchPrev) swatchPrev.addEventListener("click", () => scrollSwatchesBySteps(-3));
-  if (swatchNext) swatchNext.addEventListener("click", () => scrollSwatchesBySteps(3));
+  if (swatchPrev) swatchPrev.addEventListener("click", () => scrollSwatchesBy(-220));
+  if (swatchNext) swatchNext.addEventListener("click", () => scrollSwatchesBy(220));
 
   if (swatchList){
-    let snapTimer = null;
     swatchList.addEventListener("scroll", () => {
       // throttle-ish: next tick
       window.requestAnimationFrame(updateSwatchNavState);
-
-      // ensure we land on full circles (no half swatches)
-      if (snapTimer) window.clearTimeout(snapTimer);
-      snapTimer = window.setTimeout(() => {
-        snapSwatchesToClosest();
-        window.requestAnimationFrame(updateSwatchNavState);
-      }, 90);
     }, { passive: true });
   }
   window.addEventListener("resize", () => window.requestAnimationFrame(updateSwatchNavState));
@@ -1194,7 +1106,6 @@ function setPreview(side){
   previewImg.src = productPath(currentColorKey, currentSide);
   previewImg.alt = isFront ? "Product preview (front)" : "Product preview (back)";
   setActivePair(btnFront, btnBack, isFront);
-  updateCurrentInfo();
 }
 
 function setMode(mode){
@@ -1261,25 +1172,6 @@ setToggle(togDesign, true);
       If you import a design and edit it, a simple workflow is “clone on edit”: treat the imported design as a new draft ID, then saving/exporting
       produces a new share code. That prevents accidental overwrites while still allowing a future “history” feature if you want it later.
     </p>
-  </div>
-</div>
-
-<!-- Current info overlay -->
-<div class="overlay" id="currentInfoOverlay" role="dialog" aria-modal="true" aria-labelledby="currentInfoTitle">
-  <div class="modal">
-    <div class="modal-head">
-      <div>
-        <h2 class="modal-title" id="currentInfoTitle">Current Selection</h2>
-        <div class="modal-sub">What you’re viewing right now.</div>
-      </div>
-      <button class="close-btn" type="button" id="closeCurrentInfoBtn" aria-label="Close">✕</button>
-    </div>
-
-    <div class="kv">
-      <div class="k">Color</div><div class="v" id="ciColor">—</div>
-      <div class="k">View</div><div class="v" id="ciView">—</div>
-      <div class="k">Size</div><div class="v" id="ciSize">—</div>
-    </div>
   </div>
 </div>
 
