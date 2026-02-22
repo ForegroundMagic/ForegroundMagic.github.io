@@ -18,7 +18,6 @@
 
     :root {
       --edge: 10px;
-
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-right: env(safe-area-inset-right, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -60,104 +59,166 @@
       min-height: 0;
     }
 
-    /* Top toolbar (NOW WRAPS) */
+    /* Top toolbar */
     .toolbar {
-      /* remove fixed height so it can grow to 2 lines */
-      min-height: 52px;
+      min-height: 64px;
       flex: 0 0 auto;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;              /* key change */
-      gap: 10px 12px;               /* row/col gaps */
+      flex-wrap: wrap;                 /* allow wrapping */
+      gap: 10px 12px;
       padding: 10px 12px;
       box-sizing: border-box;
-
       background: linear-gradient(to bottom, rgba(255,255,255,0.04), rgba(255,255,255,0.00));
       border-bottom: 1px solid var(--stroke);
       min-width: 0;
     }
 
-    /* NEW: left cluster containing brand + pill */
-    .toolbar__cluster {
+    /* Brand (logo + text) */
+    .brand {
       display: flex;
       align-items: center;
       gap: 12px;
       min-width: 0;
-      flex: 1 1 auto;               /* grows, can shrink */
-    }
-
-    /* Buttons cluster */
-    .toolbar__actions {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex: 0 1 auto;
-      min-width: 0;
-      flex-wrap: wrap;              /* allows button wrapping if needed */
-    }
-
-    /* Brand */
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
       flex: 0 1 auto;
     }
 
+    /* 2x logo size */
     .logo {
-      width: 28px;
-      height: 28px;
+      width: 56px;
+      height: 56px;
       display: block;
       filter: brightness(0) invert(1);
       opacity: 0.95;
       flex: 0 0 auto;
     }
 
+    /* Keep text fully visible but contained within logo height */
     .brand__text {
       display: flex;
       flex-direction: column;
-      line-height: 1.1;
-      min-width: 0;
+      justify-content: center;
+      max-height: 56px;               /* never exceed logo height */
+      line-height: 1.15;
     }
 
     .brand__title {
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 750;
       letter-spacing: 0.2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin: 0;
+      white-space: nowrap;            /* ensures visibility if short */
     }
 
     .brand__sub {
-      font-size: 11px;
+      font-size: 12px;
+      font-weight: 600;
       color: var(--text-dim);
+      margin: 0;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    /* Product pill */
-    .product-pill {
+    /* Actions: left group + right group */
+    .toolbar__actions {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .actions-left,
+    .actions-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .actions-left { justify-content: flex-start; }
+    .actions-right { justify-content: flex-end; }
+
+    /* Buttons */
+    .btn {
+      appearance: none;
+      border: 1px solid var(--stroke);
+      background: var(--btn);
+      color: rgba(255,255,255,0.9);
+      border-radius: 10px;
+      padding: 9px 11px;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .btn:hover { background: var(--btn-hover); border-color: var(--stroke2); }
+    .btn:active { background: var(--btn-active); transform: translateY(1px); }
+
+    .btn--primary {
+      background: rgba(86, 132, 255, 0.22);
+      border-color: rgba(86, 132, 255, 0.35);
+    }
+    .btn--primary:hover {
+      background: rgba(86, 132, 255, 0.30);
+      border-color: rgba(86, 132, 255, 0.55);
+    }
+
+    .icon { width: 14px; height: 14px; display: inline-block; }
+    .icon svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+      fill: none;
+      stroke: rgba(255,255,255,0.82);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Content area */
+    .content {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+      padding: 12px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
       gap: 10px;
-      padding: 6px 10px;
+    }
+
+    /* Product info moved into content, left-aligned at top */
+    .content-top {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      min-width: 0;
+    }
+
+    .product-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
       border: 1px solid var(--stroke);
       border-radius: 999px;
       background: rgba(255,255,255,0.03);
       box-shadow: 0 8px 20px rgba(0,0,0,0.18);
       min-width: 0;
-      flex: 0 1 auto;
+      max-width: 100%;
     }
 
     .product-name {
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 650;
       white-space: nowrap;
     }
 
@@ -191,79 +252,42 @@
       box-shadow: 0 0 0 3px rgba(255, 196, 61, 0.12);
     }
 
-    /* Buttons */
-    .btn {
-      appearance: none;
-      border: 1px solid var(--stroke);
-      background: var(--btn);
-      color: rgba(255,255,255,0.9);
-      border-radius: 10px;
-      padding: 8px 10px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
-      user-select: none;
-      white-space: nowrap;
-    }
-    .btn:hover { background: var(--btn-hover); border-color: var(--stroke2); }
-    .btn:active { background: var(--btn-active); transform: translateY(1px); }
-
-    .btn--icon {
-      width: 36px;
-      justify-content: center;
-      padding: 8px 0;
-    }
-
-    .btn--primary {
-      background: rgba(86, 132, 255, 0.22);
-      border-color: rgba(86, 132, 255, 0.35);
-    }
-    .btn--primary:hover {
-      background: rgba(86, 132, 255, 0.30);
-      border-color: rgba(86, 132, 255, 0.55);
-    }
-
-    .icon { width: 14px; height: 14px; display: inline-block; }
-    .icon svg {
-      width: 14px;
-      height: 14px;
-      display: block;
-      fill: none;
-      stroke: rgba(255,255,255,0.82);
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .content {
+    /* Main workspace placeholder (no scrollbars) */
+    .workspace {
       flex: 1 1 auto;
       min-height: 0;
       overflow: hidden;
-      padding: 12px;
-      box-sizing: border-box;
+      border: 1px dashed rgba(255,255,255,0.08);
+      border-radius: 12px;
     }
 
-    /* Mobile behavior:
-       - Buttons drop to a new row and right-align
-       - Product pill can wrap under brand if needed */
-    @media (max-width: 620px) {
+    /* Responsive stacking rules requested:
+       - If not enough horizontal space:
+         left buttons stack vertically on left
+         right buttons stack vertically on right
+    */
+    @media (max-width: 640px) {
       .toolbar__actions {
-        flex-basis: 100%;           /* forces second line when tight */
-        justify-content: flex-end;
+        flex-basis: 100%;              /* let actions drop to new line */
+      }
+      .actions-left,
+      .actions-right {
+        flex-direction: column;         /* stack within each side */
+        align-items: stretch;
+      }
+      .actions-left .btn,
+      .actions-right .btn {
+        width: 100%;
+        justify-content: center;
       }
     }
 
-    @media (max-width: 520px) {
-      .brand__sub { display: none; }
+    /* Tighten a bit further on very small screens */
+    @media (max-width: 420px) {
       .product-code { display: none; }
-      .toolbar { padding: 10px; }
-      .btn { padding: 8px 9px; }
-      .btn--icon { width: 34px; }
-      .product-pill { gap: 8px; }
+      .brand__title { font-size: 13px; }
+      .brand__sub { font-size: 11px; }
+      .btn { padding: 9px 10px; }
     }
   </style>
 </head>
@@ -271,17 +295,58 @@
   <div class="page">
     <div class="app">
 
+      <!-- TOP TOOLBAR -->
       <div class="toolbar">
-        <!-- Cluster 1: Brand + Item pill -->
-        <div class="toolbar__cluster">
-          <div class="brand">
-            <img class="logo" src="assets/graphics/logo/FM_logo.svg" alt="Foreground Magic logo" />
-            <div class="brand__text">
-              <div class="brand__title">Foreground Magic</div>
-              <div class="brand__sub">Designer</div>
-            </div>
+        <!-- Brand only -->
+        <div class="brand">
+          <!-- Use your working logo source here -->
+          <img class="logo" src="assets/graphics/logo/FM_logo.svg" alt="Foreground Magic logo" />
+          <div class="brand__text">
+            <div class="brand__title">Foreground Magic</div>
+            <div class="brand__sub">Designer</div>
+          </div>
+        </div>
+
+        <!-- Actions: left side + right side -->
+        <div class="toolbar__actions">
+          <div class="actions-left">
+            <button class="btn" type="button">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M9 9h6M9 12h6M9 15h6"/></svg>
+              </span>
+              Inspector
+            </button>
+
+            <button class="btn" type="button">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+              </span>
+              Canvas
+            </button>
           </div>
 
+          <div class="actions-right">
+            <button class="btn" type="button">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M4 21h16"/></svg>
+              </span>
+              Import
+            </button>
+
+            <button class="btn btn--primary" type="button">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M16 17l-4 4-4-4"/><path d="M4 3h16"/></svg>
+              </span>
+              Export
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+        <!-- Product info moved here (top-left) -->
+        <div class="content-top">
           <div class="product-pill" aria-label="Product details">
             <div class="product-name">Shirt Type A</div>
             <div class="divider" aria-hidden="true"></div>
@@ -291,51 +356,10 @@
           </div>
         </div>
 
-        <!-- Cluster 2: Buttons (can wrap to next line) -->
-        <div class="toolbar__actions">
-          <button class="btn btn--icon" type="button" title="Undo" aria-label="Undo">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M9 14l-4-4 4-4"/><path d="M5 10h10a6 6 0 1 1 0 12h-3"/></svg>
-            </span>
-          </button>
-
-          <button class="btn btn--icon" type="button" title="Redo" aria-label="Redo">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M15 14l4-4-4-4"/><path d="M19 10H9a6 6 0 1 0 0 12h3"/></svg>
-            </span>
-          </button>
-
-          <button class="btn" type="button">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M9 9h6M9 12h6M9 15h6"/></svg>
-            </span>
-            Inspector
-          </button>
-
-          <button class="btn" type="button">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
-            </span>
-            Canvas
-          </button>
-
-          <button class="btn" type="button">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M4 21h16"/></svg>
-            </span>
-            Import Design
-          </button>
-
-          <button class="btn btn--primary" type="button">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M16 17l-4 4-4-4"/><path d="M4 3h16"/></svg>
-            </span>
-            Export Design
-          </button>
-        </div>
+        <!-- placeholder workspace -->
+        <div class="workspace"></div>
       </div>
 
-      <div class="content"></div>
     </div>
   </div>
 </body>
